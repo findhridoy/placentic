@@ -77,12 +77,9 @@ const userLogin = asyncHandler(async (req, res) => {
     return res.status(400).json(errors);
   }
 
-  // distructure the value
-  const { username, email, password } = req.body;
-
   // check the username and email from the database
   const user = await User.findOne({
-    $or: [{ username }, { email }],
+    $or: [{ username: req.body.userName }, { email: req.body.userName }],
   });
   if (!user) {
     res.status(404);
@@ -90,7 +87,7 @@ const userLogin = asyncHandler(async (req, res) => {
   }
 
   // check the hash password
-  const isMatch = await bcrypt.compare(password, user.password);
+  const isMatch = await bcrypt.compare(req.body.password, user.password);
 
   if (user && isMatch) {
     res.json({
