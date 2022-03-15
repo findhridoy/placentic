@@ -3,7 +3,7 @@ const { connect } = require("mongoose");
 const { success, error } = require("consola");
 
 // Internal Imports
-const { PORT, MDB_URI } = require("./index");
+const { MDB_URI } = require("./index");
 
 // Connecting with Database
 const connectMDB = async () => {
