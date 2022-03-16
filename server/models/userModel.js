@@ -37,6 +37,7 @@ const UserSchema = new Schema(
     },
     avatar_id: {
       type: String,
+      default: "abcdefdh",
     },
   },
   { timestamps: true }

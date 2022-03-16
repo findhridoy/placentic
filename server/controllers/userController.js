@@ -7,6 +7,7 @@ const { validateRegInput } = require("../utils/validation/registerValidation");
 const { validateLoginInput } = require("../utils/validation/loginValidation");
 const User = require("../models/userModel");
 const { generateToken } = require("../utils/generateToken");
+const { cloudinary } = require("../config/cloudinary");
 
 /**
  * @route   Post /api/users/register
@@ -47,6 +48,7 @@ const userRegister = asyncHandler(async (req, res) => {
     email,
     password: hashPassword,
     avatar,
+    avatar_id,
   });
   if (user) {
     res.status(201).json({
@@ -90,7 +92,7 @@ const userLogin = asyncHandler(async (req, res) => {
   const isMatch = await bcrypt.compare(req.body.password, user.password);
 
   if (user && isMatch) {
-    res.json({
+    res.status(200).json({
       _id: user._id,
       name: user.name,
       username: user.username,
@@ -107,21 +109,14 @@ const userLogin = asyncHandler(async (req, res) => {
 });
 
 /**
- * @route   Post /api/users/profile
+ * @route   Get /api/users/profile
  * @desc    Get user profile
  * @access  Private/Loggedin user
  */
 const getUserProfile = asyncHandler(async (req, res) => {
-  const user = await User.findById(req.user._id);
+  const user = await User.findById(req.user._id).select("-password");
   if (user) {
-    res.json({
-      _id: user._id,
-      name: user.name,
-      email: user.email,
-      username: user.username,
-      isAdmin: user.isAdmin,
-      avatar: user.avatar,
-    });
+    res.status(200).json(user);
   } else {
     res.status(404);
     throw new Error("User not found");
@@ -129,28 +124,81 @@ const getUserProfile = asyncHandler(async (req, res) => {
 });
 
 /**
- * @route   Post /api/users/update/:id
+ * @route   Put /api/users/update/:id
  * @desc    Update user profile
  * @access  Private/Loggedin user
  */
-const updateUserProfile = asyncHandler(async (req, res) => {});
+const updateUserProfile = asyncHandler(async (req, res) => {
+  let user = await User.findById(req.user._id);
+
+  // with file
+  if (user && req.file) {
+    await cloudinary.uploader.destroy(user.avatar_id);
+    const result = await cloudinary.uploader.upload(req.file.path, {
+      upload_preset: "placentic_users",
+    });
+
+    const updatedUser = {
+      name: req.body.name || user.name,
+      username: req.body.username || user.username,
+      email: req.body.email || user.email,
+      avatar: result.secure_url || user.avatar,
+      avatar_id: result.public_id || user.avatar_id,
+    };
+
+    user = await User.findByIdAndUpdate(req.user._id, updatedUser, {
+      new: true,
+    }).select("-password");
+
+    res.status(200).json(user);
+  }
+
+  // without file
+  if (user && !req.file) {
+    const updatedUser = {
+      name: req.body.name || user.name,
+      username: req.body.username || user.username,
+      email: req.body.email || user.email,
+    };
+
+    user = await User.findByIdAndUpdate(req.user._id, updatedUser, {
+      new: true,
+    }).select("-password");
+
+    res.status(200).json(user);
+  } else {
+    res.status(404);
+    throw new Error("User not found");
+  }
+});
+
+const uploadAvatar = asyncHandler(async (req, res) => {
+  // try {
+  //   const result = await cloudinary.uploader.upload(req.file.path, {
+  //     upload_preset: "placentic_users",
+  //   });
+  //   res.send(result);
+  // } catch (error) {
+  //   res.send(error);
+  // }
+});
 
 /**
- * @route   Post /api/users/delete/:id
+ * @route   Delete /api/users/delete/:id
  * @desc    Delete a user
  * @access  Private/Admin
  */
 const deleteUser = asyncHandler(async (req, res) => {});
 
 /**
- * @route   Post /api/users
+ * @route   Get /api/users
  * @desc    Get all users
  * @access  Private/Admin
  */
 const getUsers = asyncHandler(async (req, res) => {});
 
 /**
- * @route   Post /api/user/updateAdmin/:id
+ * @route   Put /api/user/updateAdmin/:id
  * @desc    Make a admin
  * @access  Private/Admin
  */
@@ -163,4 +211,5 @@ module.exports = {
   getUserProfile,
   updateUserProfile,
   deleteUser,
+  uploadAvatar,
 };
