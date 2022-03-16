@@ -5,6 +5,8 @@ const { success } = require("consola");
 // Internal Imports
 const { PORT } = require("./config");
 const connectMDB = require("./config/db");
+const userRouter = require("./routes/userRoutes");
+const { notFound, errorHandler } = require("./middleware/errorMiddileware");
 
 // Initialize the Application
 const app = express();
@@ -13,7 +15,14 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Connecting with Database
+// Routing Setup
+app.use("/api/users", userRouter);
+
+// Default Error Handler
+app.use(notFound);
+app.use(errorHandler);
+
+// Connecting with the Database
 connectMDB();
 
 // Start Listening for the server on Port
