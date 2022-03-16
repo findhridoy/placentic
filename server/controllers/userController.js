@@ -124,11 +124,12 @@ const getUserProfile = asyncHandler(async (req, res) => {
 });
 
 /**
- * @route   Put /api/users/update/:id
+ * @route   Put /api/users/update
  * @desc    Update user profile
  * @access  Private/Loggedin user
  */
 const updateUserProfile = asyncHandler(async (req, res) => {
+  // find user by id
   let user = await User.findById(req.user._id);
 
   // with file
@@ -172,37 +173,69 @@ const updateUserProfile = asyncHandler(async (req, res) => {
   }
 });
 
-const uploadAvatar = asyncHandler(async (req, res) => {
-  // try {
-  //   const result = await cloudinary.uploader.upload(req.file.path, {
-  //     upload_preset: "placentic_users",
-  //   });
-  //   res.send(result);
-  // } catch (error) {
-  //   res.send(error);
-  // }
-});
-
 /**
  * @route   Delete /api/users/delete/:id
  * @desc    Delete a user
  * @access  Private/Admin
  */
-const deleteUser = asyncHandler(async (req, res) => {});
+const deleteUser = asyncHandler(async (req, res) => {
+  // find user by id
+  const user = await User.findById(req.params.id);
+  if (user) {
+    // remove avatar in cloudinary
+    await cloudinary.uploader.destroy(user.avatar_id);
+
+    // remove user from database
+    await user.remove();
+
+    res.json({
+      message: "User removed",
+    });
+  } else {
+    res.status(404);
+    throw new Error("User not found");
+  }
+});
 
 /**
  * @route   Get /api/users
  * @desc    Get all users
  * @access  Private/Admin
  */
-const getUsers = asyncHandler(async (req, res) => {});
+const getUsers = asyncHandler(async (req, res) => {
+  // find all user as an admin
+  const users = await User.find({}).select("-password");
+  if (users) {
+    res.status(200).json(users);
+  } else {
+    res.status(404);
+    throw new Error("Users not found");
+  }
+});
 
 /**
- * @route   Put /api/user/updateAdmin/:id
+ * @route   Put /api/users/updateAdmin/:id
  * @desc    Make a admin
  * @access  Private/Admin
  */
-const updateToAdmin = asyncHandler(async (req, res) => {});
+const updateToAdmin = asyncHandler(async (req, res) => {
+  // find user by id
+  const user = await User.findById(req.params.id).select("-password");
+
+  // check user and update to admin
+  if (user) {
+    user.name = req.body.name || user.name;
+    user.username = req.body.username || user.username;
+    user.email = req.body.email || user.email;
+    user.isAdmin = req.body.isAdmin || user.isAdmin;
+
+    const updatedUser = await user.save();
+    res.status(200).json(updatedUser);
+  } else {
+    res.status(404);
+    throw new Error("User not found");
+  }
+});
 
 // Export all controller function
 module.exports = {
@@ -211,5 +244,6 @@ module.exports = {
   getUserProfile,
   updateUserProfile,
   deleteUser,
-  uploadAvatar,
+  getUsers,
+  updateToAdmin,
 };

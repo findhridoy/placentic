@@ -7,9 +7,11 @@ const {
   userLogin,
   getUserProfile,
   updateUserProfile,
-  uploadAvatar,
+  deleteUser,
+  getUsers,
+  updateToAdmin,
 } = require("../controllers/userController");
-const { protect } = require("../middleware/authMiddleware");
+const { protect, admin } = require("../middleware/authMiddleware");
 const { upload } = require("../utils/avatarUpload");
 
 // User routes
@@ -17,7 +19,9 @@ router.post("/register", userRegister);
 router.post("/login", userLogin);
 router.get("/profile", protect, getUserProfile);
 router.put("/update", protect, upload.single("avatar"), updateUserProfile);
-router.post("/upload", upload.single("avatar"), uploadAvatar);
+router.delete("/delete/:id", protect, admin, deleteUser);
+router.get("/", protect, admin, getUsers);
+router.put("/updateAdmin/:id", protect, admin, updateToAdmin);
 
 // Export router
 module.exports = router;
