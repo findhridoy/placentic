@@ -13,7 +13,7 @@ const validateRegInput = (data) => {
   if (isEmpty(data.name)) {
     errors.name = "Name field can not be empty";
   } else if (!Validator.isLength(data.name, { min: 3, max: 30 })) {
-    errors.name = "Name must be between 6 and 30 characters long";
+    errors.name = "Name must be between 3 and 30 characters long";
   }
 
   // check the username field
