@@ -5,9 +5,9 @@
   "main": "index.js",
   "scripts": {
     "start": "node server/index.js",
-    "server": "nodemon server/index.js",
-    "client": "yarn start --prefix client",
-    "dev": "concurrently \"yarn run server\" \"yarn run client\"",
+    "server": "nodemon server/index.js --ignore client",
+    "client": "cd client && yarn start",
+    "dev": "concurrently \"yarn run client\" \"yarn run server\"",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Hridoy",
@@ -26,7 +26,7 @@
     "validator": "^13.7.0"
   },
   "devDependencies": {
-    "concurrently": "^7.0.0",
+    "concurrently": "^7.1.0",
     "nodemon": "^2.0.15"
   }
 }
