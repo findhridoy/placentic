@@ -1,5 +1,4 @@
 // External Imports
-const { default: mongoose } = require("mongoose");
 const { Schema, model } = require("mongoose");
 
 // User Schema
@@ -14,6 +13,7 @@ const UserSchema = new Schema(
       type: String,
       required: true,
       trim: true,
+      unique: true,
     },
     email: {
       type: String,

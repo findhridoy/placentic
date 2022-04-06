@@ -1,0 +1,62 @@
+/*=================== LAYOUT ===================*/
+.container {
+  max-width: 1168px;
+  margin-right: $x-1;
+  margin-left: $x-1;
+  @include breakpoint(sm) {
+    margin-right: $x-1-5;
+    margin-left: $x-1-5;
+  }
+  @include breakpoint(md) {
+    margin-right: $x-2;
+    margin-left: $x-2;
+  }
+  @include breakpoint(lg) {
+    margin-right: $x-3;
+    margin-left: $x-3;
+  }
+  @include breakpoint(xl) {
+    margin-right: auto;
+    margin-left: auto;
+  }
+}
+/*=================== REUSEABLE CLASSES ===================*/
+
+.btn {
+  .MuiButton-root {
+    padding: $x-0-75 $x-2;
+    font-weight: $semi-bold;
+    text-transform: capitalize;
+    border-radius: 0;
+    @include small-font;
+    cursor: pointer;
+    @include breakpoint(sm) {
+      padding: $x-0-75 $x-2-75;
+    }
+    &:hover {
+      box-shadow: 0px 25px 50px -10px rgba(0, 0, 0, 0.6);
+      -webkit-box-shadow: 0px 25px 50px -10px rgba(0, 0, 0, 0.6);
+      -moz-box-shadow: 0px 25px 50px -10px rgba(0, 0, 0, 0.6);
+    }
+  }
+}
+.btn__white {
+  .MuiButton-root {
+    background-color: $white;
+    color: $dark-alt;
+    &:hover {
+      color: $dark-alt;
+      background-color: $white;
+    }
+  }
+}
+.btn__dark {
+  .MuiButton-root {
+    background-color: $dark-alt;
+    color: $white;
+    &:hover {
+      color: $white;
+      background-color: $dark-alt;
+    }
+  }
+}

@@ -6,6 +6,8 @@ const { success } = require("consola");
 const { PORT } = require("./config");
 const connectMDB = require("./config/db");
 const userRouter = require("./routes/userRoutes");
+const categoryRouter = require("./routes/categoryRoutes");
+const productRouter = require("./routes/productRoutes");
 const { notFound, errorHandler } = require("./middleware/errorMiddileware");
 
 // Initialize the Application
@@ -17,6 +19,8 @@ app.use(express.urlencoded({ extended: true }));
 
 // Routing Setup
 app.use("/api/users", userRouter);
+app.use("/api/category", categoryRouter);
+app.use("/api/product", productRouter);
 
 // Default Error Handler
 app.use(notFound);

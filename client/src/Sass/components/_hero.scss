@@ -1,0 +1,46 @@
+.hero__section {
+  @include section-height(100vh);
+  position: relative;
+  top: 0;
+  &::after {
+    content: "";
+    width: 50%;
+    height: 100%;
+    right: 0;
+    top: 0;
+    background-color: $cyan-alt;
+    position: absolute;
+    z-index: -1;
+  }
+  .hero__content {
+    display: grid;
+    height: 80vh;
+    gap: 2rem;
+    @include breakpoint(md) {
+      grid-template-columns: 1fr 1fr;
+    }
+    .hero__data {
+      align-self: center;
+      .hero__title {
+        @include big-font;
+        color: $dark-alt;
+      }
+      .hero__description {
+        @include small-font;
+        font-weight: $medium;
+        color: $dark-alt;
+        margin-top: $x-1;
+      }
+      .hero__btn {
+        margin-top: $x-1-5;
+      }
+    }
+    .hero__image {
+      text-align: center;
+      align-self: center;
+      img {
+        width: 60%;
+      }
+    }
+  }
+}

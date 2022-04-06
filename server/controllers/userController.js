@@ -188,8 +188,8 @@ const deleteUser = asyncHandler(async (req, res) => {
     // remove user from database
     await user.remove();
 
-    res.json({
-      message: "User removed",
+    res.status(200).json({
+      message: "User is removed successfully",
     });
   } else {
     res.status(404);
