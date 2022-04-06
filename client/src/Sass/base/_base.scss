@@ -1,0 +1,44 @@
+/*********** Base Css ***/
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+html {
+  scroll-behavior: smooth;
+}
+body {
+  @include body-margin;
+  padding: 0;
+  // overflow: overlay;
+  font-family: $poppins;
+  @include normal-font;
+  background-color: $white-alt;
+}
+ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+h1,
+h2,
+h3,
+h4,
+p {
+  margin: 0;
+}
+a {
+  text-decoration: none;
+}
+button,
+input {
+  border: none;
+  outline: none;
+  font-family: $poppins;
+}
+img {
+  max-width: 100%;
+  height: auto;
+}
