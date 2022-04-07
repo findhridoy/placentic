@@ -11,8 +11,9 @@ html {
 }
 body {
   @include body-margin;
+  // margin: 0;
   padding: 0;
-  // overflow: overlay;
+  overflow: overlay;
   font-family: $poppins;
   @include normal-font;
   background-color: $white-alt;

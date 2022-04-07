@@ -8,14 +8,16 @@ $dark-300: #d2d2d275;
 $dark-100: #f5f5f5;
 $warning: #ffba00;
 $info: #00efd2;
-$primary-500: #1185ed;
-$primary: #0676d8;
+$primary-500: hsl(208, 87%, 50%);
+$primary: hsl(208, 95%, 44%);
+// $cyan: hsl(210, 100%, 40%);
 
 $white: hsl(0, 0%, 100%);
 $white-alt: hsl(228, 14%, 93%);
+$gray: hsl(0, 0%, 76%);
 $dark: hsl(0, 0%, 0%);
 $dark-alt: hsl(228, 4%, 25%);
-$cyan: hsla(182, 95%, 32%, 0.993);
+$cyan: hsla(187, 94%, 39%, 0.993);
 $cyan-alt: hsl(206, 59%, 89%);
 $red: hsl(0, 100%, 50%);
 $green: hsl(120, 94%, 34%);
@@ -44,7 +46,7 @@ $x-2-75: 2.75rem; /* 44px */
 $x-3: 3rem; /* 48px */
 
 /******* Border ***/
-$border-light: 1px solid hsla(0, 0%, 0%, 0.103);
+$border-gray: 1px solid $gray;
 $border-dark-100: 1px solid $dark-100;
 $border-dark-alt: 1px solid $dark-alt;
 $border-danger: 1px solid $red;
@@ -52,9 +54,6 @@ $border-danger: 1px solid $red;
 /******* Shadow ***/
 $shadow-side: 2px 2px 6px #00000030;
 $shadow-all: 0 0 35px #00000020;
-
-/******* Transition ***/
-$transition: ease-in all 200ms;
 
 /******* Z Index ***/
 $z-1: 1;

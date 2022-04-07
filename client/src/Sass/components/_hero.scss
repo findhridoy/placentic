@@ -2,6 +2,7 @@
   @include section-height(100vh);
   position: relative;
   top: 0;
+  // border-bottom: $border-light;
   &::after {
     content: "";
     width: 50%;
@@ -14,7 +15,7 @@
   }
   .hero__content {
     display: grid;
-    height: 80vh;
+    height: 100vh;
     gap: 2rem;
     @include breakpoint(md) {
       grid-template-columns: 1fr 1fr;

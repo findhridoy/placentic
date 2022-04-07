@@ -21,22 +21,23 @@
   }
 }
 /*=================== REUSEABLE CLASSES ===================*/
-
+// Button
 .btn {
   .MuiButton-root {
-    padding: $x-0-75 $x-2;
+    height: 3rem;
+    width: 9rem;
+    display: block;
     font-weight: $semi-bold;
     text-transform: capitalize;
     border-radius: 0;
     @include small-font;
     cursor: pointer;
-    @include breakpoint(sm) {
-      padding: $x-0-75 $x-2-75;
+    @include breakpoint(md) {
+      height: 3.5rem;
+      width: 10rem;
     }
     &:hover {
-      box-shadow: 0px 25px 50px -10px rgba(0, 0, 0, 0.6);
-      -webkit-box-shadow: 0px 25px 50px -10px rgba(0, 0, 0, 0.6);
-      -moz-box-shadow: 0px 25px 50px -10px rgba(0, 0, 0, 0.6);
+      @include shadow-btn;
     }
   }
 }
@@ -58,5 +59,27 @@
       color: $white;
       background-color: $dark-alt;
     }
+  }
+}
+
+// Section
+.section {
+  padding: $x-2 0;
+}
+
+// Section Title
+.section__title {
+  font-weight: $semi-bold;
+  color: $dark-alt;
+  position: relative;
+  &::after {
+    content: "";
+    position: absolute;
+    width: 6rem;
+    height: 0.1rem;
+    background-color: $dark-alt;
+    left: 0;
+    bottom: 0;
+    transform: translateY(0.6rem);
   }
 }

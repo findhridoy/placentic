@@ -1,0 +1,91 @@
+.sl__section {
+  .sl__title {
+    text-align: center;
+    padding: $x-1-25 0;
+    background-color: $white;
+    font-weight: $bold;
+    border-bottom: $border-dark-100;
+    @include h2-font;
+  }
+
+  .sl__form {
+    padding: $x-2;
+    .form__group {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: $x-1;
+      .form__label {
+        font-weight: $semi-bold;
+        @include normal-font;
+        margin-bottom: $x-0-25;
+        color: $dark-alt;
+      }
+      .form__control {
+        width: 100%;
+        border-bottom: $border-gray;
+        // padding: $x-0-5;
+        height: 3rem;
+        font-weight: $medium;
+        @include small-font;
+        background-color: transparent;
+        color: $dark-alt;
+        &:focus {
+          //   box-shadow: $shadow;
+        }
+        &:hover {
+          //   box-shadow: $shadow;
+        }
+      }
+      .form__error {
+        font-weight: $medium;
+        color: $red;
+        margin-top: $x-0-25;
+        @include small-font;
+      }
+    }
+
+    .form__flex {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      .checkbox__group {
+        display: flex;
+        align-items: center;
+        .checkbox__label {
+          font-weight: $medium;
+          @include small-font;
+        }
+      }
+      .form__forget {
+        font-weight: $medium;
+        color: $primary;
+        @include small-font;
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+    }
+
+    .sl__btn {
+      margin-top: $x-2;
+      .MuiButton-root {
+        width: 100%;
+      }
+    }
+
+    .form__footer {
+      margin-top: $x-0-5;
+      text-align: center;
+      .form__footer--text {
+        font-weight: $medium;
+        @include small-font;
+        .form__footer--link {
+          color: $primary;
+          &:hover {
+            text-decoration: underline;
+          }
+        }
+      }
+    }
+  }
+}

@@ -4,17 +4,39 @@
   left: 0;
   z-index: $z-99;
   width: 100%;
-  @include header-height;
-  border-bottom: $border-light;
   background-color: $white-alt;
+  @include header-shadow(-30px);
+  @include transition(500ms);
+  @include header-height;
 
   .nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
     height: 100%;
-    // padding: 0 $x-1;
-    &__logo {
+
+    .nav__searchBox {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      input {
+        width: 99%;
+        padding: 0 $x-0-75;
+        @include small-font;
+        font-weight: $medium;
+        color: $dark-alt;
+        background-color: transparent;
+      }
+      .MuiIconButton-root {
+        .MuiSvgIcon-root {
+          @include h3-font;
+        }
+        &:hover {
+          color: $red;
+        }
+      }
+    }
+    .nav__logo {
       .logo {
         width: 130px;
         @include breakpoint(md) {
@@ -25,20 +47,21 @@
         }
       }
     }
-    &__menu {
+    .nav__menu {
       position: fixed;
       bottom: 0;
       left: 0;
       z-index: $z-99;
       width: 100%;
       @include header-height;
-      border-top: $border-light;
       background-color: $white-alt;
+      @include header-shadow(12px);
       @include breakpoint(md) {
         position: initial;
         border-top: none;
         width: initial;
         background-color: initial;
+        box-shadow: none;
       }
       .nav__list {
         display: flex;
@@ -53,10 +76,10 @@
           .nav__link {
             color: $dark-alt;
             font-weight: $semi-bold;
-            transition: $transition;
             display: flex;
             align-items: center;
             flex-direction: column;
+            @include transition(200ms);
             @include smallest-font;
             @include breakpoint(sm) {
               @include smaller-font;
@@ -84,6 +107,14 @@
         display: flex;
         gap: 0.5rem;
         .nav__item2 {
+          .MuiIconButton-root {
+            .MuiSvgIcon-root {
+              @include h3-font;
+            }
+            &:hover {
+              color: $cyan;
+            }
+          }
           .nav__link2 {
             display: flex;
             align-items: center;
@@ -91,18 +122,15 @@
             color: $dark-alt;
             font-weight: $semi-bold;
             @include small-font;
-            transition: $transition;
-            .MuiIconButton-root {
-              .MuiSvgIcon-root {
-                @include h3-font;
-              }
-              &:hover {
-                color: $cyan;
-              }
-            }
+            @include transition(200ms);
           }
         }
       }
     }
   }
+}
+
+// when scroll down
+.header__shadow {
+  @include header-shadow(-10px);
 }
