@@ -1,18 +1,24 @@
+import { SnackbarProvider } from "notistack";
 import React from "react";
-import ReactDOM from "react-dom/client";
-// import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
-// import "react-loader-spinner/dist/loader/c";
+import { createRoot } from "react-dom/client";
+import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 import App from "./App";
+import store from "./Redux/store";
 import reportWebVitals from "./reportWebVitals";
 import "./Sass/index.scss";
 
-const root = ReactDOM.createRoot(document.getElementById("root"));
+const container = document.getElementById("root");
+const root = createRoot(container);
 root.render(
   <React.StrictMode>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
+    <Provider store={store}>
+      <SnackbarProvider>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </SnackbarProvider>
+    </Provider>
   </React.StrictMode>
 );
 

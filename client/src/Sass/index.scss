@@ -3,6 +3,8 @@
 @import "mixins/mixins";
 @import "config/variables";
 @import "base/base";
+
+// Layouts
 @import "layout/layout";
 
 // Components
@@ -15,3 +17,6 @@
 
 // Pages
 @import "pages/login&signup.scss";
+
+// Dashboard
+@import "../Dashboard/DashboardStyles/dashboardIndex.scss";

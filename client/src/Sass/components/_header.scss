@@ -106,10 +106,14 @@
       .nav__list2 {
         display: flex;
         gap: 0.5rem;
+        align-items: center;
         .nav__item2 {
           .MuiIconButton-root {
             .MuiSvgIcon-root {
-              @include h3-font;
+              @include h2-font;
+              @include breakpoint(md) {
+                @include h3-font;
+              }
             }
             &:hover {
               color: $cyan;

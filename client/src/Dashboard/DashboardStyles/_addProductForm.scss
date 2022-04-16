@@ -1,0 +1,29 @@
+.addProducts {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 $x-0-5;
+  .addProducts__form {
+    max-width: 480px;
+    width: 100%;
+    background-color: $white-alt;
+    padding: $x-1-5;
+    position: relative;
+    .form__title {
+      font-weight: $semi-bold;
+      @include h3-font;
+      margin-bottom: $x-0-75;
+    }
+    .addProducts__btn {
+      .MuiButton-root {
+        width: 100% !important;
+      }
+    }
+    .addProducts__close {
+      position: absolute;
+      top: 0.8rem;
+      right: 0.8rem;
+    }
+  }
+}

@@ -10,8 +10,8 @@ const validateLoginInput = (data) => {
   let errors = {};
 
   // check the username field
-  if (isEmpty(data.userName)) {
-    errors.userName = "This field can not be empty";
+  if (isEmpty(data.username)) {
+    errors.username = "This field can not be empty";
   }
 
   // check the password field

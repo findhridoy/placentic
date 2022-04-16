@@ -24,7 +24,7 @@
 // Button
 .btn {
   .MuiButton-root {
-    height: 3rem;
+    height: 2.8rem;
     width: 9rem;
     display: block;
     font-weight: $semi-bold;
@@ -33,7 +33,7 @@
     @include small-font;
     cursor: pointer;
     @include breakpoint(md) {
-      height: 3.5rem;
+      height: 3.2rem;
       width: 10rem;
     }
     &:hover {
@@ -41,6 +41,7 @@
     }
   }
 }
+// White Button
 .btn__white {
   .MuiButton-root {
     background-color: $white;
@@ -51,8 +52,76 @@
     }
   }
 }
+// Dark Button
 .btn__dark {
   .MuiButton-root {
+    background-color: $dark-alt;
+    color: $white;
+    &:hover {
+      color: $white;
+      background-color: $dark-alt;
+    }
+  }
+}
+
+// Dashboard Button
+.d__btn {
+  position: fixed;
+  bottom: 5rem;
+  right: 1rem;
+  @include breakpoint(sm) {
+    bottom: 5.5rem;
+    right: 1.5rem;
+  }
+  @include breakpoint(md) {
+    bottom: 3rem;
+    right: 2rem;
+  }
+  .MuiIconButton-root {
+    height: 2.8rem;
+    width: 2.8rem;
+    @include transition(300ms);
+    @include breakpoint(sm) {
+      height: 3.2rem;
+      width: 3.2rem;
+    }
+    @include breakpoint(md) {
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      width: 9.5rem;
+      border-radius: 25px !important;
+    }
+    .MuiSvgIcon-root {
+      @include h3-font;
+    }
+    .btn__text {
+      display: none;
+      @include breakpoint(md) {
+        @include small-font;
+        display: initial;
+        font-weight: $medium;
+        text-transform: capitalize;
+      }
+    }
+  }
+}
+
+// Dashboard White Button
+.d__white {
+  .MuiIconButton-root {
+    background-color: $white;
+    color: $dark-alt;
+    &:hover {
+      color: $dark-alt;
+      background-color: $white;
+    }
+  }
+}
+
+// Dashboard Dark Button
+.d__dark {
+  .MuiIconButton-root {
     background-color: $dark-alt;
     color: $white;
     &:hover {
@@ -82,4 +151,102 @@
     bottom: 0;
     transform: translateY(0.6rem);
   }
+}
+
+// Main Background
+.main__bg {
+  &::after {
+    content: "";
+    width: 50%;
+    height: 100%;
+    right: 0;
+    top: 0;
+    background-color: $cyan-alt;
+    position: absolute;
+    z-index: -1;
+  }
+}
+
+// Form Style
+
+// // From Title
+// .form__title {
+//   text-align: center;
+//   font-weight: $semi-bold;
+//   @include h3-font;
+//   margin-bottom: $x-0-75;
+// }
+
+// Form Grid
+.form__grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.5rem;
+}
+
+// Form Label
+.form__label {
+  font-weight: $semi-bold;
+  @include smaller-font;
+  // margin-bottom: $x-0-25;
+  color: $dark-alt;
+}
+
+// Form Group
+.form__group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: $x-0-5;
+}
+
+// Form Control
+.form__control {
+  width: 100%;
+  border: $border-gray;
+  padding: $x-0-5;
+  height: 2.2rem;
+  font-weight: $medium;
+  @include smallest-font;
+  background-color: transparent;
+  color: $dark-alt;
+  @include breakpoint(md) {
+    height: 2.5rem;
+  }
+  &:focus {
+    //   box-shadow: $shadow;
+  }
+  &:hover {
+    //   box-shadow: $shadow;
+  }
+}
+
+// From Dropdown
+.form__dropdown {
+  @extend .form__control;
+  padding: 0;
+  border: none;
+}
+
+// From Dropdown Control
+.form__dropdownControl {
+  background-color: transparent;
+}
+
+.form__dropdownMenu {
+  background-color: $white-alt;
+}
+
+// Form Testarea
+.form__textarea {
+  @extend .form__control;
+  height: 4rem;
+  resize: vertical;
+}
+
+// Form Error
+.form__error {
+  font-weight: $medium;
+  color: $red;
+  // margin-top: $x-0-25;
+  @include smallest-font;
 }

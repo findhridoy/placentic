@@ -3,20 +3,16 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Watch } from "react-loader-spinner";
 import { Link } from "react-router-dom";
-import Layout from "../Layouts/Layout";
+import placentic from "../Assets/logo/placentic.png";
 
 const Login = () => {
   // Password hide/show state
   const [showPass, setShowPass] = useState(false);
 
   // React hook form own state
-  const {
-    handleSubmit,
-    register,
-    formState: { errors },
-  } = useForm({
-    mode: "onChange",
-  });
+  const { handleSubmit, register } = useForm();
+
+  let errors = { username: "username", password: "password" };
 
   // React hook form data submit
   const onSubmit = async (data) => {
@@ -24,10 +20,22 @@ const Login = () => {
   };
 
   return (
-    <Layout>
-      <section className="sl__section section">
-        <h2 className="sl__title">Login</h2>
+    <section className="sl__section main__bg">
+      <div className="sl__container">
+        <div className="sl__content">
+          <h3 className="sl__title">Welcome to</h3>
+          <div className="sl__logo">
+            <Link to="/">
+              <img className="logo" src={placentic} alt="brand-logo" />
+            </Link>
+          </div>
+          <p className="sl__description">
+            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Unde, ut
+            excepturi iusto temporibus natus rerum nam?
+          </p>
+        </div>
         <div className="sl__form">
+          <h2 className="form__title">Login</h2>
           <form onSubmit={handleSubmit(onSubmit)}>
             <span className="form__group">
               <label className="form__label">Username</label>
@@ -57,15 +65,19 @@ const Login = () => {
 
             <div className="form__flex">
               <span className="checkbox__group">
-                <IconButton size="small" aria-label="checkbox">
+                <IconButton
+                  size="small"
+                  aria-label="checkbox"
+                  onClick={() => setShowPass(!showPass)}
+                >
                   <input
                     type="checkbox"
                     id="showPassword"
-                    onClick={() => setShowPass(!showPass)}
+                    defaultChecked={showPass}
                   />
                 </IconButton>
                 <label className="checkbox__label" htmlFor="showPassword">
-                  Show password
+                  {showPass ? "Hide password" : "Show password"}
                 </label>
               </span>
               <Link className="form__forget" to="/forgot-password">
@@ -93,8 +105,8 @@ const Login = () => {
             </div>
           </form>
         </div>
-      </section>
-    </Layout>
+      </div>
+    </section>
   );
 };
 

@@ -81,7 +81,7 @@ const userLogin = asyncHandler(async (req, res) => {
 
   // check the username and email from the database
   const user = await User.findOne({
-    $or: [{ username: req.body.userName }, { email: req.body.userName }],
+    $or: [{ username: req.body.username }, { email: req.body.username }],
   });
   if (!user) {
     res.status(404);

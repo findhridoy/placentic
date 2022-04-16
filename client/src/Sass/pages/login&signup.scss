@@ -1,91 +1,128 @@
 .sl__section {
-  .sl__title {
-    text-align: center;
-    padding: $x-1-25 0;
-    background-color: $white;
-    font-weight: $bold;
-    border-bottom: $border-dark-100;
-    @include h2-font;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  @include body-margin(minus);
+  &::after {
+    left: 0;
+    width: 0;
+    @include breakpoint(md) {
+      width: 50%;
+      height: 100%;
+    }
   }
 
-  .sl__form {
+  .sl__container {
+    margin: 0 auto;
     padding: $x-2;
-    .form__group {
-      display: flex;
-      flex-direction: column;
-      margin-bottom: $x-1;
-      .form__label {
-        font-weight: $semi-bold;
-        @include normal-font;
-        margin-bottom: $x-0-25;
-        color: $dark-alt;
-      }
-      .form__control {
-        width: 100%;
-        border-bottom: $border-gray;
-        // padding: $x-0-5;
-        height: 3rem;
-        font-weight: $medium;
-        @include small-font;
-        background-color: transparent;
-        color: $dark-alt;
-        &:focus {
-          //   box-shadow: $shadow;
-        }
-        &:hover {
-          //   box-shadow: $shadow;
-        }
-      }
-      .form__error {
-        font-weight: $medium;
-        color: $red;
-        margin-top: $x-0-25;
-        @include small-font;
-      }
+    max-width: 350px;
+    width: 100%;
+    @include box-shadow;
+    @include breakpoint(sm) {
+      max-width: 400px;
+    }
+    @include breakpoint(md) {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      max-width: 760px;
+      gap: 3.5rem;
+    }
+    @include breakpoint(lg) {
+      max-width: 900px;
+      gap: 4rem;
     }
 
-    .form__flex {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      .checkbox__group {
-        display: flex;
-        align-items: center;
-        .checkbox__label {
-          font-weight: $medium;
-          @include small-font;
-        }
-      }
-      .form__forget {
-        font-weight: $medium;
-        color: $primary;
-        @include small-font;
-        &:hover {
-          text-decoration: underline;
-        }
-      }
-    }
-
-    .sl__btn {
-      margin-top: $x-2;
-      .MuiButton-root {
-        width: 100%;
-      }
-    }
-
-    .form__footer {
-      margin-top: $x-0-5;
+    .sl__content {
+      display: none;
       text-align: center;
-      .form__footer--text {
+      align-self: center;
+      @include breakpoint(md) {
+        display: block;
+      }
+      .sl__title {
+        @include normal-font;
+        color: $dark-alt;
+      }
+      .sl__logo {
+        margin: $x-0-25 0;
+        .logo {
+          width: 150px;
+          @include breakpoint(md) {
+            width: 200px;
+          }
+          @include breakpoint(lg) {
+            width: 220px;
+          }
+        }
+      }
+      .sl__description {
+        @include smaller-font;
         font-weight: $medium;
-        @include small-font;
-        .form__footer--link {
+        color: $dark-alt;
+
+        // display: none;
+      }
+    }
+    .sl__form {
+      .form__title {
+        text-align: center;
+        font-weight: $semi-bold;
+        @include h3-font;
+        margin-bottom: $x-0-75;
+      }
+      .form__flex {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        .checkbox__group {
+          display: flex;
+          align-items: center;
+          .checkbox__label {
+            color: $dark-alt;
+            font-weight: $medium;
+            @include smallest-font;
+          }
+        }
+        .form__forget {
+          font-weight: $medium;
           color: $primary;
+          @include smallest-font;
           &:hover {
             text-decoration: underline;
           }
         }
       }
+
+      .sl__btn {
+        margin-top: $x-1;
+        .MuiButton-root {
+          width: 100%;
+        }
+      }
+
+      .form__footer {
+        margin-top: $x-0-5;
+        text-align: center;
+        .form__footer--text {
+          font-weight: $medium;
+          color: $dark-alt;
+          @include smallest-font;
+          .form__footer--link {
+            color: $primary;
+            &:hover {
+              text-decoration: underline;
+            }
+          }
+        }
+      }
     }
+  }
+}
+
+.signup__section {
+  &::after {
+    left: 50%;
   }
 }

@@ -110,7 +110,7 @@ const Header = () => {
                   </NavLink>
                 </li>
               </ul>
-            </div>{" "}
+            </div>
           </>
         )}
       </nav>
