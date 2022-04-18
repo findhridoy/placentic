@@ -26,7 +26,6 @@
   .MuiButton-root {
     height: 2.8rem;
     width: 9rem;
-    display: block;
     font-weight: $semi-bold;
     text-transform: capitalize;
     border-radius: 0;
@@ -189,6 +188,7 @@
   font-weight: $semi-bold;
   @include smaller-font;
   // margin-bottom: $x-0-25;
+  margin-bottom: 0.1rem;
   color: $dark-alt;
 }
 

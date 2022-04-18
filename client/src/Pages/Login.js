@@ -1,24 +1,50 @@
-import { Button, IconButton } from "@mui/material";
-import React, { useState } from "react";
+import { Button, CircularProgress, IconButton } from "@mui/material";
+import { useSnackbar } from "notistack";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { Watch } from "react-loader-spinner";
-import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import placentic from "../Assets/logo/placentic.png";
+import { loginUser } from "../Redux/actions/userActions";
 
 const Login = () => {
   // Password hide/show state
   const [showPass, setShowPass] = useState(false);
 
+  // Redux
+  const dispatch = useDispatch();
+  const { loading, userInfo, errors } = useSelector((state) => state.userLogin);
+
   // React hook form own state
   const { handleSubmit, register } = useForm();
 
-  let errors = { username: "username", password: "password" };
-
   // React hook form data submit
   const onSubmit = async (data) => {
-    console.log(data);
+    dispatch(loginUser(data));
   };
 
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  let { from } = location.state || { from: { pathname: "/" } };
+
+  // notistack toast
+  const { enqueueSnackbar } = useSnackbar();
+
+  useEffect(() => {
+    if (errors?.message) {
+      enqueueSnackbar(errors?.message, {
+        variant: "error",
+        anchorOrigin: {
+          vertical: "top",
+          horizontal: "center",
+        },
+      });
+    }
+    if (userInfo) {
+      navigate(from, { replace: true });
+    }
+  }, [errors, enqueueSnackbar, navigate, from, userInfo]);
   return (
     <section className="sl__section main__bg">
       <div className="sl__container">
@@ -45,8 +71,8 @@ const Login = () => {
                 placeholder="Type your email or username"
                 {...register("username")}
               />
-              {errors.username && (
-                <span className="form__error">{errors.username.message}</span>
+              {errors?.username && (
+                <span className="form__error">{errors?.username}</span>
               )}
             </span>
 
@@ -58,8 +84,8 @@ const Login = () => {
                 placeholder="Type your password"
                 {...register("password")}
               />
-              {errors.password && (
-                <span className="form__error">{errors.password.message}</span>
+              {errors?.password && (
+                <span className="form__error">{errors?.password}</span>
               )}
             </span>
 
@@ -87,8 +113,8 @@ const Login = () => {
 
             <div className="sl__btn btn btn__dark">
               <Button type="submit">
-                {false ? (
-                  <Watch color="#000" height={50} width={100} />
+                {loading ? (
+                  <CircularProgress color="inherit" size={30} />
                 ) : (
                   "Login"
                 )}

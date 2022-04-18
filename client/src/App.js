@@ -5,6 +5,8 @@ import DashboardCategories from "./Dashboard/DashboardPages/DashboardCategories"
 import DashboardOrders from "./Dashboard/DashboardPages/DashboardOrders";
 import DashboardProducts from "./Dashboard/DashboardPages/DashboardProducts";
 import DashboardUsers from "./Dashboard/DashboardPages/DashboardUsers";
+import AdminRoutes from "./Helpers/Routes/AdminRoutes";
+import PublicRoutes from "./Helpers/Routes/PublicRoutes";
 import Home from "./Pages/Home";
 import Login from "./Pages/Login";
 import Signup from "./Pages/Signup";
@@ -14,13 +16,20 @@ const App = () => {
     <>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/dashboard/dashboard" element={<Dashboard />} />
-        <Route path="/dashboard/products" element={<DashboardProducts />} />
-        <Route path="/dashboard/orders" element={<DashboardOrders />} />
-        <Route path="/dashboard/categories" element={<DashboardCategories />} />
-        <Route path="/dashboard/users" element={<DashboardUsers />} />
+
+        <Route path="/*" element={<PublicRoutes />}>
+          <Route path="login" element={<Login />} />
+          <Route path="signup" element={<Signup />} />
+        </Route>
+
+        {/* Only Admin can access this pages */}
+        <Route path="/dashboard/*" element={<AdminRoutes />}>
+          <Route path="dashboard" element={<Dashboard />} />
+          <Route path="products" element={<DashboardProducts />} />
+          <Route path="orders" element={<DashboardOrders />} />
+          <Route path="categories" element={<DashboardCategories />} />
+          <Route path="users" element={<DashboardUsers />} />
+        </Route>
       </Routes>
       {/* <Kursor /> */}
     </>

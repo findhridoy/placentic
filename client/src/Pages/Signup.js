@@ -1,10 +1,9 @@
-import { Button, IconButton } from "@mui/material";
+import { Button, CircularProgress, IconButton } from "@mui/material";
 import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { Watch } from "react-loader-spinner";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import placentic from "../Assets/logo/placentic.png";
 import { registerUser } from "../Redux/actions/userActions";
 
@@ -14,7 +13,9 @@ const Signup = () => {
 
   // Redux
   const dispatch = useDispatch();
-  const { loading, errors } = useSelector((state) => state.userRegister);
+  const { loading, success, errors } = useSelector(
+    (state) => state.userRegister
+  );
 
   // React hook form own state
   const { handleSubmit, register } = useForm();
@@ -23,6 +24,11 @@ const Signup = () => {
   const onSubmit = async (data) => {
     dispatch(registerUser(data));
   };
+
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  let { from } = location.state || { from: { pathname: "/" } };
 
   // notistack toast
   const { enqueueSnackbar } = useSnackbar();
@@ -37,7 +43,10 @@ const Signup = () => {
         },
       });
     }
-  }, [errors, enqueueSnackbar]);
+    if (success) {
+      navigate(from);
+    }
+  }, [errors, enqueueSnackbar, navigate, from, success]);
 
   return (
     <section className="sl__section signup__section main__bg">
@@ -132,7 +141,7 @@ const Signup = () => {
             <div className="sl__btn btn btn__dark">
               <Button type="submit">
                 {loading ? (
-                  <Watch color="#fff" height={30} width={265} />
+                  <CircularProgress color="inherit" size={30} />
                 ) : (
                   "Sign Up"
                 )}

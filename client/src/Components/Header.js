@@ -7,14 +7,18 @@ import LocalMallIcon from "@mui/icons-material/LocalMall";
 import LoginIcon from "@mui/icons-material/Login";
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import SearchIcon from "@mui/icons-material/Search";
-import { IconButton } from "@mui/material";
+import { Avatar, Badge, IconButton } from "@mui/material";
 import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { Link, NavLink } from "react-router-dom";
 import placentic from "../Assets/logo/placentic.png";
 
 const Header = () => {
   const [header, setHeader] = useState(false);
   const [showSearchBox, setShowSearchBox] = useState(false);
+
+  // Redux
+  const { userInfo } = useSelector((state) => state.userLogin);
 
   // Header scroll
   useEffect(() => {
@@ -98,7 +102,9 @@ const Header = () => {
                 <li className="nav__item2">
                   <NavLink className="nav__link2" to="/cart">
                     <IconButton aria-label="cart">
-                      <LocalMallIcon />
+                      <Badge badgeContent={0} color="primary">
+                        <LocalMallIcon />
+                      </Badge>
                     </IconButton>
                   </NavLink>
                 </li>
@@ -109,6 +115,17 @@ const Header = () => {
                     </IconButton>
                   </NavLink>
                 </li>
+                {userInfo && (
+                  <li className="nav__item2">
+                    <IconButton aria-label="avatar" size="small">
+                      <Avatar
+                        alt={userInfo?.name}
+                        src={userInfo?.image}
+                        sx={{ width: 35, height: 35 }}
+                      />
+                    </IconButton>
+                  </li>
+                )}
               </ul>
             </div>
           </>
