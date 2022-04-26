@@ -1,22 +1,30 @@
+import { yupResolver } from "@hookform/resolvers/yup";
 import { Button, CircularProgress, IconButton } from "@mui/material";
-import { useSnackbar } from "notistack";
+import cogoToast from "cogo-toast";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import placentic from "../Assets/logo/placentic.png";
-import { loginUser } from "../Redux/actions/userActions";
+import { loginSchema } from "../Helpers/Validation/ValidationSchema";
+import { loginUser, userErrorReset } from "../Redux/actions/userActions";
 
 const Login = () => {
   // Password hide/show state
   const [showPass, setShowPass] = useState(false);
 
-  // Redux
+  // Redux element
   const dispatch = useDispatch();
-  const { loading, userInfo, errors } = useSelector((state) => state.userLogin);
+  const { loading, error, userInfo } = useSelector((state) => state.userLogin);
 
   // React hook form own state
-  const { handleSubmit, register } = useForm();
+  const {
+    handleSubmit,
+    register,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(loginSchema),
+  });
 
   // React hook form data submit
   const onSubmit = async (data) => {
@@ -28,23 +36,19 @@ const Login = () => {
 
   let { from } = location.state || { from: { pathname: "/" } };
 
-  // notistack toast
-  const { enqueueSnackbar } = useSnackbar();
-
   useEffect(() => {
-    if (errors?.message) {
-      enqueueSnackbar(errors?.message, {
-        variant: "error",
-        anchorOrigin: {
-          vertical: "top",
-          horizontal: "center",
-        },
-      });
+    if (error) {
+      cogoToast.error(error);
+      dispatch(userErrorReset());
     }
-    if (userInfo) {
-      navigate(from, { replace: true });
+    if (userInfo?.message) {
+      cogoToast.error("Something was wrong!");
+      dispatch(userErrorReset());
     }
-  }, [errors, enqueueSnackbar, navigate, from, userInfo]);
+    if (userInfo?.email) {
+      navigate(from);
+    }
+  }, [error, navigate, from, userInfo, dispatch]);
   return (
     <section className="sl__section main__bg">
       <div className="sl__container">
@@ -64,7 +68,7 @@ const Login = () => {
           <h2 className="form__title">Login</h2>
           <form onSubmit={handleSubmit(onSubmit)}>
             <span className="form__group">
-              <label className="form__label">Username</label>
+              <label className="form__label">Username or Email</label>
               <input
                 className="form__control"
                 type="text"
@@ -72,7 +76,7 @@ const Login = () => {
                 {...register("username")}
               />
               {errors?.username && (
-                <span className="form__error">{errors?.username}</span>
+                <span className="form__error">{errors?.username.message}</span>
               )}
             </span>
 
@@ -85,7 +89,7 @@ const Login = () => {
                 {...register("password")}
               />
               {errors?.password && (
-                <span className="form__error">{errors?.password}</span>
+                <span className="form__error">{errors?.password.message}</span>
               )}
             </span>
 

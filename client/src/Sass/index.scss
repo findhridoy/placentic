@@ -14,9 +14,13 @@
 @import "components/category";
 @import "components/products";
 @import "components/newsletter";
+@import "components/customBreadcrumbs";
+@import "components/profileInfo";
+@import "components/userAvatar";
 
 // Pages
-@import "pages/login&signup.scss";
+@import "pages/login&signup";
+@import "pages/profile";
 
 // Dashboard
-@import "../Dashboard/DashboardStyles/dashboardIndex.scss";
+@import "../Dashboard/DashboardStyles/dashboardIndex";

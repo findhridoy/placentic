@@ -8,7 +8,7 @@ const PrivateRoutes = () => {
 
   const location = useLocation();
 
-  return userInfo ? (
+  return userInfo?.email ? (
     <Outlet />
   ) : (
     <Navigate to="/login" state={{ from: location }} />

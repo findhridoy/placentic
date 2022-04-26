@@ -1,11 +1,13 @@
+import { yupResolver } from "@hookform/resolvers/yup";
 import { Button, CircularProgress, IconButton } from "@mui/material";
-import { useSnackbar } from "notistack";
+import cogoToast from "cogo-toast";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import placentic from "../Assets/logo/placentic.png";
-import { registerUser } from "../Redux/actions/userActions";
+import { signUpSchema } from "../Helpers/Validation/ValidationSchema";
+import { registerUser, userErrorReset } from "../Redux/actions/userActions";
 
 const Signup = () => {
   // Password hide/show state
@@ -13,12 +15,18 @@ const Signup = () => {
 
   // Redux
   const dispatch = useDispatch();
-  const { loading, success, errors } = useSelector(
+  const { loading, error, userInfo } = useSelector(
     (state) => state.userRegister
   );
 
   // React hook form own state
-  const { handleSubmit, register } = useForm();
+  const {
+    handleSubmit,
+    register,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(signUpSchema),
+  });
 
   // React hook form data submit
   const onSubmit = async (data) => {
@@ -30,23 +38,21 @@ const Signup = () => {
 
   let { from } = location.state || { from: { pathname: "/" } };
 
-  // notistack toast
-  const { enqueueSnackbar } = useSnackbar();
-
   useEffect(() => {
-    if (errors?.message) {
-      enqueueSnackbar(errors?.message, {
-        variant: "error",
-        anchorOrigin: {
-          vertical: "top",
-          horizontal: "center",
-        },
-      });
+    if (error) {
+      cogoToast.error(error);
+      dispatch(userErrorReset());
     }
-    if (success) {
+    if (userInfo?.message) {
+      cogoToast.error("Something was wrong!");
+      dispatch(userErrorReset());
+    }
+    if (userInfo?.email) {
+      cogoToast.error("Your account has been created.");
+      dispatch(userErrorReset());
       navigate(from);
     }
-  }, [errors, enqueueSnackbar, navigate, from, success]);
+  }, [error, navigate, from, userInfo, dispatch]);
 
   return (
     <section className="sl__section signup__section main__bg">
@@ -63,7 +69,7 @@ const Signup = () => {
                 {...register("name")}
               />
               {errors?.name && (
-                <span className="form__error">{errors?.name}</span>
+                <span className="form__error">{errors?.name.message}</span>
               )}
             </span>
 
@@ -76,7 +82,7 @@ const Signup = () => {
                 {...register("username")}
               />
               {errors?.username && (
-                <span className="form__error">{errors?.username}</span>
+                <span className="form__error">{errors?.username.message}</span>
               )}
             </span>
 
@@ -89,7 +95,7 @@ const Signup = () => {
                 {...register("email")}
               />
               {errors?.email && (
-                <span className="form__error">{errors?.email}</span>
+                <span className="form__error">{errors?.email.message}</span>
               )}
             </span>
 
@@ -102,7 +108,7 @@ const Signup = () => {
                 {...register("password")}
               />
               {errors?.password && (
-                <span className="form__error">{errors?.password}</span>
+                <span className="form__error">{errors?.password.message}</span>
               )}
             </span>
 
@@ -115,7 +121,9 @@ const Signup = () => {
                 {...register("confirmPassword")}
               />
               {errors?.confirmPassword && (
-                <span className="form__error">{errors?.confirmPassword}</span>
+                <span className="form__error">
+                  {errors?.confirmPassword.message}
+                </span>
               )}
             </span>
 

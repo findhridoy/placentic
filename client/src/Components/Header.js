@@ -1,24 +1,36 @@
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import CategoryIcon from "@mui/icons-material/Category";
 import CloseIcon from "@mui/icons-material/Close";
 import CollectionsBookmarkIcon from "@mui/icons-material/CollectionsBookmark";
+import DashboardIcon from "@mui/icons-material/Dashboard";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import LibraryBooksIcon from "@mui/icons-material/LibraryBooks";
 import LocalMallIcon from "@mui/icons-material/LocalMall";
 import LoginIcon from "@mui/icons-material/Login";
+import LogoutIcon from "@mui/icons-material/Logout";
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import SearchIcon from "@mui/icons-material/Search";
 import { Avatar, Badge, IconButton } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, NavLink } from "react-router-dom";
 import placentic from "../Assets/logo/placentic.png";
+import { logoutUser } from "../Redux/actions/userActions";
 
 const Header = () => {
   const [header, setHeader] = useState(false);
   const [showSearchBox, setShowSearchBox] = useState(false);
+  const [dropdown, setDropdown] = useState(false);
 
-  // Redux
-  const { userInfo } = useSelector((state) => state.userLogin);
+  // Redux element
+  const dispatch = useDispatch();
+  const { loading, success, userInfo } = useSelector(
+    (state) => state.userLogin
+  );
+  // const { success } = useSelector((state) => state.updateUserProfile);
+
+  // useEffect(() => {}, [success]);
 
   // Header scroll
   useEffect(() => {
@@ -34,6 +46,16 @@ const Header = () => {
       document.removeEventListener("scroll", onScroll);
     };
   }, []);
+
+  // Handle dropdown
+  const handleDropdown = () => {
+    setDropdown(!dropdown);
+  };
+
+  // Logout functionality
+  const logout = () => {
+    dispatch(logoutUser());
+  };
   return (
     <header className={header ? "header header__shadow" : "header"}>
       <nav className="nav container">
@@ -115,15 +137,72 @@ const Header = () => {
                     </IconButton>
                   </NavLink>
                 </li>
-                {userInfo && (
+                {userInfo?.email && (
                   <li className="nav__item2">
-                    <IconButton aria-label="avatar" size="small">
+                    <IconButton
+                      aria-label="avatar"
+                      size="small"
+                      onClick={handleDropdown}
+                    >
                       <Avatar
                         alt={userInfo?.name}
-                        src={userInfo?.image}
+                        src={userInfo?.avatar}
                         sx={{ width: 35, height: 35 }}
                       />
                     </IconButton>
+                    {/* Dropdown menu */}
+                    <div
+                      className={
+                        dropdown
+                          ? "dropdown__menu dropdown__show"
+                          : "dropdown__menu"
+                      }
+                    >
+                      <ul className="dropdown__list">
+                        {userInfo?.email && userInfo?.isAdmin && (
+                          <li className="dropdown__item">
+                            <NavLink
+                              to=""
+                              className="dropdown__link"
+                              onClick={handleDropdown}
+                            >
+                              <DashboardIcon />
+                              <span className="dropdown__text">Dashboard</span>
+                            </NavLink>
+                          </li>
+                        )}
+                        <li className="dropdown__item">
+                          <NavLink
+                            to="/profile"
+                            className="dropdown__link"
+                            onClick={handleDropdown}
+                          >
+                            <AccountCircleIcon />
+                            <span className="dropdown__text">Profile</span>
+                          </NavLink>
+                        </li>
+                        <li className="dropdown__item">
+                          <NavLink
+                            to="/orders"
+                            className="dropdown__link"
+                            onClick={handleDropdown}
+                          >
+                            <AddShoppingCartIcon />
+                            <span className="dropdown__text">Orders</span>
+                          </NavLink>
+                        </li>
+                        <li className="dropdown__item">
+                          <NavLink
+                            to=""
+                            className="dropdown__link"
+                            onClick={logout}
+                          >
+                            <LogoutIcon />
+                            <span className="dropdown__text">Logout</span>
+                          </NavLink>
+                        </li>
+                      </ul>
+                    </div>
                   </li>
                 )}
               </ul>

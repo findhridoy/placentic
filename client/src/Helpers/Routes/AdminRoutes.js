@@ -8,7 +8,7 @@ const AdminRoutes = () => {
 
   const location = useLocation();
 
-  return userInfo && userInfo.isAdmin ? (
+  return userInfo?.email && userInfo?.isAdmin ? (
     <Outlet />
   ) : (
     <Navigate to="/login" state={{ from: location }} />

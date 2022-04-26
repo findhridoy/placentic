@@ -14,16 +14,24 @@ const UserSchema = new Schema(
       required: true,
       trim: true,
       unique: true,
+      lowercase: true,
     },
     email: {
       type: String,
       required: true,
       trim: true,
       unique: true,
+      lowercase: true,
     },
     password: {
       type: String,
       required: true,
+    },
+    phone: {
+      type: Number,
+    },
+    country: {
+      type: String,
     },
     isAdmin: {
       type: Boolean,

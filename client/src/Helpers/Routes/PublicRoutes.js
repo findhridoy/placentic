@@ -6,7 +6,7 @@ const PublicRoutes = () => {
   // Redux
   const { userInfo } = useSelector((state) => state.userLogin);
 
-  return !userInfo ? <Outlet /> : <Navigate to="/" />;
+  return !userInfo?.email ? <Outlet /> : <Navigate to="/" />;
 };
 
 export default PublicRoutes;
