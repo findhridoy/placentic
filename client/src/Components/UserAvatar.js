@@ -14,7 +14,7 @@ import Cropper from "react-easy-crop";
 import { dataURLtoFile } from "../Helpers/CropImageResult/ConvertDataURL";
 import getCroppedImg from "../Helpers/CropImageResult/CropImage";
 
-const UserAvatar = ({ setAvatar, userInfo }) => {
+const UserAvatar = ({ setAvatar, user }) => {
   // States
   const [loading, setLoading] = useState();
   const [showImage, setShowImage] = useState(null);
@@ -48,7 +48,7 @@ const UserAvatar = ({ setAvatar, userInfo }) => {
       setLoading(true);
       const canvas = await getCroppedImg(showImage, croppedAreaPixels);
       const canvasDataURL = canvas.toDataURL("image/jpeg");
-      const avatarName = `${userInfo?.username.toLowerCase()}-avatar.jpeg`;
+      const avatarName = `${user?.username.toLowerCase()}-avatar.jpeg`;
       const canvasURLToFile = dataURLtoFile(canvasDataURL, avatarName);
       setCroppedImage(canvasDataURL);
       setAvatar(canvasURLToFile);
@@ -82,14 +82,8 @@ const UserAvatar = ({ setAvatar, userInfo }) => {
       >
         <Avatar
           sx={{ width: 150, height: 150 }}
-          alt={userInfo?.name}
-          src={
-            croppedImage
-              ? croppedImage
-              : userInfo?.avatar
-              ? userInfo?.avatar
-              : ""
-          }
+          alt={user?.name}
+          src={croppedImage ? croppedImage : user?.avatar ? user?.avatar : ""}
         />
       </Badge>
 

@@ -7,10 +7,10 @@ import {
   Typography,
 } from "@mui/material";
 import cogoToast from "cogo-toast";
-import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import CustomBreadcrumbs from "../Components/CustomBreadcrumbs";
 import ProfileInfo from "../Components/ProfileInfo";
 import UserAvatar from "../Components/UserAvatar";
@@ -18,7 +18,8 @@ import Layout from "../Layouts/Layout";
 import {
   getUserProfile,
   updateUserProfile,
-  userErrorReset,
+  userProfileErrorReset,
+  userUpdateErrorReset,
 } from "../Redux/actions/userActions";
 import Orders from "./Orders";
 
@@ -30,23 +31,31 @@ const Profile = () => {
   // Redux element
   const dispatch = useDispatch();
   const { loading, error, user } = useSelector((state) => state.userProfile);
-  const { loading: updateLoading, error: updateError, success } = useSelector(
-    (state) => state.updateUserProfile
-  );
+  const {
+    loading: updateLoading,
+    error: updateError,
+    user: updateUser,
+  } = useSelector((state) => state.updateUserProfile);
 
-  // notistack toast
-  const { enqueueSnackbar } = useSnackbar();
+  // navigate
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    dispatch(getUserProfile("profile"));
+  }, [dispatch, updateUser]);
 
   useEffect(() => {
     if (error) {
       cogoToast.error(error);
-      dispatch(userErrorReset());
-    } else {
-      if (!user?.name) {
-        dispatch(getUserProfile());
-      }
+      dispatch(userProfileErrorReset());
+      navigate("/");
     }
-  }, [dispatch, error, enqueueSnackbar, user]);
+    if (user?.message) {
+      cogoToast.error("Something was wrong!");
+      dispatch(userProfileErrorReset());
+      navigate("/");
+    }
+  }, [dispatch, error, navigate, user]);
 
   // React hook form own state
   const { handleSubmit, register } = useForm();
@@ -65,119 +74,117 @@ const Profile = () => {
 
   useEffect(() => {
     if (updateError) {
-      enqueueSnackbar(updateError, {
-        variant: "error",
-        anchorOrigin: {
-          vertical: "top",
-          horizontal: "center",
-        },
-      });
-    } else if (success) {
-      enqueueSnackbar("Update successfully!", {
-        variant: "success",
-        anchorOrigin: {
-          vertical: "top",
-          horizontal: "center",
-        },
-      });
+      cogoToast.error(updateError);
+      dispatch(userUpdateErrorReset());
+    }
+    if (
+      updateUser?.error_code === 11000 &&
+      updateUser?.error_pattern.username
+    ) {
+      cogoToast.error("Username is already exist.");
+      dispatch(userUpdateErrorReset());
+    }
+    if (updateUser?.error_code === 11000 && updateUser?.error_pattern.email) {
+      cogoToast.error("Email is already exist.");
+      dispatch(userUpdateErrorReset());
+    }
+    if (updateUser?.email) {
+      cogoToast.success("Updated successfully.");
+      dispatch(userUpdateErrorReset());
       setIsEdit(false);
     }
-  }, [updateError, enqueueSnackbar]);
-  return loading ? (
-    <h3>Loading....</h3>
-  ) : (
-    <Layout>
-      <CustomBreadcrumbs title="Profile" />
-      <section className="profile section">
-        <div className="container">
-          <div className="profile__content">
-            <div className="profile__info">
-              <form onSubmit={handleSubmit(onSubmit)}>
-                {isEdit ? (
-                  <UserAvatar setAvatar={setAvatar} userInfo={user} />
-                ) : loading ? (
-                  <Skeleton variant="circular" width={150} height={150} />
-                ) : (
-                  <Avatar
-                    sx={{ width: 150, height: 150 }}
-                    alt={user?.name}
-                    src={user?.avatar}
+  }, [updateError, updateUser, dispatch]);
+  return (
+    !error &&
+    user && (
+      <Layout>
+        <CustomBreadcrumbs title="Profile" />
+        <section className="profile section">
+          <div className="container">
+            <div className="profile__content">
+              <div className="profile__info">
+                <form onSubmit={handleSubmit(onSubmit)}>
+                  {isEdit ? (
+                    <UserAvatar setAvatar={setAvatar} user={user} />
+                  ) : loading ? (
+                    <Skeleton variant="circular" width={150} height={150} />
+                  ) : (
+                    <Avatar
+                      sx={{ width: 150, height: 150 }}
+                      alt={user?.name}
+                      src={user?.avatar}
+                    />
+                  )}
+                  {loading ? (
+                    <Skeleton width="94%">
+                      <Typography variant="h2">.</Typography>
+                    </Skeleton>
+                  ) : (
+                    <h2 className="profile__name">Hello! {user?.name}</h2>
+                  )}
+
+                  <ProfileInfo
+                    register={register}
+                    isEdit={isEdit}
+                    user={user}
+                    loading={loading}
                   />
-                )}
+
+                  {isEdit &&
+                    (loading ? (
+                      ""
+                    ) : (
+                      <div className="button__group">
+                        <div className="profile__btn btn btn__dark">
+                          <Button type="submit">
+                            {updateLoading ? (
+                              <CircularProgress color="inherit" size={30} />
+                            ) : (
+                              "Update Profile"
+                            )}
+                          </Button>
+                        </div>
+
+                        <div className="profile__btn btn btn__dark">
+                          <Button
+                            type="button"
+                            onClick={() => setIsEdit(!isEdit)}
+                            startIcon={<CloseIcon />}
+                          >
+                            Cancel
+                          </Button>
+                        </div>
+                      </div>
+                    ))}
+                </form>
                 {loading ? (
-                  <Skeleton width="94%">
-                    <Typography variant="h2">.</Typography>
-                  </Skeleton>
+                  <Skeleton variant="rectangular" width="94%" height={48} />
                 ) : (
-                  <h2 className="profile__name">Hello! {user?.name}</h2>
-                )}
-
-                <ProfileInfo
-                  register={register}
-                  isEdit={isEdit}
-                  userInfo={user}
-                  loading={loading}
-                />
-
-                {isEdit && (
-                  <div className="button__group">
-                    {loading ? (
-                      <Skeleton variant="rectangular" width="94%" height={48} />
-                    ) : (
-                      <div className="profile__btn btn btn__dark">
-                        <Button type="submit">
-                          {updateLoading ? (
-                            <CircularProgress color="inherit" size={30} />
-                          ) : (
-                            "Update Profile"
-                          )}
-                        </Button>
-                      </div>
-                    )}
-
-                    {loading ? (
-                      <Skeleton variant="rectangular" width="94%" height={48} />
-                    ) : (
-                      <div className="profile__btn btn btn__dark">
-                        <Button
-                          type="button"
-                          onClick={() => setIsEdit(!isEdit)}
-                          startIcon={<CloseIcon />}
-                        >
-                          Cancel
-                        </Button>
-                      </div>
+                  <div className="profile__btn btn btn__dark">
+                    {!isEdit && user && (
+                      <Button type="button" onClick={() => setIsEdit(!isEdit)}>
+                        Edit Profile
+                      </Button>
                     )}
                   </div>
                 )}
-              </form>
-              {loading ? (
-                <Skeleton variant="rectangular" width="94%" height={48} />
-              ) : (
-                <div className="profile__btn btn btn__dark">
-                  {!isEdit && user && (
-                    <Button type="button" onClick={() => setIsEdit(!isEdit)}>
-                      Edit Profile
-                    </Button>
-                  )}
-                </div>
-              )}
-            </div>
-
-            <div className="profile__others">
-              <div className="profile__orders">
-                <h3 className="orders__title">Orders</h3>
-                <Orders profile={true} />
               </div>
-              <div className="profile__address">
-                <h3 className="address__title">Address</h3>
-                <Orders profile={true} />
+
+              <div className="profile__others">
+                <div className="profile__orders">
+                  <h3 className="orders__title">Orders</h3>
+                  <Orders profile={true} />
+                </div>
+                <div className="profile__address">
+                  <h3 className="address__title">Address</h3>
+                  <Orders profile={true} />
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </section>
-    </Layout>
+        </section>
+      </Layout>
+    )
   );
 };
 

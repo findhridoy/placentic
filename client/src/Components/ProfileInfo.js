@@ -19,7 +19,7 @@ const ListItem = ({ register, isEdit, property, value }) => {
   );
 };
 
-const ProfileInfo = ({ register, isEdit, userInfo, loading }) => {
+const ProfileInfo = ({ register, isEdit, user, loading }) => {
   return (
     <>
       <ul className="profileInfo__list">
@@ -32,7 +32,7 @@ const ProfileInfo = ({ register, isEdit, userInfo, loading }) => {
             register={register}
             isEdit={isEdit}
             property="name"
-            value={userInfo?.name}
+            value={user?.name}
           />
         )}
 
@@ -45,7 +45,7 @@ const ProfileInfo = ({ register, isEdit, userInfo, loading }) => {
             register={register}
             isEdit={isEdit}
             property="username"
-            value={userInfo?.username}
+            value={user?.username}
           />
         )}
 
@@ -58,7 +58,7 @@ const ProfileInfo = ({ register, isEdit, userInfo, loading }) => {
             register={register}
             isEdit={isEdit}
             property="email"
-            value={userInfo?.email}
+            value={user?.email}
           />
         )}
 
@@ -71,7 +71,7 @@ const ProfileInfo = ({ register, isEdit, userInfo, loading }) => {
             register={register}
             isEdit={isEdit}
             property="phone"
-            value={userInfo?.phone}
+            value={user?.phone}
           />
         )}
 
@@ -84,7 +84,7 @@ const ProfileInfo = ({ register, isEdit, userInfo, loading }) => {
             register={register}
             isEdit={isEdit}
             property="country"
-            value={userInfo?.country}
+            value={user?.country}
           />
         )}
       </ul>

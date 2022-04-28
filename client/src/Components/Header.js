@@ -25,12 +25,10 @@ const Header = () => {
 
   // Redux element
   const dispatch = useDispatch();
-  const { loading, success, userInfo } = useSelector(
-    (state) => state.userLogin
-  );
-  // const { success } = useSelector((state) => state.updateUserProfile);
+  const { userInfo } = useSelector((state) => state.userLogin);
+  // const { user } = useSelector((state) => state.userProfile);
 
-  // useEffect(() => {}, [success]);
+  // useEffect(() => {}, [userInfo, user]);
 
   // Header scroll
   useEffect(() => {

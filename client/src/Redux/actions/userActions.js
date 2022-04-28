@@ -7,12 +7,14 @@ import {
   USER_LOGOUT,
   USER_PROFILE_FAILURE,
   USER_PROFILE_REQUEST,
+  USER_PROFILE_RESET,
   USER_PROFILE_SUCCESS,
   USER_REGISTER_FAILURE,
   USER_REGISTER_REQUEST,
   USER_REGISTER_SUCCESS,
   USER_UPDATE_FAILURE,
   USER_UPDATE_REQUEST,
+  USER_UPDATE_RESET,
   USER_UPDATE_SUCCESS,
 } from "../constants/userConstants";
 
@@ -111,7 +113,7 @@ export const logoutUser = () => async (dispatch) => {
 };
 
 // Get user profile action
-export const getUserProfile = () => async (dispatch, getState) => {
+export const getUserProfile = (path) => async (dispatch, getState) => {
   try {
     dispatch({
       type: USER_PROFILE_REQUEST,
@@ -126,11 +128,11 @@ export const getUserProfile = () => async (dispatch, getState) => {
     const config = {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${userInfo.token}`,
+        Authorization: `Bearer ${userInfo?.token}`,
       },
     };
 
-    const { data } = await axios.get("/api/users/profile", config);
+    const { data } = await axios.get(`/api/users/${path}`, config);
 
     dispatch({
       type: USER_PROFILE_SUCCESS,
@@ -145,6 +147,13 @@ export const getUserProfile = () => async (dispatch, getState) => {
           : error.message,
     });
   }
+};
+
+// User profile error reset action
+export const userProfileErrorReset = () => async (dispatch) => {
+  dispatch({
+    type: USER_PROFILE_RESET,
+  });
 };
 
 // Update user profile action
@@ -175,7 +184,13 @@ export const updateUserProfile = (updateData) => async (dispatch, getState) => {
     });
 
     // store userInfo in localStorage
-    localStorage.setItem("userInfo", JSON.stringify(data));
+    if (!data?.message) {
+      dispatch({
+        type: USER_LOGIN_SUCCESS,
+        payload: data,
+      });
+      localStorage.setItem("userInfo", JSON.stringify(data));
+    }
   } catch (error) {
     dispatch({
       type: USER_UPDATE_FAILURE,
@@ -185,4 +200,11 @@ export const updateUserProfile = (updateData) => async (dispatch, getState) => {
           : error.message,
     });
   }
+};
+
+// User profile error reset action
+export const userUpdateErrorReset = () => async (dispatch) => {
+  dispatch({
+    type: USER_UPDATE_RESET,
+  });
 };
