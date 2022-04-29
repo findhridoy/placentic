@@ -1,5 +1,6 @@
 import * as Yup from "yup";
 
+// Signup schema
 const signUpSchema = Yup.object({
   name: Yup.string()
     .required("Name field can not be empty.")
@@ -29,6 +30,7 @@ const signUpSchema = Yup.object({
     ),
 });
 
+// Login schema
 const loginSchema = Yup.object({
   username: Yup.string().required("Username or email field can not be empty."),
   password: Yup.string()
@@ -36,6 +38,13 @@ const loginSchema = Yup.object({
     .min(6, "Password must contain at least 6 characters."),
 });
 
+// Category schema
+const categorySchema = Yup.object({
+  title: Yup.string().required("Category title is required."),
+  slug: Yup.string().required("Category slug is required."),
+});
+
+// Product schema
 const addProductSchema = Yup.object({
   title: Yup.string().required("Product title is required."),
   description: Yup.string().required("Product description is required."),
@@ -47,4 +56,4 @@ const addProductSchema = Yup.object({
   // .test('type', 'Only jpeg file support', (value) => value && value[0].type === 'image/jpeg'),
 });
 
-export { signUpSchema, loginSchema, addProductSchema };
+export { signUpSchema, loginSchema, categorySchema, addProductSchema };

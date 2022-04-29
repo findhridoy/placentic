@@ -1,0 +1,37 @@
+.customTable {
+  table {
+    border-collapse: separate;
+    border-spacing: 0 0.5rem;
+    width: 100%;
+  }
+
+  thead {
+    tr {
+      background-color: $white-alt;
+      border-radius: 8px;
+      th {
+        text-align: left;
+        padding: 8px 12px;
+        color: $dark-alt;
+        @include small-font;
+      }
+    }
+  }
+  tbody {
+    tr {
+      border-radius: 8px;
+      background-color: $white-alt;
+      @include transition(200ms);
+      &:hover {
+        background-color: $white;
+      }
+      td {
+        text-align: left;
+        padding: 12px 12px;
+        font-weight: $medium;
+        color: $dark-alt;
+        @include smaller-font;
+      }
+    }
+  }
+}

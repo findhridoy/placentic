@@ -2,6 +2,10 @@ import { applyMiddleware, combineReducers, createStore } from "redux";
 import { composeWithDevTools } from "redux-devtools-extension";
 import thunk from "redux-thunk";
 import {
+  categoryListReducer,
+  createCategoryReducer,
+} from "./reducers/categoryReducers";
+import {
   getUserProfileReducer,
   updateUserProfileReducer,
   userLoginReducer,
@@ -14,6 +18,8 @@ const reducers = combineReducers({
   userLogin: userLoginReducer,
   userProfile: getUserProfileReducer,
   updateUserProfile: updateUserProfileReducer,
+  createCategory: createCategoryReducer,
+  categoryList: categoryListReducer,
 });
 
 // Get data from localStorage

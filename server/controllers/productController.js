@@ -2,9 +2,6 @@
 const asyncHandler = require("express-async-handler");
 
 // Internal Imports
-const {
-  validateProductInput,
-} = require("../utils/validation/productValidation");
 const Product = require("../models/productModel");
 const { cloudinary } = require("../config/cloudinary");
 
@@ -14,12 +11,6 @@ const { cloudinary } = require("../config/cloudinary");
  * @access  Private/Admin
  */
 const addProduct = asyncHandler(async (req, res) => {
-  // field error handler
-  const { errors, isValid } = validateProductInput(req.body);
-  if (!isValid) {
-    return res.status(400).json(errors);
-  }
-
   // distructure the value
   const {
     title,
@@ -56,6 +47,9 @@ const addProduct = asyncHandler(async (req, res) => {
       res.status(500);
       throw new Error("Somthing went wrong");
     }
+  } else {
+    res.status(500);
+    throw new Error("Something was wrong!");
   }
 });
 

@@ -1,12 +1,34 @@
 // import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import CloseIcon from "@mui/icons-material/Close";
+import DashboardIcon from "@mui/icons-material/Dashboard";
+import LogoutIcon from "@mui/icons-material/Logout";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import SearchIcon from "@mui/icons-material/Search";
 import { Avatar, IconButton } from "@mui/material";
 import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { NavLink } from "react-router-dom";
+import { logoutUser } from "../../Redux/actions/userActions";
 
 const DashboardHeader = ({ title }) => {
   const [showSearchBox, setShowSearchBox] = useState(false);
+  const [dropdown, setDropdown] = useState(false);
+
+  // Redux element
+  const dispatch = useDispatch();
+  const { userInfo } = useSelector((state) => state.userLogin);
+
+  // Handle dropdown
+  const handleDropdown = () => {
+    setDropdown(!dropdown);
+  };
+
+  // Logout functionality
+  const logout = () => {
+    dispatch(logoutUser());
+  };
 
   return (
     <header className="dashboardHeader">
@@ -39,15 +61,86 @@ const DashboardHeader = ({ title }) => {
                     <NotificationsIcon />
                   </IconButton>
                 </li>
-                <li className="nav__item">
-                  <IconButton aria-label="avatar" size="small">
-                    <Avatar
-                      alt="Travis Howard"
-                      src="https://pixinvent.com/materialize-material-design-admin-template/app-assets/images/user/12.jpg"
-                      sx={{ width: 35, height: 35 }}
-                    />
-                  </IconButton>
-                </li>
+                {userInfo?.email && (
+                  <li className="nav__item">
+                    <IconButton
+                      aria-label="avatar"
+                      size="small"
+                      onClick={handleDropdown}
+                    >
+                      <Avatar
+                        alt={userInfo?.name}
+                        src={userInfo?.avatar}
+                        sx={{ width: 35, height: 35 }}
+                      />
+                    </IconButton>
+                    {/* Dropdown menu */}
+                    <div
+                      className={
+                        dropdown
+                          ? "dropdown__menu dropdown__show"
+                          : "dropdown__menu"
+                      }
+                    >
+                      <ul className="dropdown__list">
+                        {userInfo?.email && userInfo?.isAdmin && (
+                          <li className="dropdown__item">
+                            <NavLink
+                              to="/dashboard/dashboard"
+                              className={({ isActive }) =>
+                                isActive
+                                  ? "dropdown__link active__link"
+                                  : "dropdown__link"
+                              }
+                              onClick={handleDropdown}
+                            >
+                              <DashboardIcon />
+                              <span className="dropdown__text">Dashboard</span>
+                            </NavLink>
+                          </li>
+                        )}
+                        <li className="dropdown__item">
+                          <NavLink
+                            to="/profile"
+                            className={({ isActive }) =>
+                              isActive
+                                ? "dropdown__link active__link"
+                                : "dropdown__link"
+                            }
+                            onClick={handleDropdown}
+                          >
+                            <AccountCircleIcon />
+                            <span className="dropdown__text">Profile</span>
+                          </NavLink>
+                        </li>
+                        <li className="dropdown__item">
+                          <NavLink
+                            to="/orders"
+                            className={({ isActive }) =>
+                              isActive
+                                ? "dropdown__link active__link"
+                                : "dropdown__link"
+                            }
+                            onClick={handleDropdown}
+                          >
+                            <AddShoppingCartIcon />
+                            <span className="dropdown__text">Orders</span>
+                          </NavLink>
+                        </li>
+                        <li className="dropdown__item">
+                          <NavLink
+                            to=""
+                            className="dropdown__link"
+                            onClick={logout}
+                          >
+                            <LogoutIcon />
+                            <span className="dropdown__text">Logout</span>
+                          </NavLink>
+                        </li>
+                      </ul>
+                    </div>
+                  </li>
+                )}
               </ul>
             </div>
           </>

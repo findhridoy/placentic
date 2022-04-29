@@ -26,9 +26,6 @@ const Header = () => {
   // Redux element
   const dispatch = useDispatch();
   const { userInfo } = useSelector((state) => state.userLogin);
-  // const { user } = useSelector((state) => state.userProfile);
-
-  // useEffect(() => {}, [userInfo, user]);
 
   // Header scroll
   useEffect(() => {
@@ -69,7 +66,6 @@ const Header = () => {
           </div>
         ) : (
           <>
-            {" "}
             <div className="nav__logo">
               <Link to="/">
                 <img className="logo" src={placentic} alt="brand-logo" />
@@ -160,8 +156,12 @@ const Header = () => {
                         {userInfo?.email && userInfo?.isAdmin && (
                           <li className="dropdown__item">
                             <NavLink
-                              to=""
-                              className="dropdown__link"
+                              to="/dashboard/dashboard"
+                              className={({ isActive }) =>
+                                isActive
+                                  ? "dropdown__link active__link"
+                                  : "dropdown__link"
+                              }
                               onClick={handleDropdown}
                             >
                               <DashboardIcon />
@@ -172,7 +172,11 @@ const Header = () => {
                         <li className="dropdown__item">
                           <NavLink
                             to="/profile"
-                            className="dropdown__link"
+                            className={({ isActive }) =>
+                              isActive
+                                ? "dropdown__link active__link"
+                                : "dropdown__link"
+                            }
                             onClick={handleDropdown}
                           >
                             <AccountCircleIcon />
@@ -182,7 +186,11 @@ const Header = () => {
                         <li className="dropdown__item">
                           <NavLink
                             to="/orders"
-                            className="dropdown__link"
+                            className={({ isActive }) =>
+                              isActive
+                                ? "dropdown__link active__link"
+                                : "dropdown__link"
+                            }
                             onClick={handleDropdown}
                           >
                             <AddShoppingCartIcon />

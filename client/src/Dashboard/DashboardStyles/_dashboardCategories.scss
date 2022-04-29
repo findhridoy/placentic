@@ -14,4 +14,9 @@
       }
     }
   }
+  .dc__modal {
+    .MuiModal-root {
+      z-index: 999 !important;
+    }
+  }
 }

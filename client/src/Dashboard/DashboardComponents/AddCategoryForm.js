@@ -1,35 +1,85 @@
 import CloseIcon from "@mui/icons-material/Close";
-import { Button, IconButton } from "@mui/material";
-import React from "react";
-import { useForm } from "react-hook-form";
-import { Watch } from "react-loader-spinner";
+import { Button, CircularProgress, IconButton } from "@mui/material";
+import cogoToast from "cogo-toast";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  categoryCreateReset,
+  createCategory,
+} from "../../Redux/actions/categoryActions";
+import FormImageControl from "./FormImageControl";
 
 const AddCategoryForm = ({ setOpen }) => {
-  // React hook form own state
-  const { handleSubmit, register } = useForm();
+  // States
+  const [title, setTitle] = useState("");
+  const [image, setImage] = useState(null);
+  const [formErrors, setFromErrors] = useState({});
 
-  let errors = { username: "username", password: "password" };
+  // Redux element
+  const dispatch = useDispatch();
+  const { loading, success, error, category } = useSelector(
+    (state) => state.createCategory
+  );
 
-  // React hook form data submit
-  const onSubmit = async (data) => {
-    console.log(data);
+  // Form data submit
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    const validate = (title, image) => {
+      let errors = {};
+      if (!title) {
+        errors.title = "Title field is required.";
+      }
+      if (!image) {
+        errors.image = "Image field is required.";
+      }
+      return errors;
+    };
+
+    setFromErrors(validate(title, image));
+
+    if (title && image) {
+      const slug = title.split(" ").join("-").toLowerCase();
+      const formData = new FormData();
+      formData.append("title", title);
+      formData.append("slug", slug);
+      formData.append("image", image);
+
+      // send data to backend
+      dispatch(createCategory(formData));
+    }
   };
+
+  useEffect(() => {
+    if (error) {
+      cogoToast.error(error);
+      dispatch(categoryCreateReset());
+    }
+    if (category?.message) {
+      cogoToast.error("Something was wrong!");
+      dispatch(categoryCreateReset());
+    }
+    if (success) {
+      cogoToast.success("Category has been created.");
+      dispatch(categoryCreateReset());
+    }
+  }, [error, category, success, dispatch]);
 
   return (
     <div className="addProducts">
       <div className="addProducts__form">
         <h2 className="form__title">Add Category</h2>
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit}>
           <span className="form__group">
             <label className="form__label">Title</label>
             <input
               className="form__control"
               type="text"
               placeholder="Enter category title"
-              {...register("title")}
+              onChange={(e) => setTitle(e.target.value)}
             />
-            {errors.username && (
-              <span className="form__error">{errors.username.message}</span>
+            {formErrors.title && (
+              <span className="form__error">{formErrors.title}</span>
             )}
           </span>
 
@@ -39,29 +89,17 @@ const AddCategoryForm = ({ setOpen }) => {
               className="form__control"
               type="text"
               placeholder="Auto generate slug"
-              {...register("slug")}
+              value={title.split(" ").join("-").toLowerCase()}
+              disabled
             />
-            {errors.username && (
-              <span className="form__error">{errors.username.message}</span>
-            )}
           </span>
 
-          <span className="form__group">
-            <label className="form__label">Image</label>
-            <input
-              className="form__control"
-              type="file"
-              {...register("image")}
-            />
-            {errors.password && (
-              <span className="form__error">{errors.password.message}</span>
-            )}
-          </span>
+          <FormImageControl setImage={setImage} errors={formErrors} />
 
           <div className="addProducts__btn btn btn__dark">
             <Button type="submit">
-              {false ? (
-                <Watch color="#000" height={50} width={100} />
+              {loading ? (
+                <CircularProgress color="inherit" size={30} thickness={3} />
               ) : (
                 "Add Category"
               )}

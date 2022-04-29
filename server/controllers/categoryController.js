@@ -3,9 +3,7 @@ const asyncHandler = require("express-async-handler");
 
 // Internal Imports
 const Category = require("../models/categoryModel");
-const {
-  validateCategoryInput,
-} = require("../utils/validation/categoryValidation");
+const { cloudinary } = require("../config/cloudinary");
 
 /**
  * @route   Post /api/category/create
@@ -13,12 +11,6 @@ const {
  * @access  Private/Admin
  */
 const createCategory = asyncHandler(async (req, res) => {
-  // field error handler
-  const { errors, isValid } = validateCategoryInput(req.body);
-  if (!isValid) {
-    return res.status(400).json(errors);
-  }
-
   const { title, slug } = req.body;
 
   // find the category
@@ -29,19 +21,31 @@ const createCategory = asyncHandler(async (req, res) => {
     throw new Error("Category is already created");
   }
 
-  const category = await Category.create({
-    user: req.user._id,
-    title,
-    slug,
-  });
-
-  if (category) {
-    res.status(201).json({
-      message: "Category is created succesfully",
+  if (req.file) {
+    const result = await cloudinary.uploader.upload(req.file.path, {
+      upload_preset: "placentic_categories",
     });
+
+    // create a new category
+    const category = await Category.create({
+      user: req.user._id,
+      title,
+      slug,
+      image: result.secure_url,
+      image_id: result.public_id,
+    });
+
+    if (category) {
+      res.status(201).json({
+        message: "Category is created succesfully.",
+      });
+    } else {
+      res.status(400);
+      throw new Error("Something went wrong!");
+    }
   } else {
     res.status(400);
-    throw new Error("Something went wrong");
+    throw new Error("Something was wrong!");
   }
 });
 
@@ -57,7 +61,7 @@ const getCategories = asyncHandler(async (req, res) => {
     res.status(200).json(categories);
   } else {
     res.status(400);
-    throw new Error("Something went wrong");
+    throw new Error("Category not found!");
   }
 });
 
@@ -69,15 +73,44 @@ const getCategories = asyncHandler(async (req, res) => {
 
 const updateCategory = asyncHandler(async (req, res) => {
   const category = await Category.findById(req.params.id);
-  if (category) {
+
+  // with image changes
+  if (category && req.file) {
+    await cloudinary.uploader.destroy(category.image_id);
+    const result = await cloudinary.uploader.upload(req.file.path, {
+      upload_preset: "placentic_categories",
+    });
+
     category.user = req.user._id || category.user;
     category.title = req.body.title || category.title;
     category.slug = req.body.slug || category.slug;
 
     const updatedCategory = await category.save();
-    res.status(200).json({
-      message: "Category is updated succesfully",
-    });
+    if (updatedCategory) {
+      res.status(200).json({
+        message: "Category is updated succesfully",
+      });
+    } else {
+      res.status(404);
+      throw new Error("Something went wrong");
+    }
+  }
+
+  // without image changes
+  if (category && !req.file) {
+    category.user = req.user._id || category.user;
+    category.title = req.body.title || category.title;
+    category.slug = req.body.slug || category.slug;
+
+    const updatedCategory = await category.save();
+    if (updatedCategory) {
+      res.status(200).json({
+        message: "Category is updated succesfully",
+      });
+    } else {
+      res.status(404);
+      throw new Error("Something went wrong");
+    }
   } else {
     res.status(400);
     throw new Error("Category is not found");
@@ -93,6 +126,7 @@ const updateCategory = asyncHandler(async (req, res) => {
 const deleteCategory = asyncHandler(async (req, res) => {
   const category = await Category.findById(req.params.id);
   if (category) {
+    await cloudinary.uploader.destroy(category.image_id);
     await category.remove();
     res.status(200).json({
       message: "Category is deleted succesfully",

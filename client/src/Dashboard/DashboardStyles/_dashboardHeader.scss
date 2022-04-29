@@ -60,6 +60,7 @@
         gap: 0.5rem;
         align-items: center;
         .nav__item {
+          position: relative;
           .MuiIconButton-root {
             .MuiSvgIcon-root {
               @include h2-font;
@@ -70,6 +71,52 @@
             &:hover {
               color: $cyan;
             }
+          }
+          .dropdown__menu {
+            position: absolute;
+            right: 0.3rem;
+            top: 3.2rem;
+            z-index: 9;
+            display: none;
+            .dropdown__list {
+              background-color: $white;
+              padding: $x-0-75;
+              display: flex;
+              flex-direction: column;
+              gap: 0.5rem;
+              .dropdown__item {
+                .dropdown__link {
+                  border: 1px solid $white;
+                  color: $dark-alt;
+                  font-weight: $medium;
+                  @include small-font;
+                  padding: $x-0-5;
+                  display: flex;
+                  align-items: center;
+                  gap: 0.5rem;
+                  width: 10rem;
+                  text-align: center;
+                  @include transition(200ms);
+                  &:hover {
+                    color: $cyan;
+                    border: 1px solid $white-alt;
+                  }
+                  .MuiSvgIcon-root {
+                    @include h2-font;
+                    @include breakpoint(md) {
+                      @include h3-font;
+                    }
+                  }
+                }
+                .active__link {
+                  color: $cyan;
+                  border: 1px solid $white-alt;
+                }
+              }
+            }
+          }
+          .dropdown__show {
+            display: block;
           }
         }
       }

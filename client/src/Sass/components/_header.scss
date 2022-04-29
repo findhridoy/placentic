@@ -164,6 +164,10 @@
                     }
                   }
                 }
+                .active__link {
+                  color: $cyan;
+                  border: 1px solid $white-alt;
+                }
               }
             }
           }
