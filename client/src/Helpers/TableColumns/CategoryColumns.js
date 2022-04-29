@@ -1,6 +1,7 @@
 import DeleteIcon from "@mui/icons-material/Delete";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
-import { Avatar, IconButton } from "@mui/material";
+import { Avatar, IconButton, Stack } from "@mui/material";
+import Moment from "react-moment";
 
 // Category column
 export const categoryColumns = [
@@ -9,19 +10,23 @@ export const categoryColumns = [
     accessor: "_id",
   },
   {
-    Header: "Category Image",
+    Header: "Image",
     accessor: "image",
-    Cell: ({ row }) => (
-      <Avatar
-        alt="category image"
-        src={row.values.image}
-        sx={{ width: 35, height: 35 }}
-      />
-    ),
+    show: false,
   },
   {
     Header: "Title",
     accessor: "title",
+    Cell: ({ row }) => (
+      <Stack direction="row" spacing={1} alignItems="center">
+        <Avatar
+          alt="category image"
+          src={row.values.image}
+          sx={{ width: 35, height: 35 }}
+        />
+        <span>{row.values.title}</span>
+      </Stack>
+    ),
   },
   {
     Header: "Slug",
@@ -29,20 +34,30 @@ export const categoryColumns = [
   },
   {
     Header: "Date",
-    accessor: "date",
+    accessor: "updatedAt",
+    Cell: ({ row }) => (
+      <Moment format="D MMM YYYY" withTitle>
+        {row.values.updatedAt}
+      </Moment>
+    ),
   },
   {
     Header: "Action",
     accessor: "action",
     Cell: ({ row }) => (
-      <div className="btn__group">
-        <IconButton size="small">
-          <ModeEditIcon />
+      <Stack
+        direction="row"
+        spacing={1}
+        alignItems="center"
+        justifyContent="center"
+      >
+        <IconButton size="small" color="info">
+          <ModeEditIcon fontSize="small" />
         </IconButton>
-        <IconButton size="small">
-          <DeleteIcon />
+        <IconButton size="small" color="error">
+          <DeleteIcon fontSize="small" />
         </IconButton>
-      </div>
+      </Stack>
     ),
   },
 ];

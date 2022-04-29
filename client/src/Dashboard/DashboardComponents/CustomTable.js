@@ -1,13 +1,6 @@
-import React, { useMemo } from "react";
-import { useTable } from "react-table";
-import { categoryColumns } from "../../Helpers/TableColumns/CategoryColumns";
+import React from "react";
 
-const CustomTable = ({ tableData }) => {
-  const data = useMemo(() => tableData, [tableData]);
-  const columns = useMemo(() => categoryColumns, []);
-
-  // React table
-  const tableInstance = useTable({ columns, data });
+const CustomTable = ({ tableInstance }) => {
   const {
     getTableProps,
     getTableBodyProps,

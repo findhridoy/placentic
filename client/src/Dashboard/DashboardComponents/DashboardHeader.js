@@ -12,7 +12,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 import { logoutUser } from "../../Redux/actions/userActions";
 
-const DashboardHeader = ({ title }) => {
+const DashboardHeader = ({ title, filter, setFilter }) => {
   const [showSearchBox, setShowSearchBox] = useState(false);
   const [dropdown, setDropdown] = useState(false);
 
@@ -35,7 +35,13 @@ const DashboardHeader = ({ title }) => {
       <nav className="dh__nav">
         {showSearchBox ? (
           <div className="nav__searchBox">
-            <input type="text" placeholder="Search..." autoComplete="false" />
+            <input
+              type="text"
+              placeholder="Search..."
+              autoComplete="false"
+              value={filter || ""}
+              onChange={(e) => setFilter(e.target.value || undefined)}
+            />
             <IconButton
               aria-label="close"
               onClick={() => setShowSearchBox(false)}
