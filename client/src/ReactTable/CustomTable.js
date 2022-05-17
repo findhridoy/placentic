@@ -1,3 +1,4 @@
+import Pagination from "@mui/material/Pagination";
 import React from "react";
 
 const CustomTable = ({ tableInstance }) => {
@@ -5,8 +6,11 @@ const CustomTable = ({ tableInstance }) => {
     getTableProps,
     getTableBodyProps,
     headerGroups,
-    rows,
+    page,
     prepareRow,
+    gotoPage,
+    pageOptions,
+    state: { pageIndex },
   } = tableInstance;
 
   return (
@@ -23,7 +27,7 @@ const CustomTable = ({ tableInstance }) => {
         </thead>
 
         <tbody {...getTableBodyProps()}>
-          {rows.map((row) => {
+          {page.map((row) => {
             prepareRow(row);
             return (
               <tr {...row.getRowProps()}>
@@ -37,6 +41,19 @@ const CustomTable = ({ tableInstance }) => {
           })}
         </tbody>
       </table>
+      <div className="customTable__pagination">
+        <span className="pagination__text">
+          Showing{" "}
+          <strong>
+            {pageIndex + 1} of {pageOptions.length}
+          </strong>
+        </span>
+        <Pagination
+          count={pageOptions.length}
+          color="primary"
+          onChange={(event, value) => gotoPage(value - 1)}
+        />
+      </div>
     </div>
   );
 };

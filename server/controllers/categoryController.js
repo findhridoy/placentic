@@ -52,12 +52,28 @@ const createCategory = asyncHandler(async (req, res) => {
 /**
  * @route   Get /api/category/categores
  * @desc    Get all categories
- * @access  Private/Admin
+ * @access  Private
  */
 const getCategories = asyncHandler(async (req, res) => {
   // find all category
-  const categories = await Category.find({});
+  const categories = await Category.find({}).sort({ _id: -1 });
   if (categories) {
+    res.status(200).json(categories);
+  } else {
+    res.status(400);
+    throw new Error("Categores are not found!");
+  }
+});
+
+/**
+ * @route   Get /api/category/category
+ * @desc    Get all categories
+ * @access  Private/Admin
+ */
+const getCategory = asyncHandler(async (req, res) => {
+  // find all category
+  const category = await Category.find({ id: req.body._id });
+  if (category) {
     res.status(200).json(categories);
   } else {
     res.status(400);
@@ -84,12 +100,12 @@ const updateCategory = asyncHandler(async (req, res) => {
     category.user = req.user._id || category.user;
     category.title = req.body.title || category.title;
     category.slug = req.body.slug || category.slug;
+    category.image = result.secure_url || category.image;
+    category.image_id = result.public_id || category.image_id;
 
     const updatedCategory = await category.save();
     if (updatedCategory) {
-      res.status(200).json({
-        message: "Category is updated succesfully",
-      });
+      res.status(200).json(updatedCategory);
     } else {
       res.status(404);
       throw new Error("Something went wrong");
@@ -104,9 +120,7 @@ const updateCategory = asyncHandler(async (req, res) => {
 
     const updatedCategory = await category.save();
     if (updatedCategory) {
-      res.status(200).json({
-        message: "Category is updated succesfully",
-      });
+      res.status(200).json(updatedCategory);
     } else {
       res.status(404);
       throw new Error("Something went wrong");

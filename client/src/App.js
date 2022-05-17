@@ -1,4 +1,6 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useJwt } from "react-jwt";
+import { useDispatch, useSelector } from "react-redux";
 import { Route, Routes } from "react-router-dom";
 import Dashboard from "./Dashboard/DashboardPages/Dashboard";
 import DashboardCategories from "./Dashboard/DashboardPages/DashboardCategories";
@@ -13,8 +15,20 @@ import Login from "./Pages/Login";
 import Orders from "./Pages/Orders";
 import Profile from "./Pages/Profile";
 import Signup from "./Pages/Signup";
+import { logoutUser } from "./Redux/actions/userActions";
 
 const App = () => {
+  // Redux element
+  const dispatch = useDispatch();
+  const { userInfo } = useSelector((state) => state.userLogin);
+
+  const { isExpired } = useJwt(userInfo?.token);
+
+  useEffect(() => {
+    if (isExpired) {
+      dispatch(logoutUser());
+    }
+  }, [isExpired, dispatch]);
   return (
     <>
       <Routes>

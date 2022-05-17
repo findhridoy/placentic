@@ -5,18 +5,20 @@ import cogoToast from "cogo-toast";
 import React, { useEffect, useMemo, useState } from "react";
 import "react-dropdown/style.css";
 import { useDispatch, useSelector } from "react-redux";
-import { useGlobalFilter, useTable } from "react-table";
+import { useNavigate } from "react-router-dom";
+import { useGlobalFilter, usePagination, useTable } from "react-table";
 import CustomLoader from "../../Components/CustomLoader";
-import { categoryColumns } from "../../Helpers/TableColumns/CategoryColumns";
+import CustomTable from "../../ReactTable/CustomTable";
+import { categoryColumns } from "../../ReactTable/TableColumns/CategoryColumns";
 import {
   categoryList,
   categoryListReset,
 } from "../../Redux/actions/categoryActions";
 import AddCategoryForm from "../DashboardComponents/AddCategoryForm";
-import CustomTable from "../DashboardComponents/CustomTable";
 import DashboardLayout from "../DashboardLayout/DashboardLayout";
 
 const DashboardCategories = () => {
+  // Modal state
   const [open, setOpen] = useState(false);
 
   // Redux element
@@ -24,21 +26,28 @@ const DashboardCategories = () => {
   const { loading, error, categories } = useSelector(
     (state) => state.categoryList
   );
+  const { success } = useSelector((state) => state.createCategory);
+  const { category } = useSelector((state) => state.updateCategory);
 
   useEffect(() => {
     dispatch(categoryList("categories"));
-  }, [dispatch]);
+  }, [dispatch, success, category]);
+
+  // navigate
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (error) {
       cogoToast.error(error);
       dispatch(categoryListReset());
+      navigate("/");
     }
     if (categories?.message) {
       cogoToast.error("Something was wrong!");
       dispatch(categoryListReset());
+      navigate("/");
     }
-  }, [error, categories, dispatch]);
+  }, [error, categories, dispatch, navigate]);
 
   // React table elements
   const data = useMemo(() => categories, [categories]);
@@ -50,11 +59,11 @@ const DashboardCategories = () => {
       data,
       initialState: { hiddenColumns: "image" },
     },
-    useGlobalFilter
+    useGlobalFilter,
+    usePagination
   );
 
   const { state, setGlobalFilter } = tableInstance;
-
   const { globalFilter } = state;
 
   return loading ? (

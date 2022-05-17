@@ -32,7 +32,7 @@ const FormImageControl = ({ setImage, errors, user }) => {
           //   style={{ display: "none" }}
           onChange={handleFileChange}
         />
-        {errors.image && <span className="form__error">{errors.image}</span>}
+        {errors?.image && <span className="form__error">{errors?.image}</span>}
       </span>
 
       <ImageHandler

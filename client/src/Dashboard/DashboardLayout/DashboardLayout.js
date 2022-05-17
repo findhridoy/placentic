@@ -5,9 +5,7 @@ import DashboardMenu from "../DashboardComponents/DashboardMenu";
 const DashboardLayout = ({ children, title, filter, setFilter }) => {
   return (
     <div className="dashboardLayout">
-      <div className="dashboardLayout__menu">
-        <DashboardMenu />
-      </div>
+      <DashboardMenu />
       <div className="dashboarLayout__container">
         <DashboardHeader title={title} filter={filter} setFilter={setFilter} />
         <div className="dashboardLayout__pages">{children}</div>

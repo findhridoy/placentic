@@ -3,9 +3,16 @@
   @include transition(300ms);
   @include header-height;
   padding: 0 $x-1;
-  position: relative;
+  position: fixed;
+  width: 100%;
+  right: 0;
+  top: 0;
+  z-index: 9;
   @include breakpoint(sm) {
     padding: 0 $x-1-5;
+  }
+  @include breakpoint(md) {
+    width: calc(100% - 12rem);
   }
   &::after {
     content: "";

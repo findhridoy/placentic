@@ -1,11 +1,9 @@
 // Import of partial files
-@import "mixins/breakpoints";
-@import "mixins/mixins";
+@import "config/breakpoints";
+@import "config/mixins";
 @import "config/variables";
-@import "base/base";
-
-// Layouts
-@import "layout/layout";
+@import "config/base";
+@import "config/layout";
 
 // Components
 @import "components/scroll";
@@ -18,10 +16,8 @@
 @import "components/profileInfo";
 @import "components/userAvatar";
 @import "components/imageHandler";
-
-// Pages
-@import "pages/login&signup";
-@import "pages/profile";
+@import "components/login&signup";
+@import "components/profile";
 
 // Dashboard
 @import "../Dashboard/DashboardStyles/dashboardIndex";

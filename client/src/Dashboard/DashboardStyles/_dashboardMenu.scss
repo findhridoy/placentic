@@ -4,12 +4,13 @@
   bottom: 0;
   left: 0;
   z-index: $z-99;
-  background-color: $white-alt;
+  background-color: $cyan-alt;
   @include header-height();
   @include breakpoint(md) {
-    position: initial;
-    width: initial;
-    background-color: initial;
+    width: 12rem;
+    background-color: $cyan-alt;
+    top: 0;
+    height: 100%;
   }
   .nav__logo {
     display: none;

@@ -7,6 +7,10 @@ import {
   CATEGORY_LIST_REQUEST,
   CATEGORY_LIST_RESET,
   CATEGORY_LIST_SUCCESS,
+  CATEGORY_UPDATE_FAILURE,
+  CATEGORY_UPDATE_REQUEST,
+  CATEGORY_UPDATE_RESET,
+  CATEGORY_UPDATE_SUCCESS,
 } from "../constants/categoryConstants";
 
 // Create category reducer
@@ -32,7 +36,7 @@ const categoryState = {
   categories: [],
 };
 
-// Create category reducer
+// Category list reducer
 export const categoryListReducer = (state = categoryState, action) => {
   switch (action.type) {
     case CATEGORY_LIST_REQUEST:
@@ -44,6 +48,39 @@ export const categoryListReducer = (state = categoryState, action) => {
     case CATEGORY_LIST_RESET:
       return {};
 
+    default:
+      return state;
+  }
+};
+
+// // Category list reducer
+// export const categoryReducer = (state = {}, action) => {
+//   switch (action.type) {
+//     case CATEGORY_LIST_REQUEST:
+//       return { ...state, loading: true };
+//     case CATEGORY_LIST_SUCCESS:
+//       return { loading: false, categories: action.payload };
+//     case CATEGORY_LIST_FAILURE:
+//       return { loading: false, error: action.payload };
+//     case CATEGORY_LIST_RESET:
+//       return {};
+
+//     default:
+//       return state;
+//   }
+// };
+
+// Update category reducer
+export const updateCategoryReducer = (state = { category: {} }, action) => {
+  switch (action.type) {
+    case CATEGORY_UPDATE_REQUEST:
+      return { ...state, loading: true };
+    case CATEGORY_UPDATE_SUCCESS:
+      return { loading: false, category: action.payload };
+    case CATEGORY_UPDATE_FAILURE:
+      return { loading: false, error: action.payload };
+    case CATEGORY_UPDATE_RESET:
+      return {};
     default:
       return state;
   }
