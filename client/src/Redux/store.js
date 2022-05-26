@@ -4,10 +4,14 @@ import thunk from "redux-thunk";
 import {
   categoryListReducer,
   createCategoryReducer,
+  deleteCategoryReducer,
   updateCategoryReducer,
 } from "./reducers/categoryReducers";
 import {
+  deleteUserReducer,
+  getUserListReducer,
   getUserProfileReducer,
+  makeAdminUserReducer,
   updateUserProfileReducer,
   userLoginReducer,
   userRegisterReducer,
@@ -22,6 +26,10 @@ const reducers = combineReducers({
   createCategory: createCategoryReducer,
   categoryList: categoryListReducer,
   updateCategory: updateCategoryReducer,
+  deleteCategory: deleteCategoryReducer,
+  userList: getUserListReducer,
+  updateUser: makeAdminUserReducer,
+  deleteUser: deleteUserReducer,
 });
 
 // Get data from localStorage

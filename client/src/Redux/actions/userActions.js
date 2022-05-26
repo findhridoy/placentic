@@ -1,10 +1,22 @@
 import axios from "axios";
 import {
+  USER_DELETE_FAILURE,
+  USER_DELETE_REQUEST,
+  USER_DELETE_RESET,
+  USER_DELETE_SUCCESS,
   USER_ERROR_RESET,
+  USER_LIST_FAILURE,
+  USER_LIST_REQUEST,
+  USER_LIST_RESET,
+  USER_LIST_SUCCESS,
   USER_LOGIN_FAILURE,
   USER_LOGIN_REQUEST,
   USER_LOGIN_SUCCESS,
   USER_LOGOUT,
+  USER_MAKEADMIN_FAILURE,
+  USER_MAKEADMIN_REQUEST,
+  USER_MAKEADMIN_RESET,
+  USER_MAKEADMIN_SUCCESS,
   USER_PROFILE_FAILURE,
   USER_PROFILE_REQUEST,
   USER_PROFILE_RESET,
@@ -206,5 +218,141 @@ export const updateUserProfile = (updateData) => async (dispatch, getState) => {
 export const userUpdateErrorReset = () => async (dispatch) => {
   dispatch({
     type: USER_UPDATE_RESET,
+  });
+};
+
+// User list action
+export const getUseryList = (path) => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: USER_LIST_REQUEST,
+    });
+
+    // get user data from state
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    // config
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${userInfo?.token}`,
+      },
+    };
+
+    const { data } = await axios.get(`/api/${path}`, config);
+
+    dispatch({
+      type: USER_LIST_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: USER_LIST_FAILURE,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+// User list reset
+export const userListReset = () => async (dispatch) => {
+  dispatch({
+    type: USER_LIST_RESET,
+  });
+};
+
+// Make admin action
+export const userMakeAdmin = (id, updateData) => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: USER_MAKEADMIN_REQUEST,
+    });
+
+    // get user data from state
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    // config
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    const { data } = await axios.put(
+      `/api/users/updateAdmin/${id}`,
+      updateData,
+      config
+    );
+
+    dispatch({
+      type: USER_MAKEADMIN_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: USER_MAKEADMIN_FAILURE,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+// Category update error reset action
+export const userMakeAdminReset = () => async (dispatch) => {
+  dispatch({
+    type: USER_MAKEADMIN_RESET,
+  });
+};
+
+// Delete user action
+export const deleteUser = (id) => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: USER_DELETE_REQUEST,
+    });
+
+    // get user data from state
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    // config
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    const { data } = await axios.delete(`/api/users/delete/${id}`, config);
+
+    dispatch({
+      type: USER_DELETE_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: USER_DELETE_FAILURE,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+// User delete error reset action
+export const userDeleteErrorReset = () => async (dispatch) => {
+  dispatch({
+    type: USER_DELETE_RESET,
   });
 };

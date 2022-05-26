@@ -79,11 +79,6 @@
         .checkbox__group {
           display: flex;
           align-items: center;
-          .checkbox__label {
-            color: $dark-alt;
-            font-weight: $medium;
-            @include smallest-font;
-          }
         }
         .form__forget {
           font-weight: $medium;

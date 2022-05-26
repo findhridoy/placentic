@@ -3,6 +3,10 @@ import {
   CATEGORY_CREATE_REQUEST,
   CATEGORY_CREATE_RESET,
   CATEGORY_CREATE_SUCCESS,
+  CATEGORY_DELETE_FAILURE,
+  CATEGORY_DELETE_REQUEST,
+  CATEGORY_DELETE_RESET,
+  CATEGORY_DELETE_SUCCESS,
   CATEGORY_LIST_FAILURE,
   CATEGORY_LIST_REQUEST,
   CATEGORY_LIST_RESET,
@@ -19,9 +23,9 @@ export const createCategoryReducer = (state = {}, action) => {
     case CATEGORY_CREATE_REQUEST:
       return { loading: true };
     case CATEGORY_CREATE_SUCCESS:
-      return { loading: false, success: true, category: action.payload };
+      return { loading: false, category: action.payload };
     case CATEGORY_CREATE_FAILURE:
-      return { loading: false, success: false, error: action.payload };
+      return { loading: false, error: action.payload };
     case CATEGORY_CREATE_RESET:
       return {};
 
@@ -80,6 +84,22 @@ export const updateCategoryReducer = (state = { category: {} }, action) => {
     case CATEGORY_UPDATE_FAILURE:
       return { loading: false, error: action.payload };
     case CATEGORY_UPDATE_RESET:
+      return {};
+    default:
+      return state;
+  }
+};
+
+// Delete category reducer
+export const deleteCategoryReducer = (state = {}, action) => {
+  switch (action.type) {
+    case CATEGORY_DELETE_REQUEST:
+      return { loading: true };
+    case CATEGORY_DELETE_SUCCESS:
+      return { loading: false, category: action.payload };
+    case CATEGORY_DELETE_FAILURE:
+      return { loading: false, error: action.payload };
+    case CATEGORY_DELETE_RESET:
       return {};
     default:
       return state;

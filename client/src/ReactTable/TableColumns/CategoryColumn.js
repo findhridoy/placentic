@@ -1,10 +1,10 @@
 import { Avatar, Stack } from "@mui/material";
 import React from "react";
 import Moment from "react-moment";
-import TableActions from "../TableComponents/TableActions";
+import CategoryAction from "../TableActions/CategoryAction";
 
 // Category column
-const categoryColumns = [
+export const categoryColumn = [
   {
     Header: "Id",
     accessor: "_id",
@@ -44,8 +44,6 @@ const categoryColumns = [
   {
     Header: "Action",
     accessor: "action",
-    Cell: ({ row }) => <TableActions row={row} category={true} />,
+    Cell: ({ row }) => <CategoryAction row={row} />,
   },
 ];
-
-export { categoryColumns };

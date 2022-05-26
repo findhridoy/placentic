@@ -1,5 +1,5 @@
 import AddIcon from "@mui/icons-material/Add";
-import { IconButton } from "@mui/material";
+import { Button, Skeleton } from "@mui/material";
 import Modal from "@mui/material/Modal";
 import cogoToast from "cogo-toast";
 import React, { useEffect, useMemo, useState } from "react";
@@ -7,9 +7,8 @@ import "react-dropdown/style.css";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useGlobalFilter, usePagination, useTable } from "react-table";
-import CustomLoader from "../../Components/CustomLoader";
 import CustomTable from "../../ReactTable/CustomTable";
-import { categoryColumns } from "../../ReactTable/TableColumns/CategoryColumns";
+import { categoryColumn } from "../../ReactTable/TableColumns/CategoryColumn";
 import {
   categoryList,
   categoryListReset,
@@ -26,12 +25,13 @@ const DashboardCategories = () => {
   const { loading, error, categories } = useSelector(
     (state) => state.categoryList
   );
-  const { success } = useSelector((state) => state.createCategory);
-  const { category } = useSelector((state) => state.updateCategory);
+  const { category } = useSelector((state) => state.createCategory);
+  const { category: updateCat } = useSelector((state) => state.updateCategory);
+  const { category: deleteCate } = useSelector((state) => state.deleteCategory);
 
   useEffect(() => {
     dispatch(categoryList("categories"));
-  }, [dispatch, success, category]);
+  }, [dispatch, category?.title, updateCat?.title, deleteCate?.success]);
 
   // navigate
   const navigate = useNavigate();
@@ -51,7 +51,7 @@ const DashboardCategories = () => {
 
   // React table elements
   const data = useMemo(() => categories, [categories]);
-  const columns = useMemo(() => categoryColumns, []);
+  const columns = useMemo(() => categoryColumn, []);
 
   const tableInstance = useTable(
     {
@@ -66,9 +66,7 @@ const DashboardCategories = () => {
   const { state, setGlobalFilter } = tableInstance;
   const { globalFilter } = state;
 
-  return loading ? (
-    <CustomLoader size={40} />
-  ) : (
+  return (
     <DashboardLayout
       title="Categories"
       filter={globalFilter}
@@ -77,18 +75,28 @@ const DashboardCategories = () => {
       <section className="dc__section">
         <div className="dc__container">
           <div className="dc__header">
-            <h4 className="header__title">Category list</h4>
+            {loading ? (
+              <Skeleton width={100} animation="wave" height={35} />
+            ) : (
+              <h4 className="header__title">Category list</h4>
+            )}
+
+            {loading ? (
+              <Skeleton variant="rectangular" width={130} height={35} />
+            ) : (
+              <div className="btn small__btn btn__dark">
+                <Button type="button" onClick={() => setOpen(true)}>
+                  <span className="btn__text">Add Category</span>
+                  <AddIcon />
+                </Button>
+              </div>
+            )}
           </div>
-          <div className="dp__categories">
-            <CustomTable tableInstance={tableInstance} />
+          <div className="dc__categories">
+            <CustomTable tableInstance={tableInstance} loading={loading} />
           </div>
         </div>
-        <div className="d__btn d__dark">
-          <IconButton onClick={() => setOpen(true)}>
-            <span className="btn__text">Add Category</span>
-            <AddIcon />
-          </IconButton>
-        </div>
+
         <div className="dc__modal">
           <Modal open={open} onClose={() => setOpen(false)}>
             <>

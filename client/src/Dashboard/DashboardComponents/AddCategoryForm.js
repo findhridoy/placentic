@@ -5,7 +5,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   categoryCreateReset,
-  createCategory,
+  createCategory
 } from "../../Redux/actions/categoryActions";
 import FormImageControl from "./FormImageControl";
 
@@ -17,7 +17,7 @@ const AddCategoryForm = ({ setOpen }) => {
 
   // Redux element
   const dispatch = useDispatch();
-  const { loading, success, error, category } = useSelector(
+  const { loading, error, category } = useSelector(
     (state) => state.createCategory
   );
 
@@ -59,12 +59,12 @@ const AddCategoryForm = ({ setOpen }) => {
       cogoToast.error("Something was wrong!");
       dispatch(categoryCreateReset());
     }
-    if (success) {
+    if (category?.title) {
       cogoToast.success("Category has been created.");
       dispatch(categoryCreateReset());
       setOpen(false);
     }
-  }, [error, category, success, dispatch, setOpen]);
+  }, [error, category, dispatch, setOpen]);
 
   return (
     <div className="addProducts">

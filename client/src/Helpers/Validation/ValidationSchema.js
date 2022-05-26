@@ -56,4 +56,31 @@ const addProductSchema = Yup.object({
   // .test('type', 'Only jpeg file support', (value) => value && value[0].type === 'image/jpeg'),
 });
 
-export { signUpSchema, loginSchema, categorySchema, addProductSchema };
+// Signup schema
+const userUpdateSchema = Yup.object({
+  name: Yup.string()
+    .required("Name field can not be empty.")
+    .matches(/[a-zA-Z]+\s[a-zA-Z-]/, "Please type your full name."),
+  email: Yup.string()
+    .required("Email field can not be empty.")
+    .matches(
+      /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+      "Please type a valid email address."
+    ),
+  username: Yup.string()
+    .required("Username field can not be empty.")
+    .min(5, "Username must contain at least 5 characters.")
+    .matches(
+      /[0-9]/,
+      "Only characters are not allowed at least one number should be there"
+    )
+    .max(10, "Username must be between 5 and 10 characters."),
+});
+
+export {
+  signUpSchema,
+  loginSchema,
+  categorySchema,
+  addProductSchema,
+  userUpdateSchema,
+};

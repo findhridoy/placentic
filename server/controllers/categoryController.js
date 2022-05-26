@@ -36,9 +36,7 @@ const createCategory = asyncHandler(async (req, res) => {
     });
 
     if (category) {
-      res.status(201).json({
-        message: "Category is created succesfully.",
-      });
+      res.status(201).json(category);
     } else {
       res.status(400);
       throw new Error("Something went wrong!");
@@ -143,7 +141,7 @@ const deleteCategory = asyncHandler(async (req, res) => {
     await cloudinary.uploader.destroy(category.image_id);
     await category.remove();
     res.status(200).json({
-      message: "Category is deleted succesfully",
+      success: true,
     });
   } else {
     res.status(400);

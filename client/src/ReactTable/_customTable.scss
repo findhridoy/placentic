@@ -44,6 +44,7 @@
         font-weight: $semi-bold;
         color: $dark-alt;
         @include smaller-font;
+        white-space: nowrap;
       }
     }
   }

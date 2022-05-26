@@ -24,7 +24,7 @@ const ProfileInfo = ({ register, isEdit, user, loading }) => {
     <>
       <ul className="profileInfo__list">
         {loading ? (
-          <Skeleton width="100%">
+          <Skeleton width="100%" height={40}>
             <Typography variant="h6">.</Typography>
           </Skeleton>
         ) : (
@@ -37,7 +37,7 @@ const ProfileInfo = ({ register, isEdit, user, loading }) => {
         )}
 
         {loading ? (
-          <Skeleton width="100%">
+          <Skeleton width="100%" height={40}>
             <Typography variant="h6">.</Typography>
           </Skeleton>
         ) : (
@@ -50,7 +50,7 @@ const ProfileInfo = ({ register, isEdit, user, loading }) => {
         )}
 
         {loading ? (
-          <Skeleton width="100%">
+          <Skeleton width="100%" height={40}>
             <Typography variant="h6">.</Typography>
           </Skeleton>
         ) : (
@@ -63,7 +63,7 @@ const ProfileInfo = ({ register, isEdit, user, loading }) => {
         )}
 
         {loading ? (
-          <Skeleton width="100%">
+          <Skeleton width="100%" height={40}>
             <Typography variant="h6">.</Typography>
           </Skeleton>
         ) : (
@@ -76,7 +76,7 @@ const ProfileInfo = ({ register, isEdit, user, loading }) => {
         )}
 
         {loading ? (
-          <Skeleton width="100%">
+          <Skeleton width="100%" height={40}>
             <Typography variant="h6">.</Typography>
           </Skeleton>
         ) : (

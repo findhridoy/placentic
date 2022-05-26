@@ -77,7 +77,7 @@ const ImageHandler = ({
                   type="button"
                   startIcon={!loading && <CropIcon />}
                   onClick={handleCroppedImage}
-                  disabled={loading}
+                  // disabled={loading}
                 >
                   {loading ? (
                     <CircularProgress color="inherit" size={30} thickness={3} />

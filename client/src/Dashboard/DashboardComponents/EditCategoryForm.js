@@ -56,7 +56,7 @@ const EditCategoryForm = ({ setOpen, row }) => {
       cogoToast.error("Category title is already exist.");
       dispatch(categoryUpdateErrorReset());
     }
-    if (category?.message) {
+    if (category?.message && !category?.error_code) {
       cogoToast.error("Something was wrong!");
       dispatch(categoryUpdateErrorReset());
     }
