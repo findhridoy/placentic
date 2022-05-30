@@ -5,13 +5,14 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   categoryCreateReset,
-  createCategory
+  createCategory,
 } from "../../Redux/actions/categoryActions";
 import FormImageControl from "./FormImageControl";
 
 const AddCategoryForm = ({ setOpen }) => {
   // States
   const [title, setTitle] = useState("");
+  const [message, setMessage] = useState("");
   const [image, setImage] = useState(null);
   const [formErrors, setFromErrors] = useState({});
 
@@ -25,10 +26,13 @@ const AddCategoryForm = ({ setOpen }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    const validate = (title, image) => {
+    const validate = (title, message, image) => {
       let errors = {};
       if (!title) {
         errors.title = "Title field is required.";
+      }
+      if (!message) {
+        errors.message = "Message field is required.";
       }
       if (!image) {
         errors.image = "Image field is required.";
@@ -36,13 +40,12 @@ const AddCategoryForm = ({ setOpen }) => {
       return errors;
     };
 
-    setFromErrors(validate(title, image));
+    setFromErrors(validate(title, message, image));
 
-    if (title && image) {
-      const slug = title.split(" ").join("-").toLowerCase();
+    if (title && message && image) {
       const formData = new FormData();
       formData.append("title", title);
-      formData.append("slug", slug);
+      formData.append("message", message);
       formData.append("image", image);
 
       // send data to backend
@@ -59,7 +62,7 @@ const AddCategoryForm = ({ setOpen }) => {
       cogoToast.error("Something was wrong!");
       dispatch(categoryCreateReset());
     }
-    if (category?.title) {
+    if (category?.success) {
       cogoToast.success("Category has been created.");
       dispatch(categoryCreateReset());
       setOpen(false);
@@ -85,14 +88,16 @@ const AddCategoryForm = ({ setOpen }) => {
           </span>
 
           <span className="form__group">
-            <label className="form__label">Slug</label>
+            <label className="form__label">Message</label>
             <input
               className="form__control"
               type="text"
-              placeholder="Auto generate slug"
-              value={title.split(" ").join("-").toLowerCase()}
-              disabled
+              placeholder="Enter category message"
+              onChange={(e) => setMessage(e.target.value)}
             />
+            {formErrors.message && (
+              <span className="form__error">{formErrors.message}</span>
+            )}
           </span>
 
           <FormImageControl setImage={setImage} errors={formErrors} />

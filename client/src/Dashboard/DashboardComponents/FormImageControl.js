@@ -35,6 +35,12 @@ const FormImageControl = ({ setImage, errors, user }) => {
         {errors?.image && <span className="form__error">{errors?.image}</span>}
       </span>
 
+      <img
+        style={{ display: "none" }}
+        src={croppedImage && croppedImage}
+        alt="Display none"
+      />
+
       <ImageHandler
         showImage={showImage}
         setShowImage={setShowImage}

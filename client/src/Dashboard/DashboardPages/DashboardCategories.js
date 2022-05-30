@@ -5,8 +5,8 @@ import cogoToast from "cogo-toast";
 import React, { useEffect, useMemo, useState } from "react";
 import "react-dropdown/style.css";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import { useGlobalFilter, usePagination, useTable } from "react-table";
+import CustomAlert from "../../Components/CustomAlert";
 import CustomTable from "../../ReactTable/CustomTable";
 import { categoryColumn } from "../../ReactTable/TableColumns/CategoryColumn";
 import {
@@ -31,23 +31,18 @@ const DashboardCategories = () => {
 
   useEffect(() => {
     dispatch(categoryList("categories"));
-  }, [dispatch, category?.title, updateCat?.title, deleteCate?.success]);
-
-  // navigate
-  const navigate = useNavigate();
+  }, [dispatch, category?.success, updateCat?.success, deleteCate?.success]);
 
   useEffect(() => {
     if (error) {
       cogoToast.error(error);
       dispatch(categoryListReset());
-      navigate("/");
     }
     if (categories?.message) {
       cogoToast.error("Something was wrong!");
       dispatch(categoryListReset());
-      navigate("/");
     }
-  }, [error, categories, dispatch, navigate]);
+  }, [error, categories, dispatch]);
 
   // React table elements
   const data = useMemo(() => categories, [categories]);
@@ -92,9 +87,13 @@ const DashboardCategories = () => {
               </div>
             )}
           </div>
-          <div className="dc__categories">
-            <CustomTable tableInstance={tableInstance} loading={loading} />
-          </div>
+          {!loading && categories?.length === 0 ? (
+            <CustomAlert severity="info" message="No categories found!" />
+          ) : (
+            <div className="dc__categories">
+              <CustomTable tableInstance={tableInstance} loading={loading} />
+            </div>
+          )}
         </div>
 
         <div className="dc__modal">

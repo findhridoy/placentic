@@ -11,14 +11,22 @@ const { cloudinary } = require("../config/cloudinary");
  * @access  Private/Admin
  */
 const createCategory = asyncHandler(async (req, res) => {
-  const { title, slug } = req.body;
+  const { title, message } = req.body;
 
-  // find the category
-  const existCategory = await Category.findOne({ slug });
+  // exist category title
+  const existCategoryTitle = await Category.findOne({ title });
 
-  if (existCategory) {
+  if (existCategoryTitle) {
     res.status(400);
-    throw new Error("Category is already created");
+    throw new Error("Category title is already exist!");
+  }
+
+  // exist category message
+  const existCategoryMessage = await Category.findOne({ message });
+
+  if (existCategoryMessage) {
+    res.status(400);
+    throw new Error("Category message is already exist!");
   }
 
   if (req.file) {
@@ -30,13 +38,15 @@ const createCategory = asyncHandler(async (req, res) => {
     const category = await Category.create({
       user: req.user._id,
       title,
-      slug,
+      message,
       image: result.secure_url,
       image_id: result.public_id,
     });
 
     if (category) {
-      res.status(201).json(category);
+      res.status(201).json({
+        success: true,
+      });
     } else {
       res.status(400);
       throw new Error("Something went wrong!");
@@ -68,16 +78,16 @@ const getCategories = asyncHandler(async (req, res) => {
  * @desc    Get all categories
  * @access  Private/Admin
  */
-const getCategory = asyncHandler(async (req, res) => {
-  // find all category
-  const category = await Category.find({ id: req.body._id });
-  if (category) {
-    res.status(200).json(categories);
-  } else {
-    res.status(400);
-    throw new Error("Category not found!");
-  }
-});
+// const getCategory = asyncHandler(async (req, res) => {
+//   // find all category
+//   const category = await Category.find({ id: req.body._id });
+//   if (category) {
+//     res.status(200).json(category);
+//   } else {
+//     res.status(400);
+//     throw new Error("Category not found!");
+//   }
+// });
 
 /**
  * @route   Put /api/category/update/:id
@@ -97,13 +107,15 @@ const updateCategory = asyncHandler(async (req, res) => {
 
     category.user = req.user._id || category.user;
     category.title = req.body.title || category.title;
-    category.slug = req.body.slug || category.slug;
+    category.message = req.body.message || category.message;
     category.image = result.secure_url || category.image;
     category.image_id = result.public_id || category.image_id;
 
     const updatedCategory = await category.save();
     if (updatedCategory) {
-      res.status(200).json(updatedCategory);
+      res.status(200).json({
+        success: true,
+      });
     } else {
       res.status(404);
       throw new Error("Something went wrong");
@@ -114,11 +126,13 @@ const updateCategory = asyncHandler(async (req, res) => {
   if (category && !req.file) {
     category.user = req.user._id || category.user;
     category.title = req.body.title || category.title;
-    category.slug = req.body.slug || category.slug;
+    category.message = req.body.message || category.message;
 
     const updatedCategory = await category.save();
     if (updatedCategory) {
-      res.status(200).json(updatedCategory);
+      res.status(200).json({
+        success: true,
+      });
     } else {
       res.status(404);
       throw new Error("Something went wrong");

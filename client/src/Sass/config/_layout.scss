@@ -165,15 +165,24 @@
   font-weight: $semi-bold;
   color: $dark-alt;
   position: relative;
+  text-align: center;
+  @include breakpoint(md) {
+    text-align: initial;
+  }
   &::after {
     content: "";
     position: absolute;
     width: 6rem;
     height: 0.1rem;
     background-color: $dark-alt;
-    left: 0;
-    bottom: 0;
-    transform: translateY(0.6rem);
+    left: 50%;
+    bottom: -25%;
+    transform: translate(-50%, 25%);
+    @include breakpoint(md) {
+      left: 0;
+      bottom: 0;
+      transform: translateY(0.6rem);
+    }
   }
 }
 
@@ -243,6 +252,32 @@
   &:hover {
     //   box-shadow: $shadow;
   }
+}
+
+// Form Select
+.form__select {
+  width: 100%;
+  border: $border-gray;
+  padding: $x-0-25;
+  height: 2.2rem;
+  font-weight: $medium;
+  @include smallest-font;
+  background-color: transparent;
+  color: $dark-alt;
+  @include breakpoint(md) {
+    height: 2.5rem;
+  }
+}
+
+// From Options
+.form__option {
+  font-weight: $medium;
+  @include smallest-font;
+  color: $dark-alt;
+  height: 2.2rem !important;
+  background-color: transparent;
+  line-height: 2;
+  padding: $x-0-5;
 }
 
 // Form checkbox label
@@ -316,12 +351,9 @@
 }
 
 // Custom Alert
-// .custom__alert {
-//   position: absolute;
-//   width: 100%;
-//   top: -4rem;
-//   left: 0;
-// }
+.custom__alert {
+  margin: 2rem 0;
+}
 
 // Custom Loader
 .customLoader {

@@ -12,6 +12,7 @@ import FormImageControl from "./FormImageControl";
 const EditCategoryForm = ({ setOpen, row }) => {
   // States
   const [title, setTitle] = useState(row.values.title);
+  const [message, setMessage] = useState(row.values.message);
   const [image, setImage] = useState(null);
   const [formErrors, setFromErrors] = useState({});
 
@@ -25,21 +26,23 @@ const EditCategoryForm = ({ setOpen, row }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    const validate = (title) => {
+    const validate = (title, message) => {
       let errors = {};
       if (!title) {
         errors.title = "Title field is required.";
       }
+      if (!message) {
+        errors.message = "Message field is required.";
+      }
       return errors;
     };
 
-    setFromErrors(validate(title));
+    setFromErrors(validate(title, message));
 
-    if (title) {
-      const slug = title.split(" ").join("-").toLowerCase();
+    if (title && message) {
       const formData = new FormData();
       formData.append("title", title);
-      formData.append("slug", slug);
+      formData.append("message", message);
       formData.append("image", image);
 
       // send data to backend
@@ -56,11 +59,15 @@ const EditCategoryForm = ({ setOpen, row }) => {
       cogoToast.error("Category title is already exist.");
       dispatch(categoryUpdateErrorReset());
     }
+    if (category?.error_code === 11000 && category?.error_pattern.message) {
+      cogoToast.error("Category message is already exist.");
+      dispatch(categoryUpdateErrorReset());
+    }
     if (category?.message && !category?.error_code) {
       cogoToast.error("Something was wrong!");
       dispatch(categoryUpdateErrorReset());
     }
-    if (category?.title) {
+    if (category?.success) {
       cogoToast.success("Updated successfully.");
       setOpen(false);
       dispatch(categoryUpdateErrorReset());
@@ -70,7 +77,7 @@ const EditCategoryForm = ({ setOpen, row }) => {
   return (
     <div className="addProducts">
       <div className="addProducts__form">
-        <h2 className="form__title">Add Category</h2>
+        <h2 className="form__title">Edit Category</h2>
         <form onSubmit={handleSubmit}>
           <span className="form__group">
             <label className="form__label">Title</label>
@@ -87,14 +94,17 @@ const EditCategoryForm = ({ setOpen, row }) => {
           </span>
 
           <span className="form__group">
-            <label className="form__label">Slug</label>
+            <label className="form__label">Message</label>
             <input
               className="form__control"
               type="text"
-              placeholder="Auto generate slug"
-              value={title.split(" ").join("-").toLowerCase()}
-              disabled
+              placeholder="Enter category message"
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
             />
+            {formErrors.message && (
+              <span className="form__error">{formErrors.message}</span>
+            )}
           </span>
 
           <FormImageControl setImage={setImage} />
@@ -104,7 +114,7 @@ const EditCategoryForm = ({ setOpen, row }) => {
               {loading ? (
                 <CircularProgress color="inherit" size={30} thickness={3} />
               ) : (
-                "Update Category"
+                "Update"
               )}
             </Button>
           </div>

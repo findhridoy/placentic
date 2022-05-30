@@ -8,6 +8,13 @@ import {
   updateCategoryReducer,
 } from "./reducers/categoryReducers";
 import {
+  createProductReducer,
+  deleteProductReducer,
+  getProductReducer,
+  productListReducer,
+  updateProductReducer,
+} from "./reducers/productReducers";
+import {
   deleteUserReducer,
   getUserListReducer,
   getUserProfileReducer,
@@ -30,6 +37,11 @@ const reducers = combineReducers({
   userList: getUserListReducer,
   updateUser: makeAdminUserReducer,
   deleteUser: deleteUserReducer,
+  createProduct: createProductReducer,
+  productList: productListReducer,
+  updateProduct: updateProductReducer,
+  deleteProduct: deleteProductReducer,
+  getProduct: getProductReducer,
 });
 
 // Get data from localStorage

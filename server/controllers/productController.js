@@ -12,14 +12,7 @@ const { cloudinary } = require("../config/cloudinary");
  */
 const addProduct = asyncHandler(async (req, res) => {
   // distructure the value
-  const {
-    title,
-    description,
-    category,
-    categorySlug,
-    price,
-    countInStock,
-  } = req.body;
+  const { title, description, category, price, countInStock } = req.body;
 
   if (req.file) {
     const result = await cloudinary.uploader.upload(req.file.path, {
@@ -32,7 +25,6 @@ const addProduct = asyncHandler(async (req, res) => {
       title,
       description,
       category,
-      categorySlug,
       price,
       countInStock,
       image: result.secure_url,
@@ -41,7 +33,7 @@ const addProduct = asyncHandler(async (req, res) => {
 
     if (product) {
       res.status(201).json({
-        message: "Product added successfully",
+        success: true,
       });
     } else {
       res.status(500);
@@ -73,7 +65,6 @@ const updateProduct = asyncHandler(async (req, res) => {
     product.title = req.body.title || product.title;
     product.description = req.body.description || product.description;
     product.category = req.body.category || product.category;
-    product.categorySlug = req.body.categorySlug || product.categorySlug;
     product.price = req.body.price || product.price;
     product.countInStock = req.body.countInStock || product.countInStock;
     product.image = result.secure_url || product.image;
@@ -82,7 +73,7 @@ const updateProduct = asyncHandler(async (req, res) => {
     const updatedProduct = await product.save();
     if (updateProduct) {
       res.status(200).json({
-        message: "Product updated successfully",
+        success: true,
       });
     } else {
       res.status(404);
@@ -96,14 +87,13 @@ const updateProduct = asyncHandler(async (req, res) => {
     product.title = req.body.title || product.title;
     product.description = req.body.description || product.description;
     product.category = req.body.category || product.category;
-    product.categorySlug = req.body.categorySlug || product.categorySlug;
     product.price = req.body.price || product.price;
     product.countInStock = req.body.countInStock || product.countInStock;
 
     const updatedProduct = await product.save();
     if (updateProduct) {
       res.status(200).json({
-        message: "Product updated successfully",
+        success: true,
       });
     } else {
       res.status(404);
@@ -131,7 +121,7 @@ const deleteProduct = asyncHandler(async (req, res) => {
     await product.remove();
 
     res.status(200).json({
-      message: "Product is removed successfully",
+      success: true,
     });
   } else {
     res.status(404);
@@ -212,7 +202,7 @@ const createProductReview = asyncHandler(async (req, res) => {
     // save in database
     await product.save();
     res.status(200).json({
-      message: "Your review is created",
+      success: true,
     });
   } else {
     res.status(404);

@@ -57,23 +57,6 @@ export const categoryListReducer = (state = categoryState, action) => {
   }
 };
 
-// // Category list reducer
-// export const categoryReducer = (state = {}, action) => {
-//   switch (action.type) {
-//     case CATEGORY_LIST_REQUEST:
-//       return { ...state, loading: true };
-//     case CATEGORY_LIST_SUCCESS:
-//       return { loading: false, categories: action.payload };
-//     case CATEGORY_LIST_FAILURE:
-//       return { loading: false, error: action.payload };
-//     case CATEGORY_LIST_RESET:
-//       return {};
-
-//     default:
-//       return state;
-//   }
-// };
-
 // Update category reducer
 export const updateCategoryReducer = (state = { category: {} }, action) => {
   switch (action.type) {

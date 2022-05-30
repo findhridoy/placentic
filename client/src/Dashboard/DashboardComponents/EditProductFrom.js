@@ -8,15 +8,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { addProductSchema } from "../../Helpers/Validation/ValidationSchema";
 import { categoryList } from "../../Redux/actions/categoryActions";
 import {
-  createProduct,
-  productCreateReset,
+  productUpdateReset,
+  updateProduct,
 } from "../../Redux/actions/productActions";
 import FormImageControl from "./FormImageControl";
 
-const AddProductForm = ({ setOpen }) => {
+const EditProductForm = ({ setOpen, row }) => {
   // States
   const [image, setImage] = useState(null);
-  const [imageError, setImageError] = useState({});
 
   // Redux element
   const dispatch = useDispatch();
@@ -24,7 +23,7 @@ const AddProductForm = ({ setOpen }) => {
     (state) => state.categoryList
   );
   const { loading, error, product } = useSelector(
-    (state) => state.createProduct
+    (state) => state.updateProduct
   );
 
   useEffect(() => {
@@ -42,16 +41,7 @@ const AddProductForm = ({ setOpen }) => {
 
   // React hook form data submit
   const onSubmit = async (data) => {
-    const validate = (image) => {
-      let errors = {};
-      if (!image) {
-        errors.image = "Product image field is required.";
-      }
-      return errors;
-    };
-    setImageError(validate(image));
-
-    if (data && image) {
+    if (data) {
       const formData = new FormData();
 
       formData.append("image", image);
@@ -62,22 +52,22 @@ const AddProductForm = ({ setOpen }) => {
       formData.append("countInStock", data.stock);
 
       // send data to backend
-      dispatch(createProduct(formData));
+      dispatch(updateProduct(row.values._id, formData));
     }
   };
 
   useEffect(() => {
     if (error) {
       cogoToast.error(error);
-      dispatch(productCreateReset());
+      dispatch(productUpdateReset());
     }
     if (product?.message) {
       cogoToast.error("Something was wrong!");
-      dispatch(productCreateReset());
+      dispatch(productUpdateReset());
     }
     if (product?.success) {
-      cogoToast.success("Product has been created.");
-      dispatch(productCreateReset());
+      cogoToast.success("Product has been updated.");
+      dispatch(productUpdateReset());
 
       setOpen(false);
     }
@@ -86,7 +76,7 @@ const AddProductForm = ({ setOpen }) => {
   return (
     <div className="addProducts">
       <div className="addProducts__form">
-        <h2 className="form__title">Add Product</h2>
+        <h2 className="form__title">Update Product</h2>
         <form onSubmit={handleSubmit(onSubmit)}>
           <span className="form__group">
             <label className="form__label">Title</label>
@@ -95,6 +85,7 @@ const AddProductForm = ({ setOpen }) => {
               type="text"
               placeholder="Enter product title"
               {...register("title")}
+              defaultValue={row ? row?.values.title : ""}
             />
             {errors?.title && (
               <span className="form__error">{errors?.title.message}</span>
@@ -104,11 +95,16 @@ const AddProductForm = ({ setOpen }) => {
           <span className="form__group">
             <label className="form__label">Category</label>
             <select className="form__select" {...register("category")}>
-              <option className="form__option" value="">
+              <option
+                className="form__option"
+                value={row ? row.values.category : ""}
+              >
                 {categoryError
                   ? "Something was wrong!"
                   : categories?.length === 0
                   ? "Category not found!"
+                  : row
+                  ? row.values.category
                   : "Select a category"}
               </option>
 
@@ -133,6 +129,7 @@ const AddProductForm = ({ setOpen }) => {
               className="form__textarea"
               placeholder="Enter product description"
               {...register("description")}
+              defaultValue={row ? row?.values.description : ""}
             ></textarea>
             {errors?.description && (
               <span className="form__error">{errors?.description.message}</span>
@@ -147,6 +144,7 @@ const AddProductForm = ({ setOpen }) => {
                 type="text"
                 placeholder="Enter product price"
                 {...register("price")}
+                defaultValue={row ? row?.values.price : ""}
               />
               {errors?.price && (
                 <span className="form__error">{errors?.price.message}</span>
@@ -160,6 +158,7 @@ const AddProductForm = ({ setOpen }) => {
                 type="text"
                 placeholder="Enter product stock"
                 {...register("stock")}
+                defaultValue={row ? row?.values.countInStock : ""}
               />
               {errors?.stock && (
                 <span className="form__error">{errors?.stock.message}</span>
@@ -167,14 +166,14 @@ const AddProductForm = ({ setOpen }) => {
             </span>
           </div>
 
-          <FormImageControl setImage={setImage} errors={imageError} />
+          <FormImageControl setImage={setImage} />
 
           <div className="addProducts__btn btn btn__dark">
             <Button type="submit">
               {loading ? (
                 <CircularProgress color="inherit" size={30} thickness={3} />
               ) : (
-                "Add Product"
+                "Update"
               )}
             </Button>
           </div>
@@ -189,4 +188,4 @@ const AddProductForm = ({ setOpen }) => {
   );
 };
 
-export default AddProductForm;
+export default EditProductForm;

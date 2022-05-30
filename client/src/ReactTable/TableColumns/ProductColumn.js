@@ -1,26 +1,18 @@
+// import CloseIcon from "@mui/icons-material/Close";
 import { Avatar, Stack } from "@mui/material";
 import React from "react";
 import Moment from "react-moment";
-import CategoryAction from "../TableActions/CategoryAction";
+import ProductAction from "../TableActions/ProductAction";
 
-// Category column
-export const categoryColumn = [
-  {
-    Header: "Id",
-    accessor: "_id",
-  },
-  {
-    Header: "Image",
-    accessor: "image",
-    show: false,
-  },
+// Product column
+export const productColumn = [
   {
     Header: "Title",
     accessor: "title",
     Cell: ({ row }) => (
       <Stack direction="row" spacing={1} alignItems="center">
         <Avatar
-          alt="category image"
+          alt="product image"
           src={row?.values.image}
           sx={{ width: 35, height: 35 }}
         />
@@ -29,9 +21,34 @@ export const categoryColumn = [
     ),
   },
   {
-    Header: "Message",
-    accessor: "message",
+    Header: "Category",
+    accessor: "category",
   },
+  {
+    Header: "Price",
+    accessor: "price",
+  },
+  {
+    Header: "Reviews",
+    accessor: "countReviews",
+  },
+  {
+    Header: "Stock",
+    accessor: "countInStock",
+  },
+  {
+    Header: "Id",
+    accessor: "_id",
+  },
+  {
+    Header: "Image",
+    accessor: "image",
+  },
+  {
+    Header: "Description",
+    accessor: "description",
+  },
+
   {
     Header: "Date",
     accessor: "updatedAt",
@@ -41,9 +58,10 @@ export const categoryColumn = [
       </Moment>
     ),
   },
+
   {
     Header: "Action",
     accessor: "action",
-    Cell: ({ row }) => <CategoryAction row={row} />,
+    Cell: ({ row }) => <ProductAction row={row} />,
   },
 ];

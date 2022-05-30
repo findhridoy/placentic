@@ -1,40 +1,114 @@
 import AddIcon from "@mui/icons-material/Add";
-import { IconButton } from "@mui/material";
+import { Button, Skeleton } from "@mui/material";
 import Modal from "@mui/material/Modal";
-import React, { useState } from "react";
-import Dropdown from "react-dropdown";
+import cogoToast from "cogo-toast";
+import React, { useEffect, useMemo, useState } from "react";
 import "react-dropdown/style.css";
+import { useDispatch, useSelector } from "react-redux";
+import { useGlobalFilter, usePagination, useTable } from "react-table";
+import CustomAlert from "../../Components/CustomAlert";
+import CustomTable from "../../ReactTable/CustomTable";
+import { productColumn } from "../../ReactTable/TableColumns/ProductColumn";
+import {
+  productList,
+  productListReset,
+} from "../../Redux/actions/productActions";
 import AddProductForm from "../DashboardComponents/AddProductForm";
 import DashboardLayout from "../DashboardLayout/DashboardLayout";
 
 const DashboardProducts = () => {
+  // States
   const [open, setOpen] = useState(false);
 
-  const options = ["All", "two", "three"];
+  // Redux element
+  const dispatch = useDispatch();
+  const { loading, error, products } = useSelector(
+    (state) => state.productList
+  );
+  const { product } = useSelector((state) => state.createProduct);
+  const { product: deletedProduct } = useSelector(
+    (state) => state.deleteProduct
+  );
+  const { product: updatedProduct } = useSelector(
+    (state) => state.updateProduct
+  );
+
+  useEffect(() => {
+    dispatch(productList("products"));
+  }, [dispatch, product?.success, updatedProduct?.success, deletedProduct]);
+
+  useEffect(() => {
+    if (error) {
+      cogoToast.error(error);
+      dispatch(productListReset());
+      // navigate("/");
+    }
+    if (products?.message) {
+      cogoToast.error("Something was wrong!");
+      dispatch(productListReset());
+      // navigate("/");
+    }
+  }, [error, products, dispatch]);
+
+  // React table elements
+  const data = useMemo(() => products, [products]);
+  const columns = useMemo(() => productColumn, []);
+
+  const tableInstance = useTable(
+    {
+      columns,
+      data,
+      initialState: { hiddenColumns: ["image", "_id", "description"] },
+    },
+    useGlobalFilter,
+    usePagination
+  );
+
+  const { state, setGlobalFilter } = tableInstance;
+  const { globalFilter } = state;
+
   return (
-    <DashboardLayout title="Product Inventory">
+    <DashboardLayout
+      title="Product Inventory"
+      filter={globalFilter}
+      setFilter={setGlobalFilter}
+    >
       <section className="dp__section">
         <div className="dp__container">
           <div className="dp__header">
-            <h4 className="header__title">Product list</h4>
+            {loading ? (
+              <Skeleton width={140} animation="wave" height={35} />
+            ) : (
+              <h4 className="header__title">Product list</h4>
+            )}
             <div className="dp__categories">
-              <h4 className="category__title">Categories</h4>
-              <Dropdown
-                options={options}
-                onChange={this?._onSelect}
-                value={options[0]}
-                placeholder="Select an option"
-              />
+              {loading ? (
+                <Skeleton
+                  width={130}
+                  variant="rectangular"
+                  animation="wave"
+                  height={35}
+                />
+              ) : (
+                <div className="btn small__btn btn__dark">
+                  <Button type="button" onClick={() => setOpen(true)}>
+                    <span className="btn__text">Add Product</span>
+                    <AddIcon />
+                  </Button>
+                </div>
+              )}
             </div>
           </div>
-          <div className="dp__products"></div>
+
+          {!loading && products?.length === 0 ? (
+            <CustomAlert severity="info" message="No products found!" />
+          ) : (
+            <div className="dp__products">
+              <CustomTable tableInstance={tableInstance} loading={loading} />
+            </div>
+          )}
         </div>
-        <div className="d__btn d__dark">
-          <IconButton onClick={() => setOpen(true)}>
-            <span className="btn__text">Add Product</span>
-            <AddIcon />
-          </IconButton>
-        </div>
+
         <Modal open={open} onClose={() => setOpen(false)}>
           <>
             <AddProductForm setOpen={setOpen} />

@@ -14,10 +14,10 @@ const CategorySchema = new Schema(
       trim: true,
       unique: true,
     },
-    slug: {
+    message: {
       type: String,
-      lowercase: true,
       trim: true,
+      unique: true,
     },
     image: {
       type: String,
