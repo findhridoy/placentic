@@ -9,6 +9,7 @@ const {
   getAllProducts,
   getProduct,
   createProductReview,
+  getProducts,
 } = require("../controllers/productController");
 const { protect, admin } = require("../middleware/authMiddleware");
 const { upload } = require("../utils/avatarUpload");
@@ -24,6 +25,7 @@ router.put(
 );
 router.delete("/delete/:id", protect, admin, deleteProduct);
 router.get("/products", protect, admin, getAllProducts);
+router.get("/", getProducts);
 router.get("/product/:id", protect, admin, getProduct);
 router.get("/review/:id", protect, createProductReview);
 

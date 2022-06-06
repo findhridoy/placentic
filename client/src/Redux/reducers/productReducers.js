@@ -15,6 +15,10 @@ import {
   PRODUCT_LIST_REQUEST,
   PRODUCT_LIST_RESET,
   PRODUCT_LIST_SUCCESS,
+  PRODUCT_QUERY_FAILURE,
+  PRODUCT_QUERY_REQUEST,
+  PRODUCT_QUERY_RESET,
+  PRODUCT_QUERY_SUCCESS,
   PRODUCT_UPDATE_FAILURE,
   PRODUCT_UPDATE_REQUEST,
   PRODUCT_UPDATE_RESET,
@@ -109,6 +113,26 @@ export const getProductReducer = (state = productState, action) => {
     case PRODUCT_GET_FAILURE:
       return { loading: false, error: action.payload };
     case PRODUCT_GET_RESET:
+      return {};
+    default:
+      return state;
+  }
+};
+
+// Query all products
+export const queryProductReducer = (state = { products: [] }, action) => {
+  switch (action.type) {
+    case PRODUCT_QUERY_REQUEST:
+      return { ...state, loading: true, products: [] };
+    case PRODUCT_QUERY_SUCCESS:
+      return {
+        loading: false,
+        products: action.payload.products,
+        counts: action.payload.counts,
+      };
+    case PRODUCT_QUERY_FAILURE:
+      return { loading: false, error: action.payload };
+    case PRODUCT_QUERY_RESET:
       return {};
     default:
       return state;

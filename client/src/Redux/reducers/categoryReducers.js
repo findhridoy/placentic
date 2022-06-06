@@ -15,6 +15,10 @@ import {
   CATEGORY_UPDATE_REQUEST,
   CATEGORY_UPDATE_RESET,
   CATEGORY_UPDATE_SUCCESS,
+  LIMIT_CATEGORY_LIST_FAILURE,
+  LIMIT_CATEGORY_LIST_REQUEST,
+  LIMIT_CATEGORY_LIST_RESET,
+  LIMIT_CATEGORY_LIST_SUCCESS,
 } from "../constants/categoryConstants";
 
 // Create category reducer
@@ -84,6 +88,29 @@ export const deleteCategoryReducer = (state = {}, action) => {
       return { loading: false, error: action.payload };
     case CATEGORY_DELETE_RESET:
       return {};
+    default:
+      return state;
+  }
+};
+
+// Category list initial state
+const categoriesState = {
+  loading: true,
+  categories: [],
+};
+
+// Category list reducer
+export const categoryLimitListReducer = (state = categoriesState, action) => {
+  switch (action.type) {
+    case LIMIT_CATEGORY_LIST_REQUEST:
+      return { ...state, loading: true };
+    case LIMIT_CATEGORY_LIST_SUCCESS:
+      return { loading: false, categories: action.payload };
+    case LIMIT_CATEGORY_LIST_FAILURE:
+      return { loading: false, error: action.payload };
+    case LIMIT_CATEGORY_LIST_RESET:
+      return {};
+
     default:
       return state;
   }

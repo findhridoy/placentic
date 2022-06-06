@@ -1,33 +1,45 @@
 .category__section {
   background-color: $white;
-  // background: skyblue;
   .category__content {
     display: grid;
     place-items: center;
+    @include breakpoint(md) {
+      place-items: initial;
+    }
     .category__data {
-      margin-top: $x-3;
       display: grid;
       gap: 1rem;
-      // justify-items: center;
-      // align-items: center;
-      // @include breakpoint(sm) {
-      //   grid-template-columns: repeat(2, 1fr);
-      // }
-      // @include breakpoint(md) {
-      //   grid-template-columns: repeat(3, 1fr);
-      // }
-      // @include breakpoint(lg) {
-      //   grid-template-columns: repeat(3, 1fr);
-      // }
-      @include breakpoint(xl) {
-        grid-template-columns: repeat(4, 1fr);
+      margin-top: $x-2;
+      @include breakpoint(sm) {
+        grid-template-columns: repeat(2, 1fr);
       }
-      .MuiSkeleton-root {
-        width: 300px !important;
-        height: 240px !important;
-        @include breakpoint(md) {
+      @include breakpoint(md) {
+        grid-template-columns: repeat(auto-fit, minmax(225px, 1fr));
+      }
+      .MuiSkeleton-root,
+      .category__item {
+        width: 280px !important;
+        height: 220px !important;
+        @include breakpoint(sm) {
           width: 260px !important;
-          height: 200px !important;
+        }
+        @include breakpoint(md) {
+          width: 100% !important;
+        }
+      }
+      .category__item {
+        overflow: hidden;
+        position: relative;
+        .category__img {
+          img {
+            object-fit: cover;
+          }
+        }
+        .category__btn {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
         }
       }
     }

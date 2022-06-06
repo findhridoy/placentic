@@ -146,6 +146,43 @@ const getAllProducts = asyncHandler(async (req, res) => {
 });
 
 /**
+ * @route   Get /api/product?keword=keword
+ * @desc    Get all products/search/limit
+ * @access  Public
+ */
+const getProducts = asyncHandler(async (req, res) => {
+  // load more queries
+  const limit = req.query.limit;
+  const skip = req.query.skip;
+
+  // search products by keyword
+  const keyword = req.query.keyword
+    ? {
+        title: {
+          $regex: req.query.keyword,
+          $options: "i",
+        },
+      }
+    : {};
+
+  // get total products count
+  const counts = await Product.countDocuments({ ...keyword });
+
+  // find all products
+  const products = await Product.find({ ...keyword })
+    .limit(limit)
+    .skip(skip)
+    .sort({ rating: -1 });
+
+  if (products) {
+    res.status(200).json({ products, counts });
+  } else {
+    res.status(404);
+    throw new Error("Products not found");
+  }
+});
+
+/**
  * @route   Get /api/product/product/:id
  * @desc    Get single product
  * @access  Private/Admin
@@ -216,6 +253,7 @@ module.exports = {
   updateProduct,
   deleteProduct,
   getAllProducts,
+  getProducts,
   getProduct,
   createProductReview,
 };

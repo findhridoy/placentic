@@ -4,7 +4,7 @@ import React from "react";
 const CustomAlert = ({ severity, message }) => {
   return (
     <div className="custom__alert">
-      <Alert variant="filled" severity={severity}>
+      <Alert variant="outlined" severity={severity}>
         {message}
       </Alert>
     </div>

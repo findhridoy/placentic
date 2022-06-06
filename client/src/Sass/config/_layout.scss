@@ -80,6 +80,13 @@
     }
   }
 }
+// Outline Button
+// .btn__outline {
+//   .MuiButton-root {
+//     border: 1px solid $dark-alt;
+//     color: $white;
+//   }
+// }
 
 // Button group
 .button__group {
@@ -352,7 +359,12 @@
 
 // Custom Alert
 .custom__alert {
-  margin: 2rem 0;
+  // margin: 2rem 0;
+  .MuiAlert-message {
+    color: $dark-alt;
+    font-weight: $medium;
+    font-family: $poppins;
+  }
 }
 
 // Custom Loader

@@ -16,6 +16,10 @@ import {
   PRODUCT_LIST_REQUEST,
   PRODUCT_LIST_RESET,
   PRODUCT_LIST_SUCCESS,
+  PRODUCT_QUERY_FAILURE,
+  PRODUCT_QUERY_REQUEST,
+  PRODUCT_QUERY_RESET,
+  PRODUCT_QUERY_SUCCESS,
   PRODUCT_UPDATE_FAILURE,
   PRODUCT_UPDATE_REQUEST,
   PRODUCT_UPDATE_RESET,
@@ -243,5 +247,46 @@ export const getProduct = (id) => async (dispatch, getState) => {
 export const GetProductReset = () => async (dispatch) => {
   dispatch({
     type: PRODUCT_GET_RESET,
+  });
+};
+
+// query product list action
+export const queryProduct = (keyword, limit, skip) => async (dispatch) => {
+  try {
+    dispatch({
+      type: PRODUCT_QUERY_REQUEST,
+    });
+
+    // config
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+
+    const { data } = await axios.get(
+      `/api/product?keyword=${keyword}&limit=${limit}&skip=${skip}`,
+      config
+    );
+
+    dispatch({
+      type: PRODUCT_QUERY_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: PRODUCT_QUERY_FAILURE,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+// Query product reset
+export const queryProductReset = () => async (dispatch) => {
+  dispatch({
+    type: PRODUCT_QUERY_RESET,
   });
 };

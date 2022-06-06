@@ -12,8 +12,7 @@ const ActionButton = ({
   btnRef,
 }) => {
   return (
-    <div>
-      {" "}
+    <>
       <Stack
         direction="row"
         spacing={1}
@@ -42,7 +41,7 @@ const ActionButton = ({
           )}
         </IconButton>
       </Stack>
-    </div>
+    </>
   );
 };
 

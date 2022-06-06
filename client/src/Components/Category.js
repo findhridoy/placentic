@@ -1,30 +1,44 @@
-import { Skeleton } from "@mui/material";
+import { Button, Skeleton } from "@mui/material";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  categoryList,
-  categoryListReset,
+  categoryLimitList,
+  categoryLimitListReset,
 } from "../Redux/actions/categoryActions";
+import CustomAlert from "./CustomAlert";
+
+const CategoryItem = ({ category }) => {
+  return (
+    <div className="category__item">
+      <div className="category__img">
+        <img src={category?.image} alt="Category Img" />
+      </div>
+      <div className="category__btn btn small__btn btn__white">
+        <Button>{category?.message}</Button>
+      </div>
+    </div>
+  );
+};
 
 const Category = () => {
   // Redux element
   const dispatch = useDispatch();
   const { loading, error, categories } = useSelector(
-    (state) => state.categoryList
+    (state) => state.categoryLimitList
   );
 
   useEffect(() => {
-    dispatch(categoryList("categories"));
+    dispatch(categoryLimitList("category"));
   }, [dispatch]);
 
   useEffect(() => {
     if (error) {
       // cogoToast.error(error);
-      dispatch(categoryListReset());
+      dispatch(categoryLimitListReset());
     }
     if (categories?.message) {
       // cogoToast.error("Something was wrong!");
-      dispatch(categoryListReset());
+      dispatch(categoryLimitListReset());
     }
   }, [error, categories, dispatch]);
   return (
@@ -33,10 +47,17 @@ const Category = () => {
         <h2 className="category__title section__title">Top Category</h2>
         <div className="category__content">
           <div className="category__data">
-            {true &&
-              [0, 1, 2, 3, 4].map((index) => (
-                <Skeleton variant="rectangular" />
-              ))}
+            {loading ? (
+              [0, 1, 2, 3].map((index) => (
+                <Skeleton variant="rectangular" key={index} />
+              ))
+            ) : categories?.length === 0 ? (
+              <CustomAlert severity="info" message="No categories are found!" />
+            ) : (
+              categories?.map((category) => (
+                <CategoryItem category={category} key={category?._id} />
+              ))
+            )}
           </div>
         </div>
       </div>

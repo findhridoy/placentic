@@ -74,22 +74,6 @@ const getCategories = asyncHandler(async (req, res) => {
 });
 
 /**
- * @route   Get /api/category/category
- * @desc    Get all categories
- * @access  Private/Admin
- */
-// const getCategory = asyncHandler(async (req, res) => {
-//   // find all category
-//   const category = await Category.find({ id: req.body._id });
-//   if (category) {
-//     res.status(200).json(category);
-//   } else {
-//     res.status(400);
-//     throw new Error("Category not found!");
-//   }
-// });
-
-/**
  * @route   Put /api/category/update/:id
  * @desc    Update category
  * @access  Private/Admin
@@ -163,10 +147,28 @@ const deleteCategory = asyncHandler(async (req, res) => {
   }
 });
 
+// Unauthrized
+/**
+ * @route   Get /api/category/category
+ * @desc    Get limit categories
+ * @access  Public
+ */
+const limitCategories = asyncHandler(async (req, res) => {
+  // find all category
+  const categories = await Category.find({}).sort({ _id: -1 }).limit(4);
+  if (categories) {
+    res.status(200).json(categories);
+  } else {
+    res.status(400);
+    throw new Error("Categores are not found!");
+  }
+});
+
 // Export all controller function
 module.exports = {
   createCategory,
   getCategories,
   updateCategory,
   deleteCategory,
+  limitCategories,
 };

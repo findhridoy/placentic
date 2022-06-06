@@ -16,6 +16,10 @@ import {
   CATEGORY_UPDATE_REQUEST,
   CATEGORY_UPDATE_RESET,
   CATEGORY_UPDATE_SUCCESS,
+  LIMIT_CATEGORY_LIST_FAILURE,
+  LIMIT_CATEGORY_LIST_REQUEST,
+  LIMIT_CATEGORY_LIST_RESET,
+  LIMIT_CATEGORY_LIST_SUCCESS,
 } from "../constants/categoryConstants";
 
 // create category action
@@ -202,5 +206,43 @@ export const deleteCategory = (id) => async (dispatch, getState) => {
 export const categoryDeleteErrorReset = () => async (dispatch) => {
   dispatch({
     type: CATEGORY_DELETE_RESET,
+  });
+};
+
+// category limit list action
+export const categoryLimitList = (path) => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: LIMIT_CATEGORY_LIST_REQUEST,
+    });
+
+    // config
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+
+    const { data } = await axios.get(`/api/category/${path}`, config);
+
+    dispatch({
+      type: LIMIT_CATEGORY_LIST_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: LIMIT_CATEGORY_LIST_FAILURE,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+// Category list reset
+export const categoryLimitListReset = () => async (dispatch) => {
+  dispatch({
+    type: LIMIT_CATEGORY_LIST_RESET,
   });
 };
