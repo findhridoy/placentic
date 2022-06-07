@@ -1,65 +1,67 @@
-import { Skeleton, Stack } from "@mui/material";
+import AddIcon from "@mui/icons-material/Add";
+import { Button, CircularProgress, Skeleton, Stack } from "@mui/material";
+import cogoToast from "cogo-toast";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { queryProduct } from "../Redux/actions/productActions";
+import {
+  queryProduct,
+  queryProductReset,
+} from "../Redux/actions/productActions";
 import CustomAlert from "./CustomAlert";
-
-const ProductItem = ({ product }) => {
-  return (
-    <div className="category__item">
-      <div className="category__img">
-        <img src={product?.image} alt={product?.title} />
-      </div>
-      <Stack>
-        <h3 className="product__title">{product?.title}</h3>
-        <Stack justifyContent="space-between" direction="row">
-          <span className="product__price">$ {product?.price}</span>
-          <span className="product__price">{product?.rating}</span>
-        </Stack>
-      </Stack>
-    </div>
-  );
-};
+import ProductItem from "./ProductItem";
 
 const Products = () => {
   // States
   const [keyword, setKeyword] = useState("");
-  const [limit, setLimit] = useState(4);
-  const [skip, setSkip] = useState(0);
+  const [limit, setLimit] = useState(8);
+  const [loader, setLoader] = useState();
 
   // Redux element
   const dispatch = useDispatch();
-  const { loading, error, products, counts } = useSelector(
-    (state) => state.queryProduct
-  );
-  console.log(products);
-  console.log(counts);
+  const {
+    loading,
+    error,
+    products,
+    product: storeProducts,
+    counts,
+  } = useSelector((state) => state.queryProduct);
 
   useEffect(() => {
-    dispatch(queryProduct(keyword, limit, skip));
-  }, [dispatch, keyword, limit, skip]);
+    dispatch(queryProduct(keyword, limit));
+  }, [dispatch, keyword, limit]);
 
   useEffect(() => {
+    if (loading && !storeProducts) {
+      setLoader(true);
+    }
+    if (storeProducts) {
+      setLoader(false);
+    }
     if (error) {
-      // cogoToast.error(error);
-      // dispatch(categoryLimitListReset());
+      cogoToast.error(error);
+      dispatch(queryProductReset());
     }
     if (products?.message) {
-      // cogoToast.error("Something was wrong!");
-      // dispatch(categoryLimitListReset());
+      cogoToast.error("Something was wrong!");
+      dispatch(queryProductReset());
     }
-  }, [error, products, dispatch]);
+  }, [error, products, dispatch, loading, storeProducts]);
+
+  // load more functionality
+  const handleClick = () => {
+    setLimit((preValue) => preValue + 4);
+  };
   return (
     <section className="products__section section">
       <div className="container">
         <div className="products__content">
           <h2 className="products__title section__title">Our Products</h2>
           <div className="products__data">
-            {loading ? (
-              [0, 1, 2, 3].map((index) => (
+            {loader ? (
+              [0, 1, 2, 3, 4, 5, 6, 7].map((index) => (
                 <div className="products__loader" key={index}>
                   <Skeleton
-                    height={280}
+                    height={260}
                     animation="wave"
                     variant="rectangular"
                   />
@@ -72,14 +74,31 @@ const Products = () => {
                   </Stack>
                 </div>
               ))
-            ) : products?.length === 0 ? (
+            ) : storeProducts?.length === 0 ? (
               <CustomAlert severity="info" message="No products are found!" />
             ) : (
-              products?.map((product) => (
+              storeProducts?.map((product) => (
                 <ProductItem product={product} key={product?._id} />
               ))
             )}
           </div>
+
+          {counts === products?.length || storeProducts?.length === 0 ? (
+            " "
+          ) : (
+            <div className="product__btn btn small__btn btn__dark">
+              <Button type="button" onClick={handleClick}>
+                {loading ? (
+                  <CircularProgress color="inherit" size={30} thickness={3} />
+                ) : (
+                  <>
+                    <span className="btn__text">Load More</span>
+                    <AddIcon />
+                  </>
+                )}
+              </Button>
+            </div>
+          )}
         </div>
       </div>
     </section>

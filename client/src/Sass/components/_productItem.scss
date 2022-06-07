@@ -1,0 +1,61 @@
+.product__item {
+  width: 280px;
+
+  @include breakpoint(sm) {
+    width: 260px;
+  }
+  @include breakpoint(md) {
+    width: 100%;
+  }
+  .product__img {
+    position: relative;
+    overflow: hidden;
+    height: 280px;
+    img {
+      object-fit: cover;
+    }
+
+    .product__action {
+      position: absolute;
+      bottom: -20%;
+      width: 100%;
+      @include transition(500ms);
+
+      .MuiIconButton-root {
+        background-color: $white-alt;
+        @include transition(300ms);
+        .MuiSvgIcon-root {
+          color: $cyan;
+          // opacity: 0.8;
+          @include h4-font;
+          @include transition(300ms);
+        }
+        &:hover {
+          background-color: $cyan;
+          // opacity: 0.8;
+          .MuiSvgIcon-root {
+            color: $white-alt;
+            opacity: 1;
+          }
+        }
+      }
+    }
+    &:hover {
+      .product__action {
+        bottom: 8%;
+      }
+    }
+  }
+  .product__title {
+    font-weight: $semi-bold;
+    color: $dark-alt;
+    @include small-font;
+    opacity: 0.8;
+  }
+  .product__price {
+    font-weight: $bold;
+    color: $dark-alt;
+    @include smaller-font;
+    opacity: 0.6;
+  }
+}

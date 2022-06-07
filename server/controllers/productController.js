@@ -152,8 +152,9 @@ const getAllProducts = asyncHandler(async (req, res) => {
  */
 const getProducts = asyncHandler(async (req, res) => {
   // load more queries
-  const limit = req.query.limit;
-  const skip = req.query.skip;
+  const limit = parseInt(req.query.limit);
+  const page = 1;
+  const skip = limit * (page - 1);
 
   // search products by keyword
   const keyword = req.query.keyword
@@ -172,7 +173,7 @@ const getProducts = asyncHandler(async (req, res) => {
   const products = await Product.find({ ...keyword })
     .limit(limit)
     .skip(skip)
-    .sort({ rating: -1 });
+    .sort({ _id: -1 });
 
   if (products) {
     res.status(200).json({ products, counts });

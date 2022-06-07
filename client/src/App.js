@@ -13,6 +13,7 @@ import PublicRoutes from "./Helpers/Routes/PublicRoutes";
 import Home from "./Pages/Home";
 import Login from "./Pages/Login";
 import Orders from "./Pages/Orders";
+import Product from "./Pages/Product";
 import Profile from "./Pages/Profile";
 import Signup from "./Pages/Signup";
 import { logoutUser } from "./Redux/actions/userActions";
@@ -33,6 +34,7 @@ const App = () => {
     <>
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/product/details/:id" element={<Product />} />
 
         {/* Public Routes */}
         <Route path="/*" element={<PublicRoutes />}>

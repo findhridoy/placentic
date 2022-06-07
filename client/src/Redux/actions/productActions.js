@@ -251,7 +251,7 @@ export const GetProductReset = () => async (dispatch) => {
 };
 
 // query product list action
-export const queryProduct = (keyword, limit, skip) => async (dispatch) => {
+export const queryProduct = (keyword, limit) => async (dispatch) => {
   try {
     dispatch({
       type: PRODUCT_QUERY_REQUEST,
@@ -265,7 +265,7 @@ export const queryProduct = (keyword, limit, skip) => async (dispatch) => {
     };
 
     const { data } = await axios.get(
-      `/api/product?keyword=${keyword}&limit=${limit}&skip=${skip}`,
+      `/api/product?keyword=${keyword}&limit=${limit}`,
       config
     );
 

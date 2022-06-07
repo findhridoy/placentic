@@ -387,3 +387,16 @@
 .MuiTypography-root {
   line-height: 1 !important;
 }
+
+// Ratings
+.rating {
+  display: flex;
+  align-items: center;
+  .rating__icon {
+    .MuiSvgIcon-root {
+      color: $cyan;
+      @include h4-font;
+      opacity: 0.6;
+    }
+  }
+}

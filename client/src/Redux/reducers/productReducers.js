@@ -97,17 +97,11 @@ export const deleteProductReducer = (state = {}, action) => {
   }
 };
 
-// Get product initial state
-const productState = {
-  loading: true,
-  product: {},
-};
-
 // Get product reducer
-export const getProductReducer = (state = productState, action) => {
+export const getProductReducer = (state = { product: {} }, action) => {
   switch (action.type) {
     case PRODUCT_GET_REQUEST:
-      return { ...state, loading: true };
+      return { ...state, loading: true, product: {} };
     case PRODUCT_GET_SUCCESS:
       return { loading: false, product: action.payload };
     case PRODUCT_GET_FAILURE:
@@ -129,6 +123,7 @@ export const queryProductReducer = (state = { products: [] }, action) => {
         loading: false,
         products: action.payload.products,
         counts: action.payload.counts,
+        product: [...action.payload.products],
       };
     case PRODUCT_QUERY_FAILURE:
       return { loading: false, error: action.payload };
