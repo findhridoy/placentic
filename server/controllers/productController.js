@@ -207,10 +207,11 @@ const getProduct = asyncHandler(async (req, res) => {
 const createProductReview = asyncHandler(async (req, res) => {
   // find product by id
   const product = await Product.findById(req.params.id);
+
   if (product) {
     // check exist review
-    const reviewExist = product?.reviews.find(
-      req.user.toString() === req.user._id.toString()
+    const reviewExist = product.reviews.find(
+      (x) => req.user._id.toString() === x.user.toString()
     );
 
     if (reviewExist) {
@@ -233,7 +234,7 @@ const createProductReview = asyncHandler(async (req, res) => {
     product.countReviews = product.reviews.length;
 
     // count avarage rating
-    product.rating =
+    product.ratings =
       product.reviews.reduce((acc, item) => item.rating + acc, 0) /
       product.reviews.length;
 

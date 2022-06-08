@@ -33,7 +33,7 @@
           font-weight: $semi-bold;
           color: $dark-alt;
           @include small-font;
-          margin-top: -0.1rem;
+          margin-top: -0.2rem;
           opacity: 0.8;
         }
       }
@@ -100,7 +100,6 @@
             text-transform: uppercase;
             @include smaller-font;
             gap: 0.5rem;
-            letter-spacing: 0.8px;
           }
         }
       }
@@ -122,8 +121,8 @@
       max-width: 90%;
     }
 
-    .MuiButtonBase-root {
-      font-weight: $bold;
+    .MuiButtonBase-root .css-1vw5i9y-MuiButtonBase-root-MuiTab-root {
+      // font-weight: $bold;
       color: $dark-alt;
       font-family: $poppins;
       @include smaller-font;
@@ -137,6 +136,11 @@
       box-shadow: none;
       border-bottom: 1px solid $gray;
     }
+
+    .MuiBox-root .css-19kzrtu {
+      padding: $x-1-75 0 !important;
+    }
+
     .product__description {
       color: $dark-alt !important;
       @include small-font;

@@ -29,6 +29,7 @@
     font-weight: $semi-bold;
     text-transform: capitalize;
     border-radius: 0;
+    letter-spacing: 0.8px;
     @include small-font;
     cursor: pointer;
     @include breakpoint(md) {
@@ -325,6 +326,11 @@
   @include smallest-font;
 }
 
+// Form Required
+.form__required {
+  color: $red;
+}
+
 // Errors
 .errors {
   position: fixed;
@@ -398,5 +404,26 @@
       @include h4-font;
       opacity: 0.6;
     }
+  }
+}
+
+// Review Rating
+.reviewRating {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+
+  .MuiSvgIcon-root {
+    color: $cyan;
+    @include h2-font;
+    opacity: 0.9;
+  }
+
+  .css-d0uhtl {
+    color: $dark-alt;
+    font-weight: $semi-bold;
+    @include h4-font;
+    opacity: 0.9;
+    margin-left: 0;
   }
 }

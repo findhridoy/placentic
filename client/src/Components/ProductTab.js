@@ -7,6 +7,7 @@ import Typography from "@mui/material/Typography";
 import PropTypes from "prop-types";
 import * as React from "react";
 import SwipeableViews from "react-swipeable-views";
+import ProductReview from "./ProductReview";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -64,7 +65,7 @@ const ProductTab = ({ product }) => {
           variant="fullWidth"
           aria-label="full width tabs example"
         >
-          <Tab label="Reviews" {...a11yProps(0)} />
+          <Tab label={`Reviews (${product?.countReviews})`} {...a11yProps(0)} />
           <Tab label="Description" {...a11yProps(1)} />
           <Tab label="Additional Info" {...a11yProps(2)} />
         </Tabs>
@@ -75,7 +76,7 @@ const ProductTab = ({ product }) => {
         onChangeIndex={handleChangeIndex}
       >
         <TabPanel value={value} index={0} dir={theme.direction}>
-          Item One
+          <ProductReview product={product} />
         </TabPanel>
         <TabPanel value={value} index={1} dir={theme.direction}>
           <span className="product__description">{product?.description}</span>

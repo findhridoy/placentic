@@ -1,0 +1,33 @@
+.reviewForm {
+  // background-color: $cyan-alt;
+  // padding: 1rem;
+  margin-top: $x-1-75;
+  max-width: 680px;
+
+  .form__title {
+    font-weight: $semi-bold;
+    color: $dark;
+    @include h3-font;
+    margin-bottom: $x-1;
+  }
+  .form__group {
+    margin-bottom: $x-0-5;
+    .form__label {
+      margin-bottom: 0.3rem;
+      @include small-font;
+      letter-spacing: 0.5px;
+    }
+    .form__textarea {
+      height: 5rem;
+      font-weight: normal;
+      @include smaller-font;
+    }
+  }
+  .reviewForm__btn {
+    margin-top: $x-1;
+    .MuiButton-root {
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+  }
+}

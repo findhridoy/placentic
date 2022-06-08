@@ -45,7 +45,7 @@ const Product = () => {
               <div className="product__rating">
                 <Rating ratings={product?.ratings} />
                 <span className="product__review--text">
-                  {product?.reviews?.length} reviews
+                  {product?.countReviews} reviews
                 </span>
               </div>
               <h1 className="product__title">{product?.title}</h1>

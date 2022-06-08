@@ -26,7 +26,7 @@ router.put(
 router.delete("/delete/:id", protect, admin, deleteProduct);
 router.get("/products", protect, admin, getAllProducts);
 router.get("/", getProducts);
-router.get("/product/:id", protect, admin, getProduct);
+router.get("/product/:id", getProduct);
 router.get("/review/:id", protect, createProductReview);
 
 // Export router
