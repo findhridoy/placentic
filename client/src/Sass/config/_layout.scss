@@ -427,3 +427,10 @@
     margin-left: 0;
   }
 }
+
+// Error Icon
+.error__icon {
+  .MuiSvgIcon-root {
+    color: $red;
+  }
+}

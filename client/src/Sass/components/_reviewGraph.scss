@@ -1,0 +1,68 @@
+.reviewGraph {
+  max-width: 580px;
+  //   background-color: rgba(128, 128, 128, 0.178);
+  display: grid;
+  //   padding: $x-1-75;
+  grid-template-columns: 1fr 1.4fr;
+  .reviewGraph__rating {
+    .rating__text {
+      display: flex;
+      align-items: center;
+      gap: 0.2rem;
+      color: $dark;
+      @include h1-font;
+      font-weight: $bold;
+
+      .rating__small {
+        margin-top: $x-0-5;
+        @include small-font;
+        font-weight: $semi-bold;
+      }
+    }
+    .review__text {
+      @include small-font;
+      color: $dark-alt;
+      display: block;
+      margin-top: -0.5rem;
+    }
+    .rating {
+      margin-top: $x-0-75;
+      .rating__icon {
+        .MuiSvgIcon-root {
+          @include h2-font;
+        }
+      }
+    }
+  }
+  .reviewGraph__graph {
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 0.8rem;
+    .graph__progress {
+      display: grid;
+      grid-template-columns: 0.5fr 2.5fr;
+      align-items: center;
+      gap: 0.5rem;
+      .graph__star {
+        @include smaller-font;
+        color: $dark-alt;
+        display: flex;
+        align-items: center;
+        font-weight: $semi-bold;
+        .graph__count {
+          display: block;
+          width: 0.8rem;
+        }
+      }
+      .MuiLinearProgress-root {
+        background-color: $cyan-alt;
+        border-radius: 8px;
+        height: 0.8rem;
+        .MuiLinearProgress-bar {
+          background-color: $cyan;
+          border-radius: 8px;
+        }
+      }
+    }
+  }
+}

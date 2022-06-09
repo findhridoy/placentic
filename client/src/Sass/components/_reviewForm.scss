@@ -1,26 +1,19 @@
 .reviewForm {
-  // background-color: $cyan-alt;
-  // padding: 1rem;
-  margin-top: $x-1-75;
+  margin-top: $x-1;
   max-width: 680px;
 
   .form__title {
     font-weight: $semi-bold;
     color: $dark;
     @include h3-font;
-    margin-bottom: $x-1;
+    margin-bottom: $x-0-75;
   }
   .form__group {
-    margin-bottom: $x-0-5;
-    .form__label {
-      margin-bottom: 0.3rem;
-      @include small-font;
-      letter-spacing: 0.5px;
-    }
     .form__textarea {
       height: 5rem;
-      font-weight: normal;
-      @include smaller-font;
+    }
+    .textarea {
+      border-color: $red;
     }
   }
   .reviewForm__btn {
@@ -28,6 +21,18 @@
     .MuiButton-root {
       text-transform: uppercase;
       letter-spacing: 1px;
+    }
+  }
+  .reviewForm__logged {
+    display: block;
+    color: $dark-alt;
+    @include smaller-font;
+    margin-top: -0.8rem;
+    .logged__link {
+      color: $cyan;
+      &:hover {
+        text-decoration: underline;
+      }
     }
   }
 }

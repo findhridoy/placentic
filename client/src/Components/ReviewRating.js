@@ -21,12 +21,13 @@ function getLabelText(value) {
   return `${value} Star${value !== 1 ? "s" : ""}, ${labels[value]}`;
 }
 
-const ReviewRating = () => {
-  const [value, setValue] = React.useState(0);
+const ReviewRating = ({ value, setValue, errors }) => {
   const [hover, setHover] = React.useState(-1);
 
   return (
-    <div className="reviewRating">
+    <div
+      className={errors?.rating ? "reviewRating error__icon" : "reviewRating"}
+    >
       <Rating
         name="hover-feedback"
         value={value}
@@ -38,7 +39,7 @@ const ReviewRating = () => {
         onChangeActive={(event, newHover) => {
           setHover(newHover);
         }}
-        emptyIcon={<StarBorderIcon fontSize="inherit" />}
+        emptyIcon={<StarBorderIcon />}
       />
       {value !== null && (
         <Box sx={{ ml: 2 }}>{labels[hover !== -1 ? hover : value]}</Box>

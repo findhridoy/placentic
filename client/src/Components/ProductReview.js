@@ -1,20 +1,28 @@
 import React from "react";
 import ReviewForm from "./ReviewForm";
+import ReviewGraph from "./ReviewGraph";
 
 const ProductReview = ({ product }) => {
   return (
-    <section className="productReview__section">
-      <div className="productReview__container">
-        <div className="productReview__content">
-          <div className="productReview__empty">
-            <h4 className="empty__text">There are no review yet.</h4>
-            <span>
-              <ReviewForm />
+    <>
+      <div className="productReview">
+        <div className="productReview__container">
+          {product?.countReviews > 0 ? (
+            <div className="productReview__graph">
+              <ReviewGraph product={product} />
+            </div>
+          ) : (
+            <span className="productReview__epmty--text">
+              There are no reviews yet.
             </span>
+          )}
+
+          <div className="productReview__form">
+            <ReviewForm />
           </div>
         </div>
       </div>
-    </section>
+    </>
   );
 };
 

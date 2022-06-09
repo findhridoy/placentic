@@ -64,7 +64,7 @@
         margin: $x-1 0;
         display: flex;
         align-items: center;
-        border: 1px solid $gray;
+        border: $border-gray;
         width: max-content;
         padding: $x-0-25;
         .MuiIconButton-root {
@@ -121,8 +121,8 @@
       max-width: 90%;
     }
 
-    .MuiButtonBase-root .css-1vw5i9y-MuiButtonBase-root-MuiTab-root {
-      // font-weight: $bold;
+    .MuiButtonBase-root.css-1vw5i9y-MuiButtonBase-root-MuiTab-root {
+      font-weight: $bold !important;
       color: $dark-alt;
       font-family: $poppins;
       @include smaller-font;
@@ -138,15 +138,13 @@
     }
 
     .MuiBox-root .css-19kzrtu {
-      padding: $x-1-75 0 !important;
+      padding: $x-1-75 0 $x-2-75 !important;
     }
 
     .product__description {
       color: $dark-alt !important;
       @include small-font;
       opacity: 0.9;
-      font-family: $poppins;
-      line-height: 1.8;
     }
   }
 }
