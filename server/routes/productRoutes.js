@@ -9,6 +9,8 @@ const {
   getAllProducts,
   getProduct,
   createProductReview,
+  approveProductReview,
+  deleteProductReview,
   getProducts,
 } = require("../controllers/productController");
 const { protect, admin } = require("../middleware/authMiddleware");
@@ -27,7 +29,9 @@ router.delete("/delete/:id", protect, admin, deleteProduct);
 router.get("/products", protect, admin, getAllProducts);
 router.get("/", getProducts);
 router.get("/product/:id", getProduct);
-router.get("/review/:id", protect, createProductReview);
+router.post("/review/:id", protect, createProductReview);
+router.get("/review/approve/:id", protect, admin, approveProductReview);
+router.get("/review", protect, admin, deleteProductReview);
 
 // Export router
 module.exports = router;

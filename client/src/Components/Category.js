@@ -1,5 +1,6 @@
 import { Button, Skeleton } from "@mui/material";
-import React, { useEffect } from "react";
+import cogoToast from "cogo-toast";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   categoryLimitList,
@@ -33,11 +34,11 @@ const Category = () => {
 
   useEffect(() => {
     if (error) {
-      // cogoToast.error(error);
+      cogoToast.error(error);
       dispatch(categoryLimitListReset());
     }
     if (categories?.message) {
-      // cogoToast.error("Something was wrong!");
+      cogoToast.error("Something was wrong!");
       dispatch(categoryLimitListReset());
     }
   }, [error, categories, dispatch]);

@@ -20,6 +20,18 @@ import {
   PRODUCT_QUERY_REQUEST,
   PRODUCT_QUERY_RESET,
   PRODUCT_QUERY_SUCCESS,
+  PRODUCT_REVIEW_CREATE_FAILURE,
+  PRODUCT_REVIEW_CREATE_REQUEST,
+  PRODUCT_REVIEW_CREATE_RESET,
+  PRODUCT_REVIEW_CREATE_SUCCESS,
+  PRODUCT_REVIEW_DELETE_FAILURE,
+  PRODUCT_REVIEW_DELETE_REQUEST,
+  PRODUCT_REVIEW_DELETE_RESET,
+  PRODUCT_REVIEW_DELETE_SUCCESS,
+  PRODUCT_REVIEW_PERMISSION_FAILURE,
+  PRODUCT_REVIEW_PERMISSION_REQUEST,
+  PRODUCT_REVIEW_PERMISSION_RESET,
+  PRODUCT_REVIEW_PERMISSION_SUCCESS,
   PRODUCT_UPDATE_FAILURE,
   PRODUCT_UPDATE_REQUEST,
   PRODUCT_UPDATE_RESET,
@@ -244,7 +256,7 @@ export const getProduct = (id) => async (dispatch, getState) => {
 };
 
 // Get product reset
-export const GetProductReset = () => async (dispatch) => {
+export const getProductReset = () => async (dispatch) => {
   dispatch({
     type: PRODUCT_GET_RESET,
   });
@@ -288,5 +300,156 @@ export const queryProduct = (keyword, limit) => async (dispatch) => {
 export const queryProductReset = () => async (dispatch) => {
   dispatch({
     type: PRODUCT_QUERY_RESET,
+  });
+};
+
+// create product review action
+export const createProductReview = (id, review) => async (
+  dispatch,
+  getState
+) => {
+  try {
+    dispatch({
+      type: PRODUCT_REVIEW_CREATE_REQUEST,
+    });
+
+    // get user data from state
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    // config
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${userInfo?.token}`,
+      },
+    };
+
+    const { data } = await axios.post(
+      `/api/product/review/${id}`,
+      review,
+      config
+    );
+
+    dispatch({
+      type: PRODUCT_REVIEW_CREATE_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: PRODUCT_REVIEW_CREATE_FAILURE,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+// Create product review reset
+export const createProductReviewReset = () => async (dispatch) => {
+  dispatch({
+    type: PRODUCT_REVIEW_CREATE_RESET,
+  });
+};
+
+// Permission product review action
+export const permissionProductReview = (productID, reviewID, request) => async (
+  dispatch,
+  getState
+) => {
+  try {
+    dispatch({
+      type: PRODUCT_REVIEW_PERMISSION_REQUEST,
+    });
+
+    // get user data from state
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    // config
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${userInfo?.token}`,
+      },
+    };
+
+    const { data } = await axios.get(
+      `/api/product/review/approve/${productID}?reviewID=${reviewID}&request=${request}`,
+      config
+    );
+
+    dispatch({
+      type: PRODUCT_REVIEW_PERMISSION_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: PRODUCT_REVIEW_PERMISSION_FAILURE,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+// Permission product review reset
+export const permissionProductReviewReset = () => async (dispatch) => {
+  dispatch({
+    type: PRODUCT_REVIEW_PERMISSION_RESET,
+  });
+};
+
+// Delete product review action
+export const deleteProductReview = (productID, reviewID) => async (
+  dispatch,
+  getState
+) => {
+  try {
+    dispatch({
+      type: PRODUCT_REVIEW_DELETE_REQUEST,
+    });
+
+    // get user data from state
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    // config
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${userInfo?.token}`,
+      },
+    };
+
+    const { data } = await axios.get(
+      `/api/product/review?productID=${productID}&reviewID=${reviewID}`,
+      config
+    );
+
+    dispatch({
+      type: PRODUCT_REVIEW_DELETE_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: PRODUCT_REVIEW_DELETE_FAILURE,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+// Delete product review reset
+export const deleteProductReviewReset = () => async (dispatch) => {
+  dispatch({
+    type: PRODUCT_REVIEW_DELETE_RESET,
   });
 };

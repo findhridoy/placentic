@@ -1,7 +1,7 @@
 import AddIcon from "@mui/icons-material/Add";
 import { Button, CircularProgress, Skeleton, Stack } from "@mui/material";
 import cogoToast from "cogo-toast";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   queryProduct,
@@ -87,16 +87,25 @@ const Products = () => {
             " "
           ) : (
             <div className="product__btn btn small__btn btn__dark">
-              <Button type="button" onClick={handleClick}>
-                {loading ? (
-                  <CircularProgress color="inherit" size={30} thickness={3} />
-                ) : (
-                  <>
-                    <span className="btn__text">Load More</span>
-                    <AddIcon />
-                  </>
-                )}
-              </Button>
+              {loader ? (
+                <Skeleton
+                  height={42}
+                  width={150}
+                  animation="wave"
+                  variant="rectangular"
+                />
+              ) : (
+                <Button type="button" onClick={handleClick}>
+                  {loading ? (
+                    <CircularProgress color="inherit" size={30} thickness={3} />
+                  ) : (
+                    <>
+                      <span className="btn__text">Load More</span>
+                      <AddIcon />
+                    </>
+                  )}
+                </Button>
+              )}
             </div>
           )}
         </div>

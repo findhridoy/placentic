@@ -1,12 +1,17 @@
 import { Button, CircularProgress } from "@mui/material";
+import cogoToast from "cogo-toast";
 // import cogoToast from "cogo-toast";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import {
+  createProductReview,
+  createProductReviewReset,
+} from "../Redux/actions/productActions";
 import ReviewRating from "./ReviewRating";
 
-const ReviewForm = () => {
+const ReviewForm = ({ product }) => {
   // States
   const [ratingValue, setRatingValue] = useState(0);
   const [formErrors, setFromErrors] = useState({});
@@ -14,6 +19,9 @@ const ReviewForm = () => {
   // Redux element
   const dispatch = useDispatch();
   const { userInfo } = useSelector((state) => state.userLogin);
+  const { loading, error, review } = useSelector(
+    (state) => state.createProductReview
+  );
 
   // React hook form own state
   const { handleSubmit, register } = useForm();
@@ -34,30 +42,29 @@ const ReviewForm = () => {
     setFromErrors(validate(ratingValue, data?.comment));
 
     if (data?.comment && ratingValue) {
-      const formData = new FormData();
-
-      formData.append("rating", ratingValue);
-      formData.append("comment", data?.comment);
-
+      const formData = {
+        rating: ratingValue,
+        comment: data.comment,
+      };
       // send data to backend
-      //   dispatch(createProduct(formData));
+      dispatch(createProductReview(product?._id, formData));
     }
   };
 
-  //   useEffect(() => {
-  //     if (error) {
-  //       cogoToast.error(error);
-  //       dispatch(productCreateReset());
-  //     }
-  //     if (product?.message) {
-  //       cogoToast.error("Something was wrong!");
-  //       dispatch(productCreateReset());
-  //     }
-  //     if (product?.success) {
-  //       cogoToast.success("Product has been created.");
-  //       dispatch(productCreateReset());
-  //     }
-  //   }, [error, dispatch, product, setOpen]);
+  useEffect(() => {
+    if (error) {
+      cogoToast.error(error);
+      dispatch(createProductReviewReset());
+    }
+    if (review?.message) {
+      cogoToast.error("Something was wrong!");
+      dispatch(createProductReviewReset());
+    }
+    if (review?.success) {
+      cogoToast.success(review?.message);
+      dispatch(createProductReviewReset());
+    }
+  }, [error, dispatch, review]);
 
   return (
     <>
@@ -93,9 +100,9 @@ const ReviewForm = () => {
             </span>
 
             <div className="reviewForm__btn btn small__btn btn__dark">
-              <Button type="submit">
-                {false ? (
-                  <CircularProgress color="inherit" size={30} thickness={3} />
+              <Button type="submit" disabled={loading}>
+                {loading ? (
+                  <CircularProgress color="inherit" size={25} thickness={3} />
                 ) : (
                   "Submit"
                 )}

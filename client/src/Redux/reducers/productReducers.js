@@ -19,6 +19,18 @@ import {
   PRODUCT_QUERY_REQUEST,
   PRODUCT_QUERY_RESET,
   PRODUCT_QUERY_SUCCESS,
+  PRODUCT_REVIEW_CREATE_FAILURE,
+  PRODUCT_REVIEW_CREATE_REQUEST,
+  PRODUCT_REVIEW_CREATE_RESET,
+  PRODUCT_REVIEW_CREATE_SUCCESS,
+  PRODUCT_REVIEW_DELETE_FAILURE,
+  PRODUCT_REVIEW_DELETE_REQUEST,
+  PRODUCT_REVIEW_DELETE_RESET,
+  PRODUCT_REVIEW_DELETE_SUCCESS,
+  PRODUCT_REVIEW_PERMISSION_FAILURE,
+  PRODUCT_REVIEW_PERMISSION_REQUEST,
+  PRODUCT_REVIEW_PERMISSION_RESET,
+  PRODUCT_REVIEW_PERMISSION_SUCCESS,
   PRODUCT_UPDATE_FAILURE,
   PRODUCT_UPDATE_REQUEST,
   PRODUCT_UPDATE_RESET,
@@ -128,6 +140,54 @@ export const queryProductReducer = (state = { products: [] }, action) => {
     case PRODUCT_QUERY_FAILURE:
       return { loading: false, error: action.payload };
     case PRODUCT_QUERY_RESET:
+      return {};
+    default:
+      return state;
+  }
+};
+
+// Create product review
+export const createProductReviewReducer = (state = {}, action) => {
+  switch (action.type) {
+    case PRODUCT_REVIEW_CREATE_REQUEST:
+      return { loading: true };
+    case PRODUCT_REVIEW_CREATE_SUCCESS:
+      return { loading: false, review: action.payload };
+    case PRODUCT_REVIEW_CREATE_FAILURE:
+      return { loading: false, error: action.payload };
+    case PRODUCT_REVIEW_CREATE_RESET:
+      return {};
+    default:
+      return state;
+  }
+};
+
+// Create product review
+export const permissionProductReviewReducer = (state = {}, action) => {
+  switch (action.type) {
+    case PRODUCT_REVIEW_PERMISSION_REQUEST:
+      return { loading: true };
+    case PRODUCT_REVIEW_PERMISSION_SUCCESS:
+      return { loading: false, review: action.payload };
+    case PRODUCT_REVIEW_PERMISSION_FAILURE:
+      return { loading: false, error: action.payload };
+    case PRODUCT_REVIEW_PERMISSION_RESET:
+      return {};
+    default:
+      return state;
+  }
+};
+
+// Delete product review
+export const deleteProductReviewReducer = (state = {}, action) => {
+  switch (action.type) {
+    case PRODUCT_REVIEW_DELETE_REQUEST:
+      return { loading: true };
+    case PRODUCT_REVIEW_DELETE_SUCCESS:
+      return { loading: false, review: action.payload };
+    case PRODUCT_REVIEW_DELETE_FAILURE:
+      return { loading: false, error: action.payload };
+    case PRODUCT_REVIEW_DELETE_RESET:
       return {};
     default:
       return state;

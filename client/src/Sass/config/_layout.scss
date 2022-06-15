@@ -68,6 +68,11 @@
       color: $dark-alt;
       background-color: $white;
     }
+    &:disabled {
+      pointer-events: auto !important;
+      cursor: not-allowed !important;
+      color: $dark-alt !important;
+    }
   }
 }
 // Dark Button
@@ -78,6 +83,11 @@
     &:hover {
       color: $white;
       background-color: $dark-alt;
+    }
+    &:disabled {
+      pointer-events: auto !important;
+      cursor: not-allowed !important;
+      color: $white-alt !important;
     }
   }
 }

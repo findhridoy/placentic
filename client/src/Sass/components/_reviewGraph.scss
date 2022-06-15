@@ -1,9 +1,26 @@
 .reviewGraph {
-  max-width: 580px;
-  //   background-color: rgba(128, 128, 128, 0.178);
-  display: grid;
-  //   padding: $x-1-75;
-  grid-template-columns: 1fr 1.4fr;
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+  padding: $x-1;
+  margin-bottom: $x-1-75;
+  @include breakpoint(md) {
+    padding: $x-1-75;
+  }
+
+  &::before {
+    content: "";
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    left: 0;
+    top: 0;
+    background-color: $white;
+    z-index: -1;
+    border-radius: 10px;
+    opacity: 0.6;
+  }
+
   .reviewGraph__rating {
     .rating__text {
       display: flex;
@@ -36,28 +53,32 @@
   }
   .reviewGraph__graph {
     display: flex;
-    flex-direction: column-reverse;
-    gap: 0.8rem;
+    flex-direction: column;
+    gap: 0.3rem;
+    width: 70%;
     .graph__progress {
       display: grid;
-      grid-template-columns: 0.5fr 2.5fr;
+      grid-template-columns: 6.5rem auto;
       align-items: center;
-      gap: 0.5rem;
-      .graph__star {
+      @include breakpoint(md) {
+        grid-template-columns: 8rem auto;
+      }
+
+      .graph__text {
         @include smaller-font;
         color: $dark-alt;
-        display: flex;
-        align-items: center;
         font-weight: $semi-bold;
-        .graph__count {
-          display: block;
-          width: 0.8rem;
+        @include breakpoint(md) {
+          @include small-font;
         }
       }
       .MuiLinearProgress-root {
         background-color: $cyan-alt;
         border-radius: 8px;
-        height: 0.8rem;
+        height: 0.7rem;
+        @include breakpoint(md) {
+          height: 0.8rem;
+        }
         .MuiLinearProgress-bar {
           background-color: $cyan;
           border-radius: 8px;

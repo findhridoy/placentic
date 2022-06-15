@@ -1,6 +1,23 @@
 .reviewForm {
-  margin-top: $x-1;
-  max-width: 680px;
+  margin-top: $x-1-75;
+  position: relative;
+  padding: $x-1;
+  @include breakpoint(md) {
+    padding: $x-1-75;
+  }
+
+  &::before {
+    content: "";
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    left: 0;
+    top: 0;
+    background-color: $white;
+    z-index: -1;
+    border-radius: 10px;
+    opacity: 0.5;
+  }
 
   .form__title {
     font-weight: $semi-bold;

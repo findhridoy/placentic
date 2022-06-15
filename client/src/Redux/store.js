@@ -10,8 +10,11 @@ import {
 } from "./reducers/categoryReducers";
 import {
   createProductReducer,
+  createProductReviewReducer,
   deleteProductReducer,
+  deleteProductReviewReducer,
   getProductReducer,
+  permissionProductReviewReducer,
   productListReducer,
   queryProductReducer,
   updateProductReducer,
@@ -46,6 +49,9 @@ const reducers = combineReducers({
   updateProduct: updateProductReducer,
   deleteProduct: deleteProductReducer,
   getProduct: getProductReducer,
+  createProductReview: createProductReviewReducer,
+  permissionProductReview: permissionProductReviewReducer,
+  deleteProductReview: deleteProductReviewReducer,
 });
 
 // Get data from localStorage
