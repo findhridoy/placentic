@@ -1,0 +1,133 @@
+.cartItem {
+  position: relative;
+  display: flex;
+  // align-items: center;
+  gap: 1rem;
+  padding: $x-0-75 $x-1;
+
+  &::before {
+    content: "";
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    left: 0;
+    top: 0;
+    background-color: $white;
+    z-index: -1;
+    border-radius: 10px;
+    opacity: 0.5;
+  }
+
+  .cartItem__image {
+    width: 115px;
+    // background: gray;
+    img {
+      // width: 100px;
+      // height: 100px;
+      // object-fit: cover;
+    }
+  }
+  .cartItem__content {
+    width: 100%;
+    .cartItem__data {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      .cartItem__details {
+        .cartItem__title {
+          color: $dark-alt;
+          @include normal-font;
+          font-weight: $semi-bold;
+        }
+
+        .cartItem__price {
+          color: $dark-alt;
+          @include smallest-font;
+          font-weight: $semi-bold;
+          border-right: $border-gray;
+          margin-right: $x-0-5;
+          padding-right: $x-0-5;
+        }
+        .cartItem__stock {
+          @extend .cartItem__price;
+          border: none;
+          color: $cyan;
+          opacity: 0.7;
+        }
+      }
+
+      .cartItem__totalPrice {
+        color: $dark;
+        @include h3-font;
+        font-weight: $semi-bold;
+      }
+      .cartItem__count {
+        margin-top: $x-0-5;
+        display: flex;
+        align-items: center;
+        border: $border-gray;
+        width: max-content;
+        padding: 0.2rem;
+        .MuiIconButton-root {
+          @include transition(300ms);
+          .MuiSvgIcon-root {
+            color: $dark-alt;
+            opacity: 0.8;
+            @include h4-font;
+            @include transition(300ms);
+          }
+        }
+        input {
+          background-color: transparent;
+          width: 1.6rem;
+          height: 1.6rem;
+          text-align: center;
+          border-radius: 50%;
+          font-weight: $semi-bold;
+          color: $dark-alt;
+          @include small-font;
+        }
+      }
+    }
+
+    .cartItem__action {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+
+      .cartItem__button--group {
+        display: flex;
+
+        .cartItem__btn {
+          display: flex;
+          align-items: center;
+          gap: 0.2rem;
+          color: $dark-alt;
+          cursor: pointer;
+          @include smallest-font;
+          font-weight: $semi-bold;
+          border-right: $border-gray;
+          margin-right: $x-0-75;
+          padding-right: $x-0-75;
+          .MuiSvgIcon-root {
+            color: $dark-alt;
+            opacity: 0.8;
+            @include h4-font;
+          }
+          &:last-child {
+            border-right: none;
+            margin-right: 0;
+            padding-right: 0;
+          }
+          &:hover {
+            color: $cyan;
+            .MuiSvgIcon-root {
+              color: $cyan;
+            }
+          }
+        }
+      }
+    }
+  }
+}

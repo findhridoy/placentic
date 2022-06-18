@@ -64,12 +64,14 @@ const createCategory = asyncHandler(async (req, res) => {
  */
 const getCategories = asyncHandler(async (req, res) => {
   // find all category
-  const categories = await Category.find({}).sort({ _id: -1 });
+  const categories = await Category.find({}).sort({
+    _id: -1,
+  });
   if (categories) {
     res.status(200).json(categories);
   } else {
     res.status(400);
-    throw new Error("Categores are not found!");
+    throw new Error("Categories are not found!");
   }
 });
 

@@ -1,7 +1,7 @@
 import DeleteIcon from "@mui/icons-material/Delete";
 import { Button, Skeleton } from "@mui/material";
 import cogoToast from "cogo-toast";
-import React, { useEffect, useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useGlobalFilter, usePagination, useTable } from "react-table";
 import CustomAlert from "../../Components/CustomAlert";
@@ -19,6 +19,10 @@ const DashboardUsers = () => {
 
   useEffect(() => {
     dispatch(getUseryList("users"));
+
+    return () => {
+      dispatch(userListReset());
+    };
   }, [dispatch, user?.success, updatedUser?.email]);
 
   useEffect(() => {

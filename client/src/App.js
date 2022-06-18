@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useJwt } from "react-jwt";
 import { useDispatch, useSelector } from "react-redux";
 import { Route, Routes } from "react-router-dom";
@@ -10,6 +10,7 @@ import DashboardUsers from "./Dashboard/DashboardPages/DashboardUsers";
 import AdminRoutes from "./Helpers/Routes/AdminRoutes";
 import PrivateRoutes from "./Helpers/Routes/PrivateRoutes";
 import PublicRoutes from "./Helpers/Routes/PublicRoutes";
+import Cart from "./Pages/Cart";
 import Home from "./Pages/Home";
 import Login from "./Pages/Login";
 import Orders from "./Pages/Orders";
@@ -35,6 +36,7 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/product/details/:id" element={<Product />} />
+        <Route path="/cart" element={<Cart />} />
 
         {/* Public Routes */}
         <Route path="/*" element={<PublicRoutes />}>

@@ -376,10 +376,14 @@
 // Custom Alert
 .custom__alert {
   // margin: 2rem 0;
-  .MuiAlert-message {
-    color: $dark-alt;
-    font-weight: $medium;
-    font-family: $poppins;
+  .MuiPaper-root {
+    // opacity: 0.9;
+    border-radius: 0;
+    .MuiAlert-message {
+      // color: $dark-alt;
+      font-weight: $medium;
+      font-family: $poppins;
+    }
   }
 }
 
@@ -443,4 +447,10 @@
   .MuiSvgIcon-root {
     color: $red;
   }
+}
+
+// Badge Icon
+.MuiBadge-badge {
+  background-color: $cyan !important;
+  color: $white;
 }

@@ -1,12 +1,28 @@
 import { Alert } from "@mui/material";
-import React from "react";
+import Collapse from "@mui/material/Collapse";
+import { useState } from "react";
 
-const CustomAlert = ({ severity, message }) => {
+const CustomAlert = ({ severity, message, close }) => {
+  const [open, setOpen] = useState(true);
   return (
     <div className="custom__alert">
-      <Alert variant="outlined" severity={severity}>
-        {message}
-      </Alert>
+      {close ? (
+        <Collapse in={open}>
+          <Alert
+            variant="filled"
+            severity={severity}
+            onClose={() => {
+              setOpen(false);
+            }}
+          >
+            {message}
+          </Alert>
+        </Collapse>
+      ) : (
+        <Alert variant="filled" severity={severity}>
+          {message}
+        </Alert>
+      )}
     </div>
   );
 };

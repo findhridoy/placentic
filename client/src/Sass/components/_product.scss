@@ -66,13 +66,16 @@
       }
 
       .product__countInStock {
-        color: $dark-alt;
-        opacity: 0.8;
+        color: $cyan;
+        opacity: 0.6;
         @include smallest-font;
-        font-weight: $semi-bold;
+        font-weight: $bold;
         display: block;
         margin-top: $x-1;
         margin-bottom: $x-0-25;
+        .product__countOutStock {
+          color: $red;
+        }
       }
 
       .product__count {

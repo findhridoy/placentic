@@ -1,6 +1,7 @@
 import { applyMiddleware, combineReducers, createStore } from "redux";
 import { composeWithDevTools } from "redux-devtools-extension";
 import thunk from "redux-thunk";
+import { cartReducer } from "./reducers/cartReducers";
 import {
   categoryLimitListReducer,
   categoryListReducer,
@@ -28,6 +29,7 @@ import {
   userLoginReducer,
   userRegisterReducer,
 } from "./reducers/userReducers";
+import { wishlistReducer } from "./reducers/wishlistReducers";
 
 // reducers
 const reducers = combineReducers({
@@ -52,16 +54,30 @@ const reducers = combineReducers({
   createProductReview: createProductReviewReducer,
   permissionProductReview: permissionProductReviewReducer,
   deleteProductReview: deleteProductReviewReducer,
+  cart: cartReducer,
+  wishlist: wishlistReducer,
 });
 
-// Get data from localStorage
+// Get user data from localStorage
 const userInfoFromStorage = JSON.parse(localStorage.getItem("userInfo"))
   ? JSON.parse(localStorage.getItem("userInfo"))
   : null;
 
+// Get cart data from localStorage
+const cartFromStorage = JSON.parse(localStorage.getItem("cartItems"))
+  ? JSON.parse(localStorage.getItem("cartItems"))
+  : [];
+
+// Get wishlist data from localStorage
+const wishlistFromStorage = JSON.parse(localStorage.getItem("wishlistItems"))
+  ? JSON.parse(localStorage.getItem("wishlistItems"))
+  : [];
+
 // initial state
 const initialState = {
   userLogin: { userInfo: userInfoFromStorage },
+  cart: { cartItems: cartFromStorage },
+  wishlist: { wishlistItems: wishlistFromStorage },
 };
 
 // middleware

@@ -8,17 +8,21 @@
 
   thead {
     tr {
-      background-color: $white-alt;
-      border-radius: 8px;
       th {
         text-align: left;
         padding: $x-0-5 $x-1;
         color: $dark-alt;
-        @include small-font;
+        background-color: $white;
+        @include smaller-font;
         text-transform: uppercase;
+        &:first-child {
+          border-radius: 8px 0 0 8px;
+        }
         &:last-child {
+          border-radius: 0 8px 8px 0;
           text-align: center;
         }
+
         .th__header {
           display: flex;
           align-items: center;
@@ -32,19 +36,30 @@
   }
   tbody {
     tr {
-      border-radius: 8px;
-      background-color: $white-alt;
-      @include transition(200ms);
+      background-color: $white;
+      @include transition(100ms);
       &:hover {
-        background-color: $white;
+        background-color: $cyan;
+        cursor: text;
+        td {
+          color: $white;
+        }
       }
       td {
         text-align: left;
-        padding: $x-0-5 $x-1;
+        padding: 0.3rem $x-1;
         font-weight: $semi-bold;
         color: $dark-alt;
+        opacity: 0.9;
         @include smaller-font;
         white-space: nowrap;
+        @include transition(100ms);
+        &:first-child {
+          border-radius: 8px 0 0 8px;
+        }
+        &:last-child {
+          border-radius: 0 8px 8px 0;
+        }
       }
     }
   }

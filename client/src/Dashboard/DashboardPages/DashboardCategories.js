@@ -1,8 +1,7 @@
 import AddIcon from "@mui/icons-material/Add";
-import { Button, Skeleton } from "@mui/material";
+import { Button } from "@mui/material";
 import Modal from "@mui/material/Modal";
-import cogoToast from "cogo-toast";
-import React, { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import "react-dropdown/style.css";
 import { useDispatch, useSelector } from "react-redux";
 import { useGlobalFilter, usePagination, useTable } from "react-table";
@@ -14,6 +13,7 @@ import {
   categoryListReset,
 } from "../../Redux/actions/categoryActions";
 import AddCategoryForm from "../DashboardComponents/AddCategoryForm";
+import CustomTableLoader from "../DashboardComponents/CustomTableLoader";
 import DashboardLayout from "../DashboardLayout/DashboardLayout";
 
 const DashboardCategories = () => {
@@ -31,22 +31,19 @@ const DashboardCategories = () => {
 
   useEffect(() => {
     dispatch(categoryList("categories"));
+
+    return () => {
+      dispatch(categoryListReset());
+    };
   }, [dispatch, category?.success, updateCat?.success, deleteCate?.success]);
 
-  useEffect(() => {
-    if (error) {
-      cogoToast.error(error);
-      dispatch(categoryListReset());
-    }
-    if (categories?.message) {
-      cogoToast.error("Something was wrong!");
-      dispatch(categoryListReset());
-    }
-  }, [error, categories, dispatch]);
-
   // React table elements
-  const data = useMemo(() => categories, [categories]);
-  const columns = useMemo(() => categoryColumn, []);
+  const data = useMemo(() => (categories?.length ? categories : []), [
+    categories,
+  ]);
+  const columns = useMemo(() => (categories?.length ? categoryColumn : []), [
+    categories,
+  ]);
 
   const tableInstance = useTable(
     {
@@ -69,30 +66,29 @@ const DashboardCategories = () => {
     >
       <section className="dc__section">
         <div className="dc__container">
-          <div className="dc__header">
-            {loading ? (
-              <Skeleton width={100} animation="wave" height={35} />
-            ) : (
-              <h4 className="header__title">Category list</h4>
-            )}
-
-            {loading ? (
-              <Skeleton variant="rectangular" width={130} height={35} />
-            ) : (
-              <div className="btn small__btn btn__dark">
-                <Button type="button" onClick={() => setOpen(true)}>
-                  <span className="btn__text">Add Category</span>
-                  <AddIcon />
-                </Button>
-              </div>
-            )}
-          </div>
-          {!loading && categories?.length === 0 ? (
-            <CustomAlert severity="info" message="No categories found!" />
+          {loading ? (
+            <CustomTableLoader />
+          ) : error ? (
+            <CustomAlert severity="error" message={error} />
+          ) : categories?.message ? (
+            <CustomAlert severity="error" message="Something was wrong!" />
           ) : (
-            <div className="dc__categories">
-              <CustomTable tableInstance={tableInstance} loading={loading} />
-            </div>
+            <>
+              <div className="dc__header">
+                <h4 className="header__title">Category list</h4>
+
+                <div className="btn small__btn btn__dark">
+                  <Button type="button" onClick={() => setOpen(true)}>
+                    <span className="btn__text">Add Category</span>
+                    <AddIcon />
+                  </Button>
+                </div>
+              </div>
+
+              <div className="dc__categories">
+                <CustomTable tableInstance={tableInstance} />
+              </div>
+            </>
           )}
         </div>
 

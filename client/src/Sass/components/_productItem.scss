@@ -23,16 +23,21 @@
 
       .MuiIconButton-root {
         background-color: $white-alt;
+        &:disabled {
+          background-color: $cyan;
+          opacity: 1;
+          .MuiSvgIcon-root {
+            color: $white-alt;
+          }
+        }
         @include transition(300ms);
         .MuiSvgIcon-root {
           color: $cyan;
-          // opacity: 0.8;
           @include h4-font;
           @include transition(300ms);
         }
         &:hover {
           background-color: $cyan;
-          // opacity: 0.8;
           .MuiSvgIcon-root {
             color: $white-alt;
             opacity: 1;
@@ -51,6 +56,9 @@
     color: $dark-alt;
     @include small-font;
     opacity: 0.8;
+    &:hover {
+      color: $cyan;
+    }
   }
   .product__price {
     font-weight: $bold;

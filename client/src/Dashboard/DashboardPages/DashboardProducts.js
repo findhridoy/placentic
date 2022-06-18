@@ -2,7 +2,7 @@ import AddIcon from "@mui/icons-material/Add";
 import { Button, Skeleton } from "@mui/material";
 import Modal from "@mui/material/Modal";
 import cogoToast from "cogo-toast";
-import React, { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import "react-dropdown/style.css";
 import { useDispatch, useSelector } from "react-redux";
 import { useGlobalFilter, usePagination, useTable } from "react-table";
@@ -35,6 +35,10 @@ const DashboardProducts = () => {
 
   useEffect(() => {
     dispatch(productList("products"));
+
+    return () => {
+      dispatch(productListReset());
+    };
   }, [dispatch, product?.success, updatedProduct?.success, deletedProduct]);
 
   useEffect(() => {
@@ -51,7 +55,7 @@ const DashboardProducts = () => {
   }, [error, products, dispatch]);
 
   // React table elements
-  const data = useMemo(() => products, [products]);
+  const data = useMemo(() => (products?.length ? products : []), [products]);
   const columns = useMemo(() => productColumn, []);
 
   const tableInstance = useTable(

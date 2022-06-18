@@ -12,7 +12,7 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import SearchIcon from "@mui/icons-material/Search";
 import { Avatar, Badge, IconButton } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, NavLink } from "react-router-dom";
 import placentic from "../Assets/logo/placentic.png";
@@ -26,6 +26,8 @@ const Header = () => {
   // Redux element
   const dispatch = useDispatch();
   const { userInfo } = useSelector((state) => state.userLogin);
+  const { cartItems } = useSelector((state) => state.cart);
+  const { wishlistItems } = useSelector((state) => state.wishlist);
 
   // Header scroll
   useEffect(() => {
@@ -118,7 +120,7 @@ const Header = () => {
                 <li className="nav__item2">
                   <NavLink className="nav__link2" to="/cart">
                     <IconButton aria-label="cart">
-                      <Badge badgeContent={0} color="primary">
+                      <Badge badgeContent={cartItems?.length}>
                         <LocalMallIcon />
                       </Badge>
                     </IconButton>
@@ -127,7 +129,9 @@ const Header = () => {
                 <li className="nav__item2">
                   <NavLink className="nav__link2" to="/favourites">
                     <IconButton aria-label="love">
-                      <FavoriteBorderIcon />
+                      <Badge badgeContent={wishlistItems?.length}>
+                        <FavoriteBorderIcon />
+                      </Badge>
                     </IconButton>
                   </NavLink>
                 </li>
