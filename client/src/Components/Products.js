@@ -97,7 +97,7 @@ const Products = () => {
               ) : (
                 <Button type="button" onClick={handleClick}>
                   {loading ? (
-                    <CircularProgress color="inherit" size={30} thickness={3} />
+                    <CircularProgress color="inherit" size={20} thickness={3} />
                   ) : (
                     <>
                       <span className="btn__text">Load More</span>

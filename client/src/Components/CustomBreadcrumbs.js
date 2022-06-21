@@ -1,6 +1,5 @@
 import Breadcrumbs from "@mui/material/Breadcrumbs";
 import Link from "@mui/material/Link";
-import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
 const CustomBreadcrumbs = ({ title }) => {

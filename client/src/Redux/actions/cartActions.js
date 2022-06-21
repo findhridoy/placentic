@@ -3,7 +3,7 @@ import { CART_ADD_ITEM, CART_REMOVE_ITEM } from "../constants/cartConstants";
 // Add to cart action
 export const addToCart = (data, quantity) => async (dispatch, getState) => {
   const productItem = {
-    product: data?._id,
+    product: data?._id || data?.product,
     title: data?.title,
     price: data?.price,
     image: data?.image,

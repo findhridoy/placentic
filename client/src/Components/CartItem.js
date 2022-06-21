@@ -3,65 +3,86 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import RemoveIcon from "@mui/icons-material/Remove";
 import { IconButton } from "@mui/material";
-import { useState } from "react";
+import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
+import { addToCart, removeFromCart } from "../Redux/actions/cartActions";
 
-const CartItem = () => {
-  // States
-  const [quantity, setQuantity] = useState(1);
+const CartItem = ({ cartItem }) => {
+  // Redux element
+  const dispatch = useDispatch();
 
   // Product quantity setup
   const handleQuantity = (action) => {
     if (action === "add") {
-      setQuantity((preValue) => preValue + 1);
+      let qty = cartItem?.quantity + 1;
+      dispatch(addToCart(cartItem, qty));
     }
     if (action === "remove") {
-      setQuantity((preValue) => preValue - 1);
+      let qty = cartItem?.quantity - 1;
+      dispatch(addToCart(cartItem, qty));
     }
   };
+
+  // Remove from cart
+  const handleRemoveFromCart = () => {
+    dispatch(removeFromCart(cartItem?.product));
+  };
+
   return (
     <div className="cartItem">
       <div className="cartItem__image">
-        <img
-          src="https://res.cloudinary.com/dvrlnpthq/image/upload/v1654558055/Placentic-Products/xxvshrm8b9q8d3yh3i0z.jpg"
-          alt=""
-        />
+        <img src={cartItem?.image} alt={cartItem?.title} />
       </div>
       <div className="cartItem__content">
         <div className="cartItem__data">
           <div className="cartItem__details">
             <Link to="/">
-              <h3 className="cartItem__title">
-                Lorem ipsum dolor sit amet consectetur.
-              </h3>
+              <h3 className="cartItem__title">{cartItem?.title}</h3>
             </Link>
-            <span className="cartItem__price">$12</span>
-            <span className="cartItem__stock">In Stock</span>
+
+            <span className="cartItem__price">${cartItem?.price}</span>
+            <span className="cartItem__stock">
+              {cartItem?.countInStock > 0 ? (
+                "In Stock"
+              ) : (
+                <span className="cartItem__countOutStock">Out Of Stock</span>
+              )}
+            </span>
           </div>
 
+          <span className="cartItem__totalPrice">
+            ${cartItem?.price * cartItem?.quantity}
+          </span>
+        </div>
+
+        <div className="cartItem__action">
           <div className="cartItem__count">
             <IconButton
               onClick={() => handleQuantity("remove")}
-              disabled={quantity < 2}
+              disabled={cartItem?.quantity < 2}
               size="small"
             >
               <RemoveIcon />
             </IconButton>
-            <input type="text" disabled value={quantity} />
-            <IconButton onClick={() => handleQuantity("add")} size="small">
+            <input type="text" disabled value={cartItem?.quantity} />
+            <IconButton
+              onClick={() => handleQuantity("add")}
+              disabled={
+                cartItem?.quantity === cartItem?.countInStock ||
+                cartItem?.countInStock === 0
+              }
+              size="small"
+            >
               <AddIcon />
             </IconButton>
           </div>
 
-          <span className="cartItem__totalPrice">$12</span>
-        </div>
-        <div className="cartItem__action">
           <div className="cartItem__button--group">
             <span className="cartItem__btn">
               <FavoriteIcon fontSize="small" />
               <span className="btn__text">Save</span>
             </span>
-            <span className="cartItem__btn">
+            <span className="cartItem__btn" onClick={handleRemoveFromCart}>
               <DeleteIcon fontSize="small" />
               <span className="btn__text">Remove</span>
             </span>

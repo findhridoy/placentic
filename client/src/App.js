@@ -11,6 +11,7 @@ import AdminRoutes from "./Helpers/Routes/AdminRoutes";
 import PrivateRoutes from "./Helpers/Routes/PrivateRoutes";
 import PublicRoutes from "./Helpers/Routes/PublicRoutes";
 import Cart from "./Pages/Cart";
+import Checkout from "./Pages/Checkout";
 import Home from "./Pages/Home";
 import Login from "./Pages/Login";
 import Orders from "./Pages/Orders";
@@ -48,6 +49,7 @@ const App = () => {
         <Route path="/*" element={<PrivateRoutes />}>
           <Route path="profile" element={<Profile />} />
           <Route path="orders" element={<Orders />} />
+          <Route path="checkout" element={<Checkout />} />
         </Route>
 
         {/* Only Admin can access this pages */}
