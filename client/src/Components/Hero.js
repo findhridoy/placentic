@@ -1,10 +1,10 @@
 import { Button } from "@mui/material";
 import React from "react";
-import product from "../Assets/products/p1-600x600.jpg";
+import product from "../Assets/products/header-sofa-img.png";
 
 const Hero = () => {
   return (
-    <section className="hero__section header__bg">
+    <section className="hero__section main__bg">
       <div className="container">
         <div className="hero__content">
           <div className="hero__data">

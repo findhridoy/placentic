@@ -1,0 +1,456 @@
+/*=================== LAYOUT ===================*/
+.container {
+  max-width: 1168px;
+  margin-right: $x-1;
+  margin-left: $x-1;
+  @include breakpoint(sm) {
+    margin-right: $x-1-5;
+    margin-left: $x-1-5;
+  }
+  @include breakpoint(md) {
+    margin-right: $x-2;
+    margin-left: $x-2;
+  }
+  @include breakpoint(lg) {
+    margin-right: $x-3;
+    margin-left: $x-3;
+  }
+  @include breakpoint(xl) {
+    margin-right: auto;
+    margin-left: auto;
+  }
+}
+/*=================== REUSEABLE CLASSES ===================*/
+// Button
+.btn {
+  .MuiButton-root {
+    height: 2.8rem;
+    width: 9rem;
+    font-weight: $semi-bold;
+    text-transform: capitalize;
+    border-radius: 0;
+    letter-spacing: 0.8px;
+    @include small-font;
+    cursor: pointer;
+    @include breakpoint(md) {
+      height: 3rem;
+      width: 10rem;
+    }
+    &:hover {
+      @include shadow-btn;
+    }
+  }
+}
+.small__btn {
+  .MuiButton-root {
+    height: 2.3rem;
+    width: 7.8rem;
+    display: flex;
+    align-items: center;
+    gap: 0.2rem;
+    @include smaller-font;
+    @include breakpoint(md) {
+      height: 2.6rem;
+      width: 8.5rem;
+      @include smallest-font;
+    }
+    .MuiSvgIcon-root {
+      @include h3-font;
+    }
+  }
+}
+// White Button
+.btn__white {
+  .MuiButton-root {
+    background-color: $white;
+    color: $dark-alt;
+    &:hover {
+      color: $dark-alt;
+      background-color: $white;
+    }
+    &:disabled {
+      pointer-events: auto !important;
+      cursor: not-allowed !important;
+      color: $dark-alt !important;
+    }
+  }
+}
+// Dark Button
+.btn__dark {
+  .MuiButton-root {
+    background-color: $dark-alt;
+    color: $white;
+    &:hover {
+      color: $white;
+      background-color: $dark-alt;
+    }
+    &:disabled {
+      pointer-events: auto !important;
+      cursor: not-allowed !important;
+      color: $white-alt !important;
+    }
+  }
+}
+// Outline Button
+// .btn__outline {
+//   .MuiButton-root {
+//     border: 1px solid $dark-alt;
+//     color: $white;
+//   }
+// }
+
+// Button group
+.button__group {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+// Dashboard Button
+.d__btn {
+  position: fixed;
+  bottom: 5rem;
+  right: 1rem;
+  @include breakpoint(sm) {
+    bottom: 5.5rem;
+    right: 1.5rem;
+  }
+  @include breakpoint(md) {
+    bottom: 3rem;
+    right: 2rem;
+  }
+  .MuiIconButton-root {
+    height: 2.8rem;
+    width: 2.8rem;
+    @include transition(300ms);
+    @include breakpoint(sm) {
+      height: 3.2rem;
+      width: 3.2rem;
+    }
+    @include breakpoint(md) {
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      width: 9.5rem;
+      border-radius: 25px !important;
+    }
+    .MuiSvgIcon-root {
+      @include h3-font;
+    }
+    .btn__text {
+      display: none;
+      @include breakpoint(md) {
+        @include small-font;
+        display: initial;
+        font-weight: $medium;
+        text-transform: capitalize;
+      }
+    }
+  }
+}
+
+// Dashboard White Button
+.d__white {
+  .MuiIconButton-root {
+    background-color: $white;
+    color: $dark-alt;
+    &:hover {
+      color: $dark-alt;
+      background-color: $white;
+    }
+  }
+}
+
+// Dashboard Dark Button
+.d__dark {
+  .MuiIconButton-root {
+    background-color: $dark-alt;
+    color: $white;
+    &:hover {
+      color: $white;
+      background-color: $dark-alt;
+    }
+  }
+}
+
+// Section
+.section {
+  padding: $x-2 0;
+}
+
+// Section Title
+.section__title {
+  font-weight: $semi-bold;
+  color: $dark-alt;
+  position: relative;
+  text-align: center;
+  @include breakpoint(md) {
+    text-align: initial;
+  }
+  &::after {
+    content: "";
+    position: absolute;
+    width: 6rem;
+    height: 0.1rem;
+    background-color: $dark-alt;
+    left: 50%;
+    bottom: -25%;
+    transform: translate(-50%, 25%);
+    @include breakpoint(md) {
+      left: 0;
+      bottom: 0;
+      transform: translateY(0.6rem);
+    }
+  }
+}
+
+// Main Background
+.main__bg {
+  &::after {
+    content: "";
+    width: 50%;
+    height: 100%;
+    right: 0;
+    top: 0;
+    background-color: $cyan-alt;
+    position: absolute;
+    z-index: -1;
+  }
+}
+
+// Form Style
+
+// // From Title
+// .form__title {
+//   text-align: center;
+//   font-weight: $semi-bold;
+//   @include h3-font;
+//   margin-bottom: $x-0-75;
+// }
+
+// Form Grid
+.form__grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.5rem;
+}
+
+// Form Label
+.form__label {
+  font-weight: $semi-bold;
+  @include smaller-font;
+  // margin-bottom: $x-0-25;
+  margin-bottom: 0.1rem;
+  color: $dark-alt;
+}
+
+// Form Group
+.form__group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: $x-0-5;
+}
+
+// Form Control
+.form__control {
+  width: 100%;
+  border: $border-gray;
+  padding: $x-0-5;
+  height: 2.2rem;
+  font-weight: $medium;
+  @include smallest-font;
+  background-color: transparent;
+  color: $dark-alt;
+  @include breakpoint(md) {
+    height: 2.5rem;
+  }
+  &:focus {
+    //   box-shadow: $shadow;
+  }
+  &:hover {
+    //   box-shadow: $shadow;
+  }
+}
+
+// Form Select
+.form__select {
+  width: 100%;
+  border: $border-gray;
+  padding: $x-0-25;
+  height: 2.2rem;
+  font-weight: $medium;
+  @include smallest-font;
+  background-color: transparent;
+  color: $dark-alt;
+  @include breakpoint(md) {
+    height: 2.5rem;
+  }
+}
+
+// From Options
+.form__option {
+  font-weight: $medium;
+  @include smallest-font;
+  color: $dark-alt;
+  height: 2.2rem !important;
+  background-color: transparent;
+  line-height: 2;
+  padding: $x-0-5;
+}
+
+// Form checkbox label
+.checkbox__label {
+  color: $dark-alt;
+  font-weight: $medium;
+  @include smallest-font;
+}
+
+// From Dropdown
+.form__dropdown {
+  @extend .form__control;
+  padding: 0;
+  border: none;
+}
+
+// From Dropdown Control
+.form__dropdownControl {
+  background-color: transparent;
+}
+
+.form__dropdownMenu {
+  background-color: $white-alt;
+}
+
+// Form Testarea
+.form__textarea {
+  @extend .form__control;
+  height: 4rem;
+  resize: vertical;
+}
+
+// Form Error
+.form__error {
+  font-weight: $medium;
+  color: $red;
+  // margin-top: $x-0-25;
+  @include smallest-font;
+}
+
+// Form Required
+.form__required {
+  color: $red;
+}
+
+// Errors
+.errors {
+  position: fixed;
+  height: 100vh;
+  width: 100%;
+  background-color: $white-alt;
+  z-index: 999;
+  left: 0;
+  top: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  .errors__container {
+    text-align: center;
+    .errors__warning {
+      @include big-font;
+      color: $dark-alt;
+    }
+    .errors__title {
+      color: $dark-alt;
+      @include h3-font;
+    }
+    .errors__link {
+      color: $cyan;
+      @include h4-font;
+      font-weight: $semi-bold;
+      margin-top: $x-0-5;
+      display: inline-block;
+    }
+  }
+}
+
+// Custom Alert
+.custom__alert {
+  // margin: 2rem 0;
+  .MuiPaper-root {
+    // opacity: 0.9;
+    border-radius: 0;
+    .MuiAlert-message {
+      // color: $dark-alt;
+      font-weight: $medium;
+      font-family: $poppins;
+    }
+  }
+}
+
+// Custom Loader
+.customLoader {
+  position: fixed;
+  height: calc(100% - 4rem);
+  width: calc(100% - 12rem);
+  right: 0;
+  // left: 0;
+  bottom: 0;
+  // background-color: $white-alt;
+  // background-color: gray;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.MuiTypography-root {
+  line-height: 1 !important;
+}
+
+// Ratings
+.rating {
+  display: flex;
+  align-items: center;
+  .rating__icon {
+    .MuiSvgIcon-root {
+      color: $cyan;
+      @include h4-font;
+      opacity: 0.6;
+    }
+  }
+}
+
+// Review Rating
+.reviewRating {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+
+  .MuiSvgIcon-root {
+    color: $cyan;
+    @include h2-font;
+    opacity: 0.9;
+  }
+
+  .css-d0uhtl {
+    color: $dark-alt;
+    font-weight: $semi-bold;
+    @include h4-font;
+    opacity: 0.9;
+    margin-left: 0;
+  }
+}
+
+// Error Icon
+.error__icon {
+  .MuiSvgIcon-root {
+    color: $red;
+  }
+}
+
+// Badge Icon
+.MuiBadge-badge {
+  background-color: $cyan !important;
+  color: $white;
+}

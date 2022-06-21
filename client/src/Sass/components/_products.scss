@@ -1,0 +1,40 @@
+.products__section {
+  background-color: $white;
+  .products__content {
+    display: grid;
+    place-items: center;
+    @include breakpoint(md) {
+      place-items: initial;
+    }
+    .products__data {
+      margin-top: $x-2;
+      display: grid;
+      column-gap: 1rem;
+      row-gap: 2rem;
+      @include breakpoint(sm) {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      @include breakpoint(md) {
+        grid-template-columns: repeat(auto-fit, minmax(225px, 1fr));
+      }
+      .products__loader {
+        width: 280px;
+        @include breakpoint(sm) {
+          width: 260px;
+        }
+        @include breakpoint(md) {
+          width: 100%;
+        }
+      }
+    }
+    .product__btn {
+      margin: $x-2-5 auto auto;
+      .MuiButton-root {
+        gap: 0.5rem;
+        .MuiSvgIcon-root {
+          @include h3-font;
+        }
+      }
+    }
+  }
+}

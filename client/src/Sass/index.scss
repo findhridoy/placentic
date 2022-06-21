@@ -1,11 +1,31 @@
 // Import of partial files
-@import "mixins/breakpoints";
-@import "mixins/mixins";
+@import "config/breakpoints";
+@import "config/mixins";
 @import "config/variables";
-@import "base/base";
-@import "layout/layout";
+@import "config/base";
+@import "config/layout";
 
 // Components
 @import "components/scroll";
 @import "components/header";
 @import "components/hero";
+@import "components/category";
+@import "components/products";
+@import "components/newsletter";
+@import "components/customBreadcrumbs";
+@import "components/profileInfo";
+@import "components/userAvatar";
+@import "components/imageHandler";
+@import "components/login&signup";
+@import "components/profile";
+@import "components/productItem";
+@import "components/product";
+@import "components/productReview";
+@import "components/reviewForm";
+@import "components/reviewGraph";
+@import "components/reviewComment";
+@import "components/cart";
+@import "components/cartItem";
+
+// Dashboard
+@import "../Dashboard/DashboardStyles/dashboardIndex";

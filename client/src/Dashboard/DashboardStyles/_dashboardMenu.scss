@@ -1,0 +1,97 @@
+.dashboard__menu {
+  position: fixed;
+  width: 100%;
+  bottom: 0;
+  left: 0;
+  z-index: $z-99;
+  background-color: $cyan-alt;
+  @include header-height();
+  @include breakpoint(md) {
+    width: 12rem;
+    background-color: $cyan-alt;
+    top: 0;
+    height: 100%;
+  }
+  .nav__logo {
+    display: none;
+    @include breakpoint(md) {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      @include header-height;
+    }
+    .logo {
+      width: 130px;
+      @include breakpoint(md) {
+        width: 135px;
+      }
+      @include breakpoint(lg) {
+        width: 140px;
+      }
+    }
+  }
+  .menu__list {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    height: 100%;
+    gap: 0.5rem;
+    @include header-shadow(12px);
+    @include breakpoint(md) {
+      margin-top: $x-1;
+      flex-direction: column;
+      justify-content: initial;
+      align-items: initial;
+      gap: 0.8rem;
+      height: initial;
+      box-shadow: none;
+    }
+    .menu__item {
+      .menu__link {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.1rem;
+        color: $dark-alt;
+
+        @include transition(200ms);
+        @include breakpoint(md) {
+          flex-direction: row;
+          gap: 0.8rem;
+          padding: $x-0-5 0 $x-0-5 $x-1-5;
+          border-left: 2px solid transparent;
+        }
+        @include breakpoint(lg) {
+          padding: $x-0-75 0 $x-0-75 $x-1-5;
+        }
+
+        .menu__text {
+          font-weight: $semi-bold;
+          @include smallest-font;
+          @include breakpoint(sm) {
+            @include smaller-font;
+          }
+        }
+        .MuiSvgIcon-root {
+          @include h2-font;
+          @include breakpoint(md) {
+            @include h3-font;
+          }
+        }
+        // hover link
+        &:hover {
+          color: $cyan;
+          @include breakpoint(md) {
+            border-left: 2px solid $cyan;
+          }
+        }
+      }
+      .active__link {
+        color: $cyan;
+        @include breakpoint(md) {
+          border-left: 2px solid $cyan;
+        }
+      }
+    }
+  }
+}

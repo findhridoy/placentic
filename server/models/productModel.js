@@ -10,6 +10,16 @@ const ReviewSchema = new Schema(
       ref: "User",
     },
     name: { type: String, required: true },
+    avatar: {
+      type: String,
+      // required: true,
+    },
+    action: {
+      type: String,
+      default: "waiting",
+      // required: true,
+      enum: ["approve", "decline", "waiting"],
+    },
     rating: { type: Number, required: true },
     comment: { type: String, required: true },
   },
@@ -35,10 +45,6 @@ const ProductSchema = new Schema(
       trim: true,
     },
     category: {
-      type: String,
-      required: true,
-    },
-    categorySlug: {
       type: String,
       required: true,
     },

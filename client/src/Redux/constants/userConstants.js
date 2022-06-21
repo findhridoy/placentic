@@ -1,0 +1,46 @@
+// Register constants
+export const USER_REGISTER_REQUEST = "USER_REGISTER_REQUEST";
+export const USER_REGISTER_SUCCESS = "USER_REGISTER_SUCCESS";
+export const USER_REGISTER_FAILURE = "USER_REGISTER_FAILURE";
+
+// Login constants
+export const USER_LOGIN_REQUEST = "USER_LOGIN_REQUEST";
+export const USER_LOGIN_SUCCESS = "USER_LOGIN_SUCCESS";
+export const USER_LOGIN_FAILURE = "USER_LOGIN_FAILURE";
+
+// Error reset
+export const USER_ERROR_RESET = "USER_ERROR_RESET";
+
+// Logout constants
+export const USER_LOGOUT = "USER_LOGOUT";
+
+//Get profile constants
+export const USER_PROFILE_REQUEST = "USER_PROFILE_REQUEST";
+export const USER_PROFILE_SUCCESS = "USER_PROFILE_SUCCESS";
+export const USER_PROFILE_FAILURE = "USER_PROFILE_FAILURE";
+export const USER_PROFILE_RESET = "USER_PROFILE_RESET";
+
+// Profile Update constants
+export const USER_UPDATE_REQUEST = "USER_UPDATE_REQUEST";
+export const USER_UPDATE_SUCCESS = "USER_UPDATE_SUCCESS";
+export const USER_UPDATE_FAILURE = "USER_UPDATE_FAILURE";
+export const USER_UPDATE_RESET = "USER_UPDATE_RESET";
+
+// Dashboard can access
+// Get user list constants
+export const USER_LIST_REQUEST = "USER_LIST_REQUEST";
+export const USER_LIST_SUCCESS = "USER_LIST_SUCCESS";
+export const USER_LIST_FAILURE = "USER_LIST_FAILURE";
+export const USER_LIST_RESET = "USER_LIST_RESET";
+
+// Make admin user constants
+export const USER_MAKEADMIN_REQUEST = "USER_MAKEADMIN_REQUEST";
+export const USER_MAKEADMIN_SUCCESS = "USER_MAKEADMIN_SUCCESS";
+export const USER_MAKEADMIN_FAILURE = "USER_MAKEADMIN_FAILURE";
+export const USER_MAKEADMIN_RESET = "USER_MAKEADMIN_RESET";
+
+// Delete user constants
+export const USER_DELETE_REQUEST = "USER_DELETE_REQUEST";
+export const USER_DELETE_SUCCESS = "USER_DELETE_SUCCESS";
+export const USER_DELETE_FAILURE = "USER_DELETE_FAILURE";
+export const USER_DELETE_RESET = "USER_DELETE_RESET";

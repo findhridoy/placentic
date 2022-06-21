@@ -3,8 +3,6 @@ const asyncHandler = require("express-async-handler");
 const bcrypt = require("bcryptjs");
 
 // Internal Imports
-const { validateRegInput } = require("../utils/validation/registerValidation");
-const { validateLoginInput } = require("../utils/validation/loginValidation");
 const User = require("../models/userModel");
 const { generateToken } = require("../utils/generateToken");
 const { cloudinary } = require("../config/cloudinary");
@@ -15,12 +13,6 @@ const { cloudinary } = require("../config/cloudinary");
  * @access  Public
  */
 const userRegister = asyncHandler(async (req, res) => {
-  // field error handler
-  const { errors, isValid } = validateRegInput(req.body);
-  if (!isValid) {
-    return res.status(400).json(errors);
-  }
-
   // distructure the value
   const { name, username, email, avatar, avatar_id } = req.body;
 
@@ -53,12 +45,9 @@ const userRegister = asyncHandler(async (req, res) => {
   if (user) {
     res.status(201).json({
       _id: user._id,
-      name: user.name,
-      username: user.username,
       email: user.email,
-      isAdmin: user.isAdmin,
       avatar: user.avatar,
-      avatar_id,
+      isAdmin: user.isAdmin,
       token: generateToken(user._id),
     });
   } else {
@@ -73,15 +62,9 @@ const userRegister = asyncHandler(async (req, res) => {
  * @access  Public
  */
 const userLogin = asyncHandler(async (req, res) => {
-  // field error handler
-  const { errors, isValid } = validateLoginInput(req.body);
-  if (!isValid) {
-    return res.status(400).json(errors);
-  }
-
   // check the username and email from the database
   const user = await User.findOne({
-    $or: [{ username: req.body.userName }, { email: req.body.userName }],
+    $or: [{ username: req.body.username }, { email: req.body.username }],
   });
   if (!user) {
     res.status(404);
@@ -94,12 +77,9 @@ const userLogin = asyncHandler(async (req, res) => {
   if (user && isMatch) {
     res.status(200).json({
       _id: user._id,
-      name: user.name,
-      username: user.username,
       email: user.email,
       isAdmin: user.isAdmin,
       avatar: user.avatar,
-      avatar_id: user.avatar_id,
       token: generateToken(user._id),
     });
   } else {
@@ -143,15 +123,23 @@ const updateUserProfile = asyncHandler(async (req, res) => {
       name: req.body.name || user.name,
       username: req.body.username || user.username,
       email: req.body.email || user.email,
+      phone: req.body.phone || user.phone,
+      country: req.body.country || user.country,
       avatar: result.secure_url || user.avatar,
       avatar_id: result.public_id || user.avatar_id,
     };
 
     user = await User.findByIdAndUpdate(req.user._id, updatedUser, {
       new: true,
-    }).select("-password");
+    });
 
-    res.status(200).json(user);
+    res.status(200).json({
+      _id: user._id,
+      email: user.email,
+      isAdmin: user.isAdmin,
+      avatar: user.avatar,
+      token: generateToken(user._id),
+    });
   }
 
   // without file
@@ -160,13 +148,21 @@ const updateUserProfile = asyncHandler(async (req, res) => {
       name: req.body.name || user.name,
       username: req.body.username || user.username,
       email: req.body.email || user.email,
+      phone: req.body.phone || user.phone,
+      country: req.body.country || user.country,
     };
 
     user = await User.findByIdAndUpdate(req.user._id, updatedUser, {
       new: true,
-    }).select("-password");
+    });
 
-    res.status(200).json(user);
+    res.status(200).json({
+      _id: user._id,
+      email: user.email,
+      isAdmin: user.isAdmin,
+      avatar: user.avatar,
+      token: generateToken(user._id),
+    });
   } else {
     res.status(404);
     throw new Error("User not found");
@@ -189,7 +185,7 @@ const deleteUser = asyncHandler(async (req, res) => {
     await user.remove();
 
     res.status(200).json({
-      message: "User is removed successfully",
+      success: true,
     });
   } else {
     res.status(404);

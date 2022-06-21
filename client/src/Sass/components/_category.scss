@@ -1,0 +1,47 @@
+.category__section {
+  background-color: $white;
+  .category__content {
+    display: grid;
+    place-items: center;
+    @include breakpoint(md) {
+      place-items: initial;
+    }
+    .category__data {
+      display: grid;
+      gap: 1rem;
+      margin-top: $x-2;
+      @include breakpoint(sm) {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      @include breakpoint(md) {
+        grid-template-columns: repeat(auto-fit, minmax(225px, 1fr));
+      }
+      .MuiSkeleton-root,
+      .category__item {
+        width: 280px !important;
+        height: 220px !important;
+        @include breakpoint(sm) {
+          width: 260px !important;
+        }
+        @include breakpoint(md) {
+          width: 100% !important;
+        }
+      }
+      .category__item {
+        overflow: hidden;
+        position: relative;
+        .category__img {
+          img {
+            object-fit: cover;
+          }
+        }
+        .category__btn {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+        }
+      }
+    }
+  }
+}

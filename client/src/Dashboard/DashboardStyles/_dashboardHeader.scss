@@ -1,0 +1,132 @@
+.dashboardHeader {
+  background-color: $white-alt;
+  @include transition(300ms);
+  @include header-height;
+  padding: 0 $x-1;
+  position: fixed;
+  width: 100%;
+  right: 0;
+  top: 0;
+  z-index: 9;
+  @include breakpoint(sm) {
+    padding: 0 $x-1-5;
+  }
+  @include breakpoint(md) {
+    width: calc(100% - 12rem);
+  }
+  &::after {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    z-index: -10;
+    @include header-shadow(-25px);
+  }
+
+  .dh__nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+
+    .nav__searchBox {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      input {
+        width: 99%;
+        padding: 0 $x-0-75;
+        @include small-font;
+        font-weight: $medium;
+        color: $dark-alt;
+        background-color: transparent;
+      }
+      .MuiIconButton-root {
+        .MuiSvgIcon-root {
+          @include h2-font;
+          @include breakpoint(md) {
+            @include h3-font;
+          }
+        }
+        &:hover {
+          color: $red;
+        }
+      }
+    }
+    .nav__title {
+      color: $dark-alt;
+      font-weight: $semi-bold;
+      @include h3-font;
+    }
+
+    .nav__menu {
+      .nav__list {
+        display: flex;
+        gap: 0.5rem;
+        align-items: center;
+        .nav__item {
+          position: relative;
+          .MuiIconButton-root {
+            .MuiSvgIcon-root {
+              @include h2-font;
+              @include breakpoint(md) {
+                @include h3-font;
+              }
+            }
+            &:hover {
+              color: $cyan;
+            }
+          }
+          .dropdown__menu {
+            position: absolute;
+            right: 0.3rem;
+            top: 3.2rem;
+            z-index: 9;
+            display: none;
+            .dropdown__list {
+              background-color: $white;
+              padding: $x-0-75;
+              display: flex;
+              flex-direction: column;
+              gap: 0.5rem;
+              .dropdown__item {
+                .dropdown__link {
+                  border: 1px solid $white;
+                  color: $dark-alt;
+                  font-weight: $medium;
+                  @include small-font;
+                  padding: $x-0-5;
+                  display: flex;
+                  align-items: center;
+                  gap: 0.5rem;
+                  width: 10rem;
+                  text-align: center;
+                  @include transition(200ms);
+                  &:hover {
+                    color: $cyan;
+                    border: 1px solid $white-alt;
+                  }
+                  .MuiSvgIcon-root {
+                    @include h2-font;
+                    @include breakpoint(md) {
+                      @include h3-font;
+                    }
+                  }
+                }
+                .active__link {
+                  color: $cyan;
+                  border: 1px solid $white-alt;
+                }
+              }
+            }
+          }
+          .dropdown__show {
+            display: block;
+          }
+        }
+      }
+    }
+  }
+}

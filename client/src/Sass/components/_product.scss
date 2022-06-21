@@ -1,0 +1,168 @@
+.product__section {
+  .product__content {
+    display: grid;
+    gap: 3.5rem;
+    max-width: 400px;
+    margin: 0 auto;
+    padding: $x-1 0;
+    @include breakpoint(sm) {
+      max-width: 450px;
+    }
+    @include breakpoint(md) {
+      max-width: initial;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 2.5rem;
+    }
+    @include breakpoint(xl) {
+      max-width: 90%;
+    }
+    .product__image {
+      max-width: 450px;
+      img {
+        @include box-shadow;
+      }
+    }
+    .product__details {
+      display: flex;
+      flex-direction: column;
+      .product__rating {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        .product__review--text {
+          font-weight: $semi-bold;
+          color: $dark-alt;
+          @include small-font;
+          margin-top: -0.4rem;
+          opacity: 0.8;
+        }
+      }
+      .product__title {
+        font-weight: $semi-bold;
+        color: $dark;
+        @include h1-font;
+      }
+      .product__price {
+        font-weight: $bold;
+        color: $dark-alt;
+        @include h3-font;
+      }
+      .product__description {
+        color: $dark-alt;
+        @include small-font;
+        opacity: 0.8;
+        margin: $x-0-5 0;
+      }
+      .product__category {
+        color: $dark-alt;
+        @include small-font;
+        font-weight: $semi-bold;
+        .product__category--link {
+          color: $cyan;
+          &:hover {
+            text-decoration: underline;
+          }
+        }
+      }
+
+      .product__countInStock {
+        color: $cyan;
+        opacity: 0.6;
+        @include smallest-font;
+        font-weight: $bold;
+        display: block;
+        margin-top: $x-1;
+        margin-bottom: $x-0-25;
+        .product__countOutStock {
+          color: $red;
+        }
+      }
+
+      .product__count {
+        margin-bottom: $x-1-25;
+        display: flex;
+        align-items: center;
+        border: $border-gray;
+        width: max-content;
+        padding: $x-0-25;
+        .MuiIconButton-root {
+          @include transition(300ms);
+          .MuiSvgIcon-root {
+            color: $dark-alt;
+            opacity: 0.7;
+            @include h3-font;
+            @include transition(300ms);
+          }
+        }
+        input {
+          background-color: transparent;
+          width: 2rem;
+          height: 2rem;
+          text-align: center;
+          border-radius: 50%;
+          font-weight: $semi-bold;
+          color: $dark-alt;
+          @include normal-font;
+        }
+      }
+
+      .product__button {
+        width: 100%;
+        display: flex;
+        gap: 1rem;
+        margin-top: $x-0-5;
+        .product__btn {
+          width: 100%;
+          .MuiButton-root {
+            width: 100% !important;
+            text-transform: uppercase;
+            @include smaller-font;
+            gap: 0.5rem;
+          }
+        }
+      }
+    }
+  }
+
+  .product__tab {
+    max-width: 400px;
+    margin: 0 auto;
+    margin-top: $x-3;
+
+    @include breakpoint(sm) {
+      max-width: 450px;
+    }
+    @include breakpoint(md) {
+      max-width: initial;
+    }
+    @include breakpoint(xl) {
+      max-width: 90%;
+    }
+
+    .MuiButtonBase-root.css-1vw5i9y-MuiButtonBase-root-MuiTab-root {
+      font-weight: $bold !important;
+      color: $dark-alt;
+      font-family: $poppins;
+      @include smaller-font;
+    }
+
+    .MuiTabs-indicator {
+      background-color: $dark-alt !important;
+    }
+
+    .MuiAppBar-root {
+      box-shadow: none;
+      border-bottom: 1px solid $gray;
+    }
+
+    .MuiBox-root .css-19kzrtu {
+      padding: $x-1-75 0 !important;
+    }
+
+    .product__description {
+      color: $dark-alt !important;
+      @include small-font;
+      opacity: 0.9;
+    }
+  }
+}
