@@ -134,6 +134,7 @@
             right: 0.3rem;
             top: 3.2rem;
             display: none;
+            @include box-shadow;
             .dropdown__list {
               background-color: $white;
               padding: $x-0-75;

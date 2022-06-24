@@ -8,6 +8,7 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import CartItem from "../Components/CartItem";
 import CartSubtotal from "../Components/CartSubtotal";
+import CustomAlert from "../Components/CustomAlert";
 import CustomBreadcrumbs from "../Components/CustomBreadcrumbs";
 import Layout from "../Layouts/Layout";
 
@@ -23,55 +24,58 @@ const Cart = () => {
         <CustomBreadcrumbs title="Shopping Cart" />
         <div className="container">
           <div className="cart__header">
-            <h2 className="cart__title">
-              {cartItems?.length > 0
-                ? " Your cart items"
-                : " Your cart is empty!"}
-            </h2>
+            <h2 className="cart__title">Your cart items</h2>
             <Link className="cart__backLink" to="/">
               <ArrowBackIcon />
               Continue shopping
             </Link>
           </div>
 
-          <div className="cart__content">
-            <div className="cart__item">
-              {cartItems?.map((cartItem) => (
-                <CartItem cartItem={cartItem} key={cartItem?.product} />
-              ))}
-            </div>
-            <div className="cart__checkout">
-              <div className="cart__shipping">
-                <FormControl>
-                  <h4 className="shipping__title">Choose shipping mode:</h4>
-                  <RadioGroup
-                    aria-labelledby="shipping-radio-buttons-group"
-                    name="shipping-radio-buttons-group"
-                    value={shippingMode}
-                    onChange={(e) => setShippingMode(e.target.value)}
-                  >
-                    <FormControlLabel
-                      value="free"
-                      control={<Radio size="small" />}
-                      label="Store pickup ( In 20 min ) • FREE"
-                    />
-                    <FormControlLabel
-                      value="paid"
-                      control={<Radio size="small" />}
-                      label="Delivery at home ( Under 2 - 4 day ) • $9.90"
-                    />
-                  </RadioGroup>
-                </FormControl>
+          {cartItems?.length > 0 ? (
+            <div className="cart__content">
+              <div className="cart__item">
+                {cartItems?.map((cartItem) => (
+                  <CartItem cartItem={cartItem} key={cartItem?.product} />
+                ))}
               </div>
+              <div className="cart__checkout">
+                <div className="cart__shipping">
+                  <FormControl>
+                    <h4 className="shipping__title">Choose shipping mode:</h4>
+                    <RadioGroup
+                      aria-labelledby="shipping-radio-buttons-group"
+                      name="shipping-radio-buttons-group"
+                      value={shippingMode}
+                      onChange={(e) => setShippingMode(e.target.value)}
+                    >
+                      <FormControlLabel
+                        value="free"
+                        control={<Radio size="small" />}
+                        label="Store pickup ( In 20 min ) • FREE"
+                      />
+                      <FormControlLabel
+                        value="paid"
+                        control={<Radio size="small" />}
+                        label="Delivery at home ( Under 2 - 4 day ) • $9.90"
+                      />
+                    </RadioGroup>
+                  </FormControl>
+                </div>
 
-              <div className="cart__subtotal">
-                <CartSubtotal
-                  shippingMode={shippingMode}
-                  cartItems={cartItems}
-                />
+                <div className="cart__subtotal">
+                  <CartSubtotal
+                    shippingMode={shippingMode}
+                    cartItems={cartItems}
+                  />
+                </div>
               </div>
             </div>
-          </div>
+          ) : (
+            <CustomAlert
+              severity="info"
+              message="Your cart is currently empty."
+            />
+          )}
         </div>
       </section>
     </Layout>

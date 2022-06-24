@@ -5,6 +5,7 @@
     align-items: center;
     padding-bottom: $x-0-25;
     border-bottom: $border-gray;
+    margin-bottom: $x-1;
 
     .cart__title {
       color: $dark-alt;
@@ -28,7 +29,6 @@
   }
   .cart__content {
     display: grid;
-    margin-top: $x-1;
     gap: 2rem;
 
     @include breakpoint(lg) {
