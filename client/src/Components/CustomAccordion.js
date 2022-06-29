@@ -5,6 +5,7 @@ import MuiAccordionSummary from "@mui/material/AccordionSummary";
 import { styled } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
 import * as React from "react";
+import ShippingForm from "./ShippingForm";
 
 const Accordion = styled((props) => (
   <MuiAccordion disableGutters elevation={0} square {...props} />
@@ -36,6 +37,7 @@ const CustomAccordion = () => {
       <Accordion
         expanded={expanded === "panel1"}
         onChange={handleChange("panel1")}
+        disabled
       >
         <MuiAccordionSummary
           expandIcon={
@@ -55,9 +57,7 @@ const CustomAccordion = () => {
         </MuiAccordionSummary>
 
         <AccordionDetails>
-          <Typography>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-          </Typography>
+          <ShippingForm />
         </AccordionDetails>
       </Accordion>
 
@@ -82,15 +82,14 @@ const CustomAccordion = () => {
           </div>
         </MuiAccordionSummary>
         <AccordionDetails>
-          <Typography>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-          </Typography>
+          <ShippingForm />
         </AccordionDetails>
       </Accordion>
 
       <Accordion
         expanded={expanded === "panel3"}
         onChange={handleChange("panel3")}
+        disabled
       >
         <MuiAccordionSummary
           expandIcon={

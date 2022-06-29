@@ -60,7 +60,7 @@ const createCategory = asyncHandler(async (req, res) => {
 /**
  * @route   Get /api/category/categores
  * @desc    Get all categories
- * @access  Private
+ * @access  Private/Public
  */
 const getCategories = asyncHandler(async (req, res) => {
   // find all category

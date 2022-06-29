@@ -4,6 +4,11 @@
   gap: 1rem;
   margin-top: $x-1;
 
+  .MuiAccordion-root.Mui-disabled {
+    background: $white;
+    // @include box-shadow;
+  }
+
   .MuiAccordionSummary-root {
     flex-direction: row-reverse;
     .accordion__checkbox {
@@ -65,5 +70,8 @@
         @extend .user__name;
       }
     }
+  }
+  .MuiAccordionSummary-root.Mui-disabled {
+    opacity: 1 !important;
   }
 }

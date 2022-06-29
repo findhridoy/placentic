@@ -11,6 +11,7 @@ import AdminRoutes from "./Helpers/Routes/AdminRoutes";
 import PrivateRoutes from "./Helpers/Routes/PrivateRoutes";
 import PublicRoutes from "./Helpers/Routes/PublicRoutes";
 import Cart from "./Pages/Cart";
+import Catalog from "./Pages/Catalog";
 import Checkout from "./Pages/Checkout";
 import Home from "./Pages/Home";
 import Login from "./Pages/Login";
@@ -38,6 +39,7 @@ const App = () => {
         <Route path="/" element={<Home />} />
         <Route path="/product/details/:id" element={<Product />} />
         <Route path="/cart" element={<Cart />} />
+        <Route path="/catalog" element={<Catalog />} />
 
         {/* Public Routes */}
         <Route path="/*" element={<PublicRoutes />}>
