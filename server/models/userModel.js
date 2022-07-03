@@ -28,9 +28,18 @@ const UserSchema = new Schema(
       required: true,
     },
     phone: {
-      type: Number,
+      type: String,
     },
     country: {
+      type: String,
+    },
+    address: {
+      type: String,
+    },
+    city: {
+      type: String,
+    },
+    zip_code: {
       type: String,
     },
     isAdmin: {

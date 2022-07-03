@@ -76,9 +76,6 @@ const userUpdateSchema = Yup.object({
 
 // Shipping Address Schema
 const shippingSchema = Yup.object({
-  name: Yup.string()
-    .required("Name field can not be empty.")
-    .matches(/[a-zA-Z]+\s[a-zA-Z-]/, "Please type your full name."),
   country: Yup.string().required("Country field can not be empty."),
   phone_number: Yup.string().required("Phone number field can not be empty."),
   address: Yup.string().required("Address field can not be empty."),

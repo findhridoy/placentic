@@ -35,7 +35,7 @@ const CheckoutSubtotal = () => {
       </div>
 
       <div className="cartSubtotal__btn btn btn__dark">
-        <Button onClick={handleCheckout}>
+        <Button onClick={handleCheckout} disabled>
           <span className="btn__text">Place order</span>
           <span className="btn__digit">${amount?.total}</span>
         </Button>

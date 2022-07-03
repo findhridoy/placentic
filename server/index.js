@@ -8,6 +8,7 @@ const connectMDB = require("./config/db");
 const userRouter = require("./routes/userRoutes");
 const categoryRouter = require("./routes/categoryRoutes");
 const productRouter = require("./routes/productRoutes");
+const stripeRouter = require("./routes/stripeRoute");
 const { notFound, errorHandler } = require("./middleware/errorMiddileware");
 
 // Initialize the Application
@@ -21,6 +22,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/api/users", userRouter);
 app.use("/api/category", categoryRouter);
 app.use("/api/product", productRouter);
+app.use("/api", stripeRouter);
 
 // Default Error Handler
 app.use(notFound);

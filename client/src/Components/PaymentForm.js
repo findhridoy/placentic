@@ -1,107 +1,102 @@
-// import { CardNumberElement, PaymentElement } from "@stripe/react-stripe-js";
-
 import { Button } from "@mui/material";
 import {
-  CardCvcElement,
-  CardExpiryElement,
-  CardNumberElement,
+  PaymentElement,
   useElements,
   useStripe,
 } from "@stripe/react-stripe-js";
-import { useState } from "react";
-import { useGlobalContext } from "../Context/GlobalContext";
+import { useEffect, useState } from "react";
+import CustomAlert from "./CustomAlert";
 
-const CheckoutForm = ({ condition, orderId }) => {
-  const [cardName, setCardName] = useState("");
-  const [errors, setErrors] = useState();
-  const [loading, setLoading] = useState();
-
+const PaymentForm = () => {
   const stripe = useStripe();
   const elements = useElements();
 
-  // use context
-  const { addPaymentMethod, updatePayment } = useGlobalContext();
+  const [message, setMessage] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-
-    if (elements == null) {
+  useEffect(() => {
+    if (!stripe) {
       return;
     }
-    if (cardName === "" || cardName === " ") {
-      setErrors({
-        message: "Your card name is incomplete.",
-      });
+
+    const clientSecret = new URLSearchParams(window.location.search).get(
+      "payment_intent_client_secret"
+    );
+
+    if (!clientSecret) {
+      return;
     }
-    setLoading(true);
-    const { error, paymentMethod } = await stripe.createPaymentMethod({
-      type: "card",
-      card: elements.getElement(CardNumberElement),
-      // eslint-disable-next-line no-dupe-keys
-      card: elements.getElement(CardExpiryElement),
-      // eslint-disable-next-line no-dupe-keys
-      card: elements.getElement(CardCvcElement),
+
+    stripe.retrievePaymentIntent(clientSecret).then(({ paymentIntent }) => {
+      switch (paymentIntent.status) {
+        case "succeeded":
+          setMessage("Payment succeeded!");
+          break;
+        case "processing":
+          setMessage("Your payment is processing.");
+          break;
+        case "requires_payment_method":
+          setMessage("Your payment was not successful, please try again.");
+          break;
+        default:
+          setMessage("Something went wrong.");
+          break;
+      }
     });
-    setLoading(false);
-    if (cardName && error) {
-      setErrors(error);
+  }, [stripe]);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!stripe || !elements) {
+      // Stripe.js has not yet loaded.
+      // Make sure to disable form submission until Stripe.js has loaded.
+      return;
     }
-    if (paymentMethod && !condition) {
-      setErrors();
-      addPaymentMethod(paymentMethod.id);
+
+    setIsLoading(true);
+
+    const { error } = await stripe.confirmPayment({
+      elements,
+      confirmParams: {
+        // Make sure to change this to your payment completion page
+        return_url: "http://localhost:3000/checkout",
+      },
+    });
+
+    // This point will only be reached if there is an immediate error when
+    // confirming the payment. Otherwise, your customer will be redirected to
+    // your `return_url`. For some payment methods like iDEAL, your customer will
+    // be redirected to an intermediate site first to authorize the payment, then
+    // redirected to the `return_url`.
+    if (error.type === "card_error" || error.type === "validation_error") {
+      setMessage(error.message);
+    } else {
+      setMessage("An unexpected error occurred.");
     }
-    if (condition && paymentMethod) {
-      setErrors();
-      updatePayment(orderId, paymentMethod.id);
-    }
+
+    setIsLoading(false);
   };
 
   return (
-    <div className="checkoutForm">
-      {errors && (
-        <div className="ss__error">
-          {/* <WarningIcon className="ss__error--icon" /> */}
-          <span className="ss__error--text">{errors?.message}</span>
-        </div>
-      )}
-      <form onSubmit={handleSubmit} className="checkoutForm__form">
-        <span className="form__group">
-          <label className="form__label">Name on Card</label>
-          <input
-            className="form__control"
-            type="text"
-            placeholder="Visa or master card"
-            onChange={(e) => setCardName(e.target.value)}
-          />
-        </span>
-        <span className="form__group">
-          <label className="form__label">Card number</label>
-          <CardNumberElement />
-        </span>
+    <form id="payment-form" onSubmit={handleSubmit}>
+      {/* Show any error or success messages */}
+      {/* {message && <div id="payment-message">{message}</div>} */}
+      {message && <CustomAlert severity="error" message={message} close />}
 
-        <div className="form__divided">
-          <span className="form__group">
-            <label className="form__label">Expiration date</label>
-            <CardExpiryElement />
-          </span>
-
-          <span className="form__group">
-            <label className="form__label">CVC</label>
-            <CardCvcElement />
-          </span>
-        </div>
-
-        <div className="form__btn">
-          <Button
-            type="submit"
-            disabled={!stripe || !elements}
-            variant="contained"
-          >
-            {loading ? "Processing" : "Pay"}
-          </Button>
-        </div>
-      </form>
-    </div>
+      <PaymentElement id="payment-element" />
+      <div className="btn small__btn btn__dark">
+        <Button
+          disabled={isLoading || !stripe || !elements}
+          type="submit"
+          id="submit"
+          style={{ width: "100%", marginTop: "1.2rem" }}
+        >
+          {isLoading ? "Proccesing" : "Pay now"}
+        </Button>
+      </div>
+    </form>
   );
 };
-export default CheckoutForm;
+
+export default PaymentForm;

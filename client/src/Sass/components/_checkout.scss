@@ -1,15 +1,17 @@
 .checkout__section {
+  @include body-margin(minus);
   .checkout__container {
     display: grid;
     gap: 1.5rem;
-
+    max-width: 980px;
+    margin: 0 auto;
     @include breakpoint(md) {
       gap: 1rem;
       grid-template-columns: 1fr 0.5fr;
     }
     @include breakpoint(lg) {
       gap: 2.5rem;
-      grid-template-columns: 1fr 0.5fr;
+      // grid-template-columns: 1fr 0.5fr;
     }
     .chekout__content {
       .checkout__login {
@@ -81,7 +83,7 @@
     }
 
     .chekout__subtotal {
-      min-width: 300px;
+      min-width: 340px;
     }
   }
 }

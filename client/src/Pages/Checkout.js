@@ -4,7 +4,7 @@ import CustomBreadcrumbs from "../Components/CustomBreadcrumbs";
 
 const Checkout = () => {
   return (
-    <section className="checkout__section">
+    <section className="checkout__section section">
       <div className="container">
         <CustomBreadcrumbs title="Checkout" />
 

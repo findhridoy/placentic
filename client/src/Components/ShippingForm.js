@@ -1,16 +1,26 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Button, CircularProgress } from "@mui/material";
+import cogoToast from "cogo-toast";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { countryData } from "../Assets/json/countryData";
 import { shippingSchema } from "../Helpers/Validation/ValidationSchema";
+import {
+  updateUserProfile,
+  userUpdateErrorReset,
+} from "../Redux/actions/userActions";
 
-const ShippingForm = () => {
+const ShippingForm = ({ user, setExpanded }) => {
   // States
 
   // Redux element
   const dispatch = useDispatch();
-  const { categories } = useSelector((state) => state.categoryList);
+  const { loading, error, user: updateUser } = useSelector(
+    (state) => state.updateUserProfile
+  );
+
+  console.log(updateUser);
 
   // React hook form own state
   const {
@@ -23,35 +33,36 @@ const ShippingForm = () => {
 
   // React hook form data submit
   const onSubmit = async (data) => {
-    console.log(data);
     if (data) {
-      const formData = new FormData();
-
-      formData.append("title", data.title);
-      formData.append("description", data.description);
-      formData.append("category", data.category);
-      formData.append("price", data.price);
-      formData.append("countInStock", data.stock);
+      let formData = new FormData();
+      formData.append("city", data.city);
+      formData.append("address", data.address);
+      formData.append("zip_code", data.zip_code);
+      formData.append("phone", data.phone);
+      formData.append("country", data.country);
 
       // send data to backend
-      // dispatch(createProduct(formData));
+      dispatch(updateUserProfile(formData));
     }
   };
 
-  // useEffect(() => {
-  //   if (error) {
-  //     cogoToast.error(error);
-  //     dispatch(productCreateReset());
-  //   }
-  //   if (product?.message) {
-  //     cogoToast.error("Something was wrong!");
-  //     dispatch(productCreateReset());
-  //   }
-  //   if (product?.success) {
-  //     cogoToast.success("Product has been created.");
-  //     dispatch(productCreateReset());
-  //   }
-  // }, [error, dispatch, product]);
+  useEffect(() => {
+    if (error) {
+      cogoToast.error(error);
+      dispatch(userUpdateErrorReset());
+    }
+
+    if (updateUser?.message) {
+      cogoToast.success("Something was wrong! try again.");
+      dispatch(userUpdateErrorReset());
+      return;
+    }
+    if (updateUser) {
+      cogoToast.success("Shipping address was saved.");
+      dispatch(userUpdateErrorReset());
+      setExpanded("panel3");
+    }
+  }, [error, updateUser, dispatch, setExpanded]);
 
   return (
     <div className="shippingForm">
@@ -59,8 +70,11 @@ const ShippingForm = () => {
         <span className="form__group">
           <label className="form__label">Country/Region</label>
           <select className="form__select" {...register("country")}>
-            <option className="form__option" value="">
-              Select your country
+            <option
+              className="form__option"
+              value={user?.country ? user?.country : ""}
+            >
+              {user?.country ? user?.country : "Select your country"}
             </option>
 
             {countryData?.map((country, index) => (
@@ -78,40 +92,25 @@ const ShippingForm = () => {
           )}
         </span>
 
-        <div className="form__grid">
-          <span className="form__group">
-            <label className="form__label">Name</label>
-            <input
-              className="form__control"
-              type="text"
-              placeholder="Enter your full name"
-              {...register("name")}
-            />
-            {errors?.name && (
-              <span className="form__error">{errors?.name.message}</span>
-            )}
-          </span>
-
-          <span className="form__group">
-            <label className="form__label">Phone Number</label>
-            <input
-              className="form__control"
-              type="text"
-              placeholder="Enter your phone number"
-              {...register("phone_number")}
-            />
-            {errors?.phone_number && (
-              <span className="form__error">
-                {errors?.phone_number.message}
-              </span>
-            )}
-          </span>
-        </div>
+        <span className="form__group">
+          <label className="form__label">Phone Number</label>
+          <input
+            className="form__control"
+            type="text"
+            defaultValue={user?.phone}
+            placeholder="Enter your phone number"
+            {...register("phone_number")}
+          />
+          {errors?.phone_number && (
+            <span className="form__error">{errors?.phone_number.message}</span>
+          )}
+        </span>
 
         <span className="form__group">
           <label className="form__label">Address</label>
           <textarea
             className="form__textarea"
+            defaultValue={user?.address}
             placeholder="Enter your address"
             {...register("address")}
           ></textarea>
@@ -126,6 +125,7 @@ const ShippingForm = () => {
             <input
               className="form__control"
               type="text"
+              defaultValue={user?.city}
               placeholder="Enter your city"
               {...register("city")}
             />
@@ -139,6 +139,7 @@ const ShippingForm = () => {
             <input
               className="form__control"
               type="text"
+              defaultValue={user?.zip_code}
               placeholder="Enter your ZIP code"
               {...register("zip_code")}
             />
@@ -149,9 +150,9 @@ const ShippingForm = () => {
         </div>
 
         <div className="shippingForm__btn btn small__btn btn__dark">
-          <Button type="submit">
-            {false ? (
-              <CircularProgress color="inherit" size={30} thickness={3} />
+          <Button type="submit" style={{ width: "100%", marginTop: "0.5rem" }}>
+            {loading ? (
+              <CircularProgress color="inherit" size={24} thickness={3} />
             ) : (
               "Save Address"
             )}

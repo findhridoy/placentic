@@ -44,6 +44,10 @@ button:disabled {
   pointer-events: auto !important;
   cursor: not-allowed !important;
   opacity: 0.7;
+  &:hover {
+    color: initial;
+    box-shadow: none !important;
+  }
 }
 
 img {

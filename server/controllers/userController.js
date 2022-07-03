@@ -127,6 +127,9 @@ const updateUserProfile = asyncHandler(async (req, res) => {
       country: req.body.country || user.country,
       avatar: result.secure_url || user.avatar,
       avatar_id: result.public_id || user.avatar_id,
+      address: req.body.address || user.address,
+      city: req.body.city || user.city,
+      zip_code: req.body.zip_code || user.zip_code,
     };
 
     user = await User.findByIdAndUpdate(req.user._id, updatedUser, {
@@ -150,6 +153,9 @@ const updateUserProfile = asyncHandler(async (req, res) => {
       email: req.body.email || user.email,
       phone: req.body.phone || user.phone,
       country: req.body.country || user.country,
+      address: req.body.address || user.address,
+      city: req.body.city || user.city,
+      zip_code: req.body.zip_code || user.zip_code,
     };
 
     user = await User.findByIdAndUpdate(req.user._id, updatedUser, {
