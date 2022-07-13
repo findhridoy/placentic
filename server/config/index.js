@@ -10,4 +10,5 @@ module.exports = {
   CLOUDINARY_NAME: process.env.CLOUDINARY_NAME,
   CLOUDINARY_API: process.env.CLOUDINARY_API,
   CLOUDINARY_SECRET: process.env.CLOUDINARY_SECRET,
+  STRIPE_SECRET: process.env.STRIPE_SECRET,
 };

@@ -12,7 +12,7 @@ import ProductItem from "./ProductItem";
 
 const Products = () => {
   // States
-  const [keyword, setKeyword] = useState("");
+  // const [keyword, setKeyword] = useState("");
   const [limit, setLimit] = useState(8);
   const [loader, setLoader] = useState();
 
@@ -27,8 +27,8 @@ const Products = () => {
   } = useSelector((state) => state.queryProduct);
 
   useEffect(() => {
-    dispatch(queryProduct(keyword, limit));
-  }, [dispatch, keyword, limit]);
+    dispatch(queryProduct(limit));
+  }, [dispatch, limit]);
 
   useEffect(() => {
     if (loading && !storeProducts) {
@@ -74,7 +74,7 @@ const Products = () => {
                   </Stack>
                 </div>
               ))
-            ) : storeProducts?.length === 0 ? (
+            ) : storeProducts?.length < 1 ? (
               <CustomAlert severity="info" message="No products are found!" />
             ) : (
               storeProducts?.map((product) => (

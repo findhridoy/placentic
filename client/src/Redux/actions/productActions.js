@@ -83,7 +83,10 @@ export const productCreateReset = () => async (dispatch) => {
 };
 
 // product list action
-export const productList = (path) => async (dispatch, getState) => {
+export const productList = (path, keyword = "") => async (
+  dispatch,
+  getState
+) => {
   try {
     dispatch({
       type: PRODUCT_LIST_REQUEST,
@@ -102,7 +105,10 @@ export const productList = (path) => async (dispatch, getState) => {
       },
     };
 
-    const { data } = await axios.get(`/api/product/${path}`, config);
+    const { data } = await axios.get(
+      `/api/product/${path}?keyword=${keyword}`,
+      config
+    );
 
     dispatch({
       type: PRODUCT_LIST_SUCCESS,
@@ -263,7 +269,7 @@ export const getProductReset = () => async (dispatch) => {
 };
 
 // query product list action
-export const queryProduct = (keyword, limit) => async (dispatch) => {
+export const queryProduct = (limit) => async (dispatch) => {
   try {
     dispatch({
       type: PRODUCT_QUERY_REQUEST,
@@ -276,10 +282,7 @@ export const queryProduct = (keyword, limit) => async (dispatch) => {
       },
     };
 
-    const { data } = await axios.get(
-      `/api/product?keyword=${keyword}&limit=${limit}`,
-      config
-    );
+    const { data } = await axios.get(`/api/product?limit=${limit}`, config);
 
     dispatch({
       type: PRODUCT_QUERY_SUCCESS,

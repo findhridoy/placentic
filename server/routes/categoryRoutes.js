@@ -14,7 +14,7 @@ const { upload } = require("../utils/avatarUpload");
 
 // Category routes
 router.post("/create", protect, admin, upload.single("image"), createCategory);
-router.get("/categories", protect, getCategories);
+router.get("/categories", getCategories);
 router.put(
   "/update/:id",
   protect,

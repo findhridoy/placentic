@@ -1,18 +1,16 @@
 .product__item {
   width: 280px;
-
   @include breakpoint(sm) {
-    width: 260px;
-  }
-  @include breakpoint(md) {
     width: 100%;
   }
   .product__img {
     position: relative;
     overflow: hidden;
-    height: 280px;
     img {
       object-fit: cover;
+      vertical-align: middle;
+      width: 100%;
+      overflow: hidden;
     }
 
     .product__action {

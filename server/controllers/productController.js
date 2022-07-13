@@ -130,13 +130,23 @@ const deleteProduct = asyncHandler(async (req, res) => {
 });
 
 /**
- * @route   Get /api/product/products
+ * @route   Get /api/product/products?keyword=afgad
  * @desc    Get all products
- * @access  Private/Admin
+ * @access  Private/Admin/Public
  */
 const getAllProducts = asyncHandler(async (req, res) => {
+  // search products by keyword or get all products
+  const keyword = req.query.keyword
+    ? {
+        title: {
+          $regex: req.query.keyword,
+          $options: "i",
+        },
+      }
+    : {};
+
   // find all products
-  const product = await Product.find({});
+  const product = await Product.find({ ...keyword });
   if (product) {
     res.status(200).json(product);
   } else {
@@ -156,21 +166,11 @@ const getProducts = asyncHandler(async (req, res) => {
   const page = 1;
   const skip = limit * (page - 1);
 
-  // search products by keyword
-  const keyword = req.query.keyword
-    ? {
-        title: {
-          $regex: req.query.keyword,
-          $options: "i",
-        },
-      }
-    : {};
-
   // get total products count
-  const counts = await Product.countDocuments({ ...keyword });
+  const counts = await Product.countDocuments({});
 
   // find all products
-  const products = await Product.find({ ...keyword })
+  const products = await Product.find({})
     .limit(limit)
     .skip(skip)
     .sort({ _id: -1 });

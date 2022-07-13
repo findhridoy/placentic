@@ -55,9 +55,10 @@ const Category = () => {
             ) : categories?.length === 0 ? (
               <CustomAlert severity="info" message="No categories are found!" />
             ) : (
-              categories?.map((category) => (
-                <CategoryItem category={category} key={category?._id} />
-              ))
+              categories
+                ?.map((category) => (
+                  <CategoryItem category={category} key={category?._id} />
+                ))
             )}
           </div>
         </div>

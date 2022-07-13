@@ -3,24 +3,33 @@
   .products__content {
     display: grid;
     place-items: center;
+    @include breakpoint(sm) {
+      place-items: initial;
+      max-width: 640px;
+      margin: 0 auto;
+    }
     @include breakpoint(md) {
       place-items: initial;
+      max-width: initial;
+      margin: initial;
     }
     .products__data {
       margin-top: $x-2;
       display: grid;
       column-gap: 1rem;
-      row-gap: 2rem;
-      @include breakpoint(sm) {
-        grid-template-columns: repeat(2, 1fr);
-      }
+      row-gap: 2.5rem;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
       @include breakpoint(md) {
-        grid-template-columns: repeat(auto-fit, minmax(225px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
       }
+      @include breakpoint(xl) {
+        grid-template-columns: repeat(4, minmax(250px, 1fr));
+      }
+
       .products__loader {
         width: 280px;
         @include breakpoint(sm) {
-          width: 260px;
+          width: 100%;
         }
         @include breakpoint(md) {
           width: 100%;

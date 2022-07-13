@@ -1,12 +1,13 @@
 // External Imports
 const router = require("express").Router();
 
+// Internal Imports
+const { STRIPE_SECRET } = require("../config");
+
 // This is a public sample test API key.
 // Don’t submit any personally identifiable information in requests made with this key.
 // Sign in to see your own test API key embedded in code samples.
-const stripe = require("stripe")(
-  "sk_test_51LGMCHGPdR4pQodplo8dSd5LcxIcco1ANbyQQaNP1NxNMTNdH9fKcsibQfVSeccqdhJFXeT2vIuUtqRFNwmsdD9t00k1vydFrw"
-);
+const stripe = require("stripe")(STRIPE_SECRET);
 
 const calculateOrderAmount = (items) => {
   // Replace this constant with a calculation of the order's amount
