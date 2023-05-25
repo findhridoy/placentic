@@ -8,7 +8,7 @@ import {
   deleteProductReviewReset,
   permissionProductReview,
   permissionProductReviewReset,
-} from "../Redux/actions/productActions";
+} from "../App/actions/productActions";
 import CommentHandler from "./CommentHandler";
 import Rating from "./Rating";
 

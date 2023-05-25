@@ -1,13 +1,12 @@
-import Category from "../Components/Category";
-import Hero from "../Components/Hero";
-import Products from "../Components/Products";
-import Layout from "../Layouts/Layout";
+import Hero from "../components/Hero";
+import Products from "../components/Products";
+import Layout from "../layouts/Layout";
 
 const Home = () => {
   return (
     <Layout>
       <Hero />
-      <Category />
+      {/* <Category /> */}
       <Products />
     </Layout>
   );

@@ -1,10 +1,11 @@
 import React from "react";
-import { useSelector } from "react-redux";
 import { Navigate, Outlet } from "react-router-dom";
 
 const PublicRoutes = () => {
   // Redux
-  const { userInfo } = useSelector((state) => state.userLogin);
+  // const { userInfo } = useSelector((state) => state.userLogin);
+
+  const userInfo = { email: "" };
 
   return !userInfo?.email ? <Outlet /> : <Navigate to="/" />;
 };

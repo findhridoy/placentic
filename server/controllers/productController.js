@@ -6,7 +6,7 @@ const Product = require("../models/productModel");
 const { cloudinary } = require("../config/cloudinary");
 
 /**
- * @route   Post /api/product/add
+ * @route   Post /api/product
  * @desc    Add a new product
  * @access  Private/Admin
  */
@@ -46,7 +46,7 @@ const addProduct = asyncHandler(async (req, res) => {
 });
 
 /**
- * @route   Put /api/product/update/:id
+ * @route   Put /api/product/:prodId
  * @desc    Update product
  * @access  Private/Admin
  */
@@ -106,7 +106,7 @@ const updateProduct = asyncHandler(async (req, res) => {
 });
 
 /**
- * @route   Delete /api/product/delete/:id
+ * @route   Delete /api/product/:prodId
  * @desc    Delete product
  * @access  Private/Admin
  */
@@ -156,24 +156,22 @@ const getAllProducts = asyncHandler(async (req, res) => {
 });
 
 /**
- * @route   Get /api/product?keword=keword
- * @desc    Get all products/search/limit
+ * @route   Get /api/product?sort=1&page=1&size=4
+ * @desc    Get all product
  * @access  Public
  */
 const getProducts = asyncHandler(async (req, res) => {
   // load more queries
-  const limit = parseInt(req.query.limit);
-  const page = 1;
-  const skip = limit * (page - 1);
+  const page = parseInt(req.query.page);
+  const size = parseInt(req.query.size);
+  const sort = parseInt(req.query.sort);
+  const skip = page * size;
 
   // get total products count
   const counts = await Product.countDocuments({});
 
   // find all products
-  const products = await Product.find({})
-    .limit(limit)
-    .skip(skip)
-    .sort({ _id: -1 });
+  const products = await Product.find({}).limit(size).skip(skip).sort(sort);
 
   if (products) {
     res.status(200).json({ products, counts });
@@ -184,13 +182,13 @@ const getProducts = asyncHandler(async (req, res) => {
 });
 
 /**
- * @route   Get /api/product/product/:id
- * @desc    Get single product
- * @access  Private/Admin
+ * @route   Get /api/product/prodId
+ * @desc    Get single product by ID
+ * @access  Public
  */
 const getProduct = asyncHandler(async (req, res) => {
   // find product by id
-  const product = await Product.findById(req.params.id);
+  const product = await Product.findById(req.params.prodId);
   if (product) {
     res.status(200).json(product);
   } else {
@@ -200,7 +198,7 @@ const getProduct = asyncHandler(async (req, res) => {
 });
 
 /**
- * @route   Post /api/product/review/:id
+ * @route   Post /api/product/review/:revId
  * @desc    Create a product review
  * @access  Private
  */
@@ -279,7 +277,7 @@ const createProductReview = asyncHandler(async (req, res) => {
 });
 
 /**
- * @route   Post /api/product/review/approve/:id?
+ * @route   Post /api/product/review/approve/:revId?
  * @desc    Approve, Declien a product review
  * @access  Private/Admin
  */

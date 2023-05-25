@@ -10,7 +10,7 @@ import { Avatar, IconButton } from "@mui/material";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
-import { logoutUser } from "../../Redux/actions/userActions";
+import { logoutUser } from "../../App/actions/userActions";
 
 const DashboardHeader = ({ title, filter, setFilter }) => {
   const [showSearchBox, setShowSearchBox] = useState(false);

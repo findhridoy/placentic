@@ -6,13 +6,13 @@ import { useEffect, useMemo, useState } from "react";
 import "react-dropdown/style.css";
 import { useDispatch, useSelector } from "react-redux";
 import { useGlobalFilter, usePagination, useTable } from "react-table";
-import CustomAlert from "../../Components/CustomAlert";
-import CustomTable from "../../ReactTable/CustomTable";
-import { productColumn } from "../../ReactTable/TableColumns/ProductColumn";
 import {
   productList,
   productListReset,
-} from "../../Redux/actions/productActions";
+} from "../../App/actions/productActions";
+import CustomAlert from "../../Components/CustomAlert";
+import CustomTable from "../../ReactTable/CustomTable";
+import { productColumn } from "../../ReactTable/TableColumns/ProductColumn";
 import AddProductForm from "../DashboardComponents/AddProductForm";
 import DashboardLayout from "../DashboardLayout/DashboardLayout";
 

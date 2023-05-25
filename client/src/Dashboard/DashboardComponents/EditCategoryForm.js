@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   categoryUpdateErrorReset,
   updateCategory,
-} from "../../Redux/actions/categoryActions";
+} from "../../App/actions/categoryActions";
 import FormImageControl from "./FormImageControl";
 
 const EditCategoryForm = ({ setOpen, row }) => {

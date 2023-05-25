@@ -4,13 +4,13 @@ import MenuItem from "@mui/material/MenuItem";
 import MenuList from "@mui/material/MenuList";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import CustomAlert from "../Components/CustomAlert";
-import ProductItem from "../Components/ProductItem";
 import {
   categoryList,
   categoryListReset,
-} from "../Redux/actions/categoryActions";
-import { productList, productListReset } from "../Redux/actions/productActions";
+} from "../App/actions/categoryActions";
+import { productList, productListReset } from "../App/actions/productActions";
+import CustomAlert from "../Components/CustomAlert";
+import ProductItem from "../Components/ProductItem";
 import Layout from "./Layout";
 
 const ProductLayout = ({ children }) => {
@@ -92,32 +92,35 @@ const ProductLayout = ({ children }) => {
               </h4>
             </div>
             <div className="productLayout__content">
-             <div  className="productLayout__data">
-               {loading ? (
-                 [0, 1, 2, 3, 4, 5].map((index) => (
-                   <div className="products__loader" key={index}>
-                     <Skeleton
-                       height={260}
-                       animation="wave"
-                       variant="rectangular"
-                     />
-                     <Stack marginTop={1}>
-                       <Skeleton width="100%" animation="wave" height={35} />
-                       <Stack justifyContent="space-between" direction="row">
-                         <Skeleton width={70} animation="wave" height={20} />
-                         <Skeleton width={110} animation="wave" height={20} />
-                       </Stack>
-                     </Stack>
-                   </div>
-                 ))
-               ) : filterProduct?.length ? (
-                 filterProduct?.map((product) => (
-                   <ProductItem product={product} key={product?._id} />
-                 ))
-               ) : (
-                 <CustomAlert severity="info" message="No products are found!" />
-               )}
-             </div>
+              <div className="productLayout__data">
+                {loading ? (
+                  [0, 1, 2, 3, 4, 5].map((index) => (
+                    <div className="products__loader" key={index}>
+                      <Skeleton
+                        height={260}
+                        animation="wave"
+                        variant="rectangular"
+                      />
+                      <Stack marginTop={1}>
+                        <Skeleton width="100%" animation="wave" height={35} />
+                        <Stack justifyContent="space-between" direction="row">
+                          <Skeleton width={70} animation="wave" height={20} />
+                          <Skeleton width={110} animation="wave" height={20} />
+                        </Stack>
+                      </Stack>
+                    </div>
+                  ))
+                ) : filterProduct?.length ? (
+                  filterProduct?.map((product) => (
+                    <ProductItem product={product} key={product?._id} />
+                  ))
+                ) : (
+                  <CustomAlert
+                    severity="info"
+                    message="No products are found!"
+                  />
+                )}
+              </div>
             </div>
 
             {/* {counts === products?.length || storeProducts?.length === 0 ? (

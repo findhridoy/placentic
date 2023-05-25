@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 import {
   createProductReview,
   createProductReviewReset,
-} from "../Redux/actions/productActions";
+} from "../App/actions/productActions";
 import ReviewRating from "./ReviewRating";
 
 const ReviewForm = ({ product }) => {

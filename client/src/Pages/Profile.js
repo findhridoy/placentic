@@ -11,16 +11,16 @@ import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import CustomBreadcrumbs from "../Components/CustomBreadcrumbs";
-import ProfileInfo from "../Components/ProfileInfo";
-import UserAvatar from "../Components/UserAvatar";
-import Layout from "../Layouts/Layout";
 import {
   getUserProfile,
   updateUserProfile,
   userProfileErrorReset,
   userUpdateErrorReset,
-} from "../Redux/actions/userActions";
+} from "../App/actions/userActions";
+import CustomBreadcrumbs from "../Components/CustomBreadcrumbs";
+import ProfileInfo from "../Components/ProfileInfo";
+import UserAvatar from "../Components/UserAvatar";
+import Layout from "../Layouts/Layout";
 import Orders from "./Orders";
 
 const Profile = () => {

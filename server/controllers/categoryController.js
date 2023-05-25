@@ -58,15 +58,14 @@ const createCategory = asyncHandler(async (req, res) => {
 });
 
 /**
- * @route   Get /api/category/categores
+ * @route   Get /api/category
  * @desc    Get all categories
  * @access  Private/Public
  */
 const getCategories = asyncHandler(async (req, res) => {
   // find all category
-  const categories = await Category.find({}).sort({
-    _id: -1,
-  });
+  const categories = await Category.find({}).sort({ _id: -1 });
+
   if (categories) {
     res.status(200).json(categories);
   } else {

@@ -2,21 +2,23 @@ import { Modal } from "@mui/material";
 import cogoToast from "cogo-toast";
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import EditUserForm from "../../Dashboard/DashboardComponents/EditUserForm";
 import {
-  deleteUser,
-  userDeleteErrorReset,
-} from "../../Redux/actions/userActions";
+  deleteProduct,
+  productDeleteReset,
+} from "../../App/actions/productActions";
+import EditProductForm from "../../Dashboard/DashboardComponents/EditProductFrom";
 import ActionButton from "../TableComponents/ActionButton";
 
-const UserAction = ({ row }) => {
+const ProductAction = ({ row }) => {
   // Modal state
   const [open, setOpen] = useState(false);
   const [loader, setLoader] = useState(false);
 
   // Redux element
   const dispatch = useDispatch();
-  const { loading, error, user } = useSelector((state) => state.deleteUser);
+  const { loading, error, product } = useSelector(
+    (state) => state.deleteProduct
+  );
 
   // Table item edit functionality
   const handleEditClick = (x) => {
@@ -30,24 +32,24 @@ const UserAction = ({ row }) => {
   const handleDelete = (id) => {
     if (btnRef.current.click) {
       setLoader(true);
-      dispatch(deleteUser(id));
+      dispatch(deleteProduct(id));
     }
   };
 
   useEffect(() => {
     if (error) {
       cogoToast.error(error);
-      dispatch(userDeleteErrorReset());
+      dispatch(productDeleteReset());
     }
-    if (user?.message) {
+    if (product?.message) {
       cogoToast.error("Something was wrong!");
-      dispatch(userDeleteErrorReset());
+      dispatch(productDeleteReset());
     }
-    if (user?.success) {
-      cogoToast.success("Category is deleted.");
-      dispatch(userDeleteErrorReset());
+    if (product?.success) {
+      cogoToast.success("Product is deleted.");
+      dispatch(productDeleteReset());
     }
-  }, [error, user, dispatch]);
+  }, [error, product, dispatch]);
   return (
     <>
       <ActionButton
@@ -61,11 +63,11 @@ const UserAction = ({ row }) => {
 
       <Modal open={open} onClose={() => setOpen(false)}>
         <>
-          <EditUserForm setOpen={setOpen} row={row} />
+          <EditProductForm setOpen={setOpen} row={row} />
         </>
       </Modal>
     </>
   );
 };
 
-export default UserAction;
+export default ProductAction;

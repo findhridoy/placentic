@@ -1,13 +1,11 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Button, CircularProgress, IconButton } from "@mui/material";
-import cogoToast from "cogo-toast";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import placentic from "../Assets/logo/placentic.png";
-import { signUpSchema } from "../Helpers/Validation/ValidationSchema";
-import { registerUser, userErrorReset } from "../Redux/actions/userActions";
+import placentic from "../assets/logo/placentic.png";
+import { signUpSchema } from "../helpers/Validation/ValidationSchema";
 
 const Signup = () => {
   // Password hide/show state
@@ -15,9 +13,9 @@ const Signup = () => {
 
   // Redux
   const dispatch = useDispatch();
-  const { loading, error, userInfo } = useSelector(
-    (state) => state.userRegister
-  );
+  // const { loading, error, userInfo } = useSelector(
+  //   (state) => state.userRegister
+  // );
 
   // React hook form own state
   const {
@@ -30,7 +28,7 @@ const Signup = () => {
 
   // React hook form data submit
   const onSubmit = async (data) => {
-    dispatch(registerUser(data));
+    // dispatch(registerUser(data));
   };
 
   const location = useLocation();
@@ -38,21 +36,21 @@ const Signup = () => {
 
   let { from } = location.state || { from: { pathname: "/" } };
 
-  useEffect(() => {
-    if (error) {
-      cogoToast.error(error);
-      dispatch(userErrorReset());
-    }
-    if (userInfo?.message) {
-      cogoToast.error("Something was wrong!");
-      dispatch(userErrorReset());
-    }
-    if (userInfo?.email) {
-      cogoToast.error("Your account has been created.");
-      dispatch(userErrorReset());
-      navigate(from);
-    }
-  }, [error, navigate, from, userInfo, dispatch]);
+  // useEffect(() => {
+  //   if (error) {
+  //     cogoToast.error(error);
+  //     dispatch(userErrorReset());
+  //   }
+  //   if (userInfo?.message) {
+  //     cogoToast.error("Something was wrong!");
+  //     dispatch(userErrorReset());
+  //   }
+  //   if (userInfo?.email) {
+  //     cogoToast.error("Your account has been created.");
+  //     dispatch(userErrorReset());
+  //     navigate(from);
+  //   }
+  // }, [error, navigate, from, userInfo, dispatch]);
 
   return (
     <section className="sl__section signup__section main__bg">
@@ -148,7 +146,7 @@ const Signup = () => {
 
             <div className="sl__btn btn btn__dark">
               <Button type="submit">
-                {loading ? (
+                {true ? (
                   <CircularProgress color="inherit" size={30} />
                 ) : (
                   "Sign Up"

@@ -5,11 +5,11 @@ import cogoToast from "cogo-toast";
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
-import { userUpdateSchema } from "../../Helpers/Validation/ValidationSchema";
 import {
   userMakeAdmin,
   userMakeAdminReset,
-} from "../../Redux/actions/userActions";
+} from "../../App/actions/userActions";
+import { userUpdateSchema } from "../../Helpers/Validation/ValidationSchema";
 
 const EditUserForm = ({ setOpen, row }) => {
   // Redux element

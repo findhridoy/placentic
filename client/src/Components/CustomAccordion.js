@@ -5,7 +5,7 @@ import MuiAccordionSummary from "@mui/material/AccordionSummary";
 import { styled } from "@mui/material/styles";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getUserProfile } from "../Redux/actions/userActions";
+import { getUserProfile } from "../App/actions/userActions";
 import ShippingForm from "./ShippingForm";
 import StripePayment from "./StripePayment";
 

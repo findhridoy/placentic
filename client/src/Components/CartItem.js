@@ -5,7 +5,7 @@ import RemoveIcon from "@mui/icons-material/Remove";
 import { IconButton } from "@mui/material";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
-import { addToCart, removeFromCart } from "../Redux/actions/cartActions";
+import { addToCart, removeFromCart } from "../App/actions/cartActions";
 
 const CartItem = ({ cartItem }) => {
   // Redux element

@@ -16,21 +16,15 @@ const {
 const { protect, admin } = require("../middleware/authMiddleware");
 const { upload } = require("../utils/avatarUpload");
 
-// User routes
-router.post("/add", protect, admin, upload.single("image"), addProduct);
-router.put(
-  "/update/:id",
-  protect,
-  admin,
-  upload.single("image"),
-  updateProduct
-);
-router.delete("/delete/:id", protect, admin, deleteProduct);
-router.get("/products", getAllProducts);
+// Product routes
+router.post("/", protect, admin, upload.single("image"), addProduct);
+router.put("/:prodId", protect, admin, upload.single("image"), updateProduct);
+router.delete("/:prodId", protect, admin, deleteProduct);
 router.get("/", getProducts);
-router.get("/product/:id", getProduct);
-router.post("/review/:id", protect, createProductReview);
-router.get("/review/approve/:id", protect, admin, approveProductReview);
+router.get("/products", getAllProducts);
+router.get("/:prodId", getProduct);
+router.post("/review/:revId", protect, createProductReview);
+router.get("/review/approve/:revId", protect, admin, approveProductReview);
 router.get("/review", protect, admin, deleteProductReview);
 
 // Export router

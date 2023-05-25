@@ -9,58 +9,65 @@ import {
   Skeleton,
   Stack,
 } from "@mui/material";
-import cogoToast from "cogo-toast";
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
-import ProductTab from "../Components/ProductTab";
-import Rating from "../Components/Rating";
-import Layout from "../Layouts/Layout";
-import { addToCart } from "../Redux/actions/cartActions";
-import { getProduct, getProductReset } from "../Redux/actions/productActions";
-import { addToWishlist } from "../Redux/actions/wishlistActions";
+import { useGetProductQuery } from "../app/services/productApi";
+import Layout from "../layouts/Layout";
 
 const Product = () => {
   // States
   const [quantity, setQuantity] = useState(1);
 
   // react router
-  const { id } = useParams();
+  const { prodId } = useParams();
 
   // Redux element
-  const dispatch = useDispatch();
-  const { loading, error, product } = useSelector((state) => state.getProduct);
-  const { review: reviews } = useSelector((state) => state.deleteProductReview);
-  const { review } = useSelector((state) => state.createProductReview);
-  const { review: arrpoveReviews } = useSelector(
-    (state) => state.permissionProductReview
+  const {
+    isLoading,
+    isError,
+    error,
+    isFetching,
+    data: product,
+  } = useGetProductQuery(prodId);
+
+  console.log(product);
+
+  // const dispatch = useDispatch();
+  // const { loading, error, product } = useSelector((state) => state.getProduct);
+  // const { review: reviews } = useSelector((state) => state.deleteProductReview);
+  // const { review } = useSelector((state) => state.createProductReview);
+  // const { review: arrpoveReviews } = useSelector(
+  //   (state) => state.permissionProductReview
+  // );
+  // const { wishlistItems } = useSelector((state) => state.wishlist);
+
+  useEffect(
+    () => {
+      // dispatch(getProduct(id));
+
+      return () => {
+        // dispatch(getProductReset());
+      };
+    },
+    [
+      // dispatch,
+      // id,
+      // reviews?.success,
+      // review?.success,
+      // arrpoveReviews?.success,
+    ]
   );
-  const { wishlistItems } = useSelector((state) => state.wishlist);
 
-  useEffect(() => {
-    dispatch(getProduct(id));
-
-    return () => {
-      dispatch(getProductReset());
-    };
-  }, [
-    dispatch,
-    id,
-    reviews?.success,
-    review?.success,
-    arrpoveReviews?.success,
-  ]);
-
-  useEffect(() => {
-    if (error) {
-      cogoToast.error(error);
-      dispatch(getProductReset());
-    }
-    if (product?.message) {
-      cogoToast.error("Something was wrong!");
-      dispatch(getProductReset());
-    }
-  }, [error, product, dispatch]);
+  // useEffect(() => {
+  //   if (error) {
+  //     cogoToast.error(error);
+  //     dispatch(getProductReset());
+  //   }
+  //   if (product?.message) {
+  //     cogoToast.error("Something was wrong!");
+  //     dispatch(getProductReset());
+  //   }
+  // }, [error, product, dispatch]);
 
   // Product quantity setup
   const handleQuantity = (action) => {
@@ -74,14 +81,14 @@ const Product = () => {
 
   // Add to cart functionality
   const handleAddToCart = () => {
-    dispatch(addToCart(product, quantity));
+    // dispatch(addToCart(product, quantity));
   };
 
-  const exisWishlisttItem = wishlistItems?.find((x) => product?._id === x._id);
+  // const exisWishlisttItem = wishlistItems?.find((x) => product?._id === x._id);
 
   // Add to wishlist functionality
   const handleAddToWishlist = () => {
-    dispatch(addToWishlist(product));
+    // dispatch(addToWishlist(product));
   };
   return (
     <Layout>
@@ -89,7 +96,7 @@ const Product = () => {
         <div className="container">
           <div className="product__content">
             <div className="product__image">
-              {loading ? (
+              {isLoading ? (
                 <Skeleton
                   height={450}
                   width="100%"
@@ -101,7 +108,7 @@ const Product = () => {
               )}
             </div>
             <div className="product__details">
-              {loading ? (
+              {isLoading ? (
                 <Stack>
                   <Skeleton width={160} animation="wave" height={35} />
                   <Skeleton width="100%" animation="wave" height={65} />
@@ -132,7 +139,7 @@ const Product = () => {
               ) : (
                 <>
                   <div className="product__rating">
-                    <Rating ratings={product?.ratings} />
+                    {/* <Rating ratings={product?.ratings} /> */}
                     <span className="product__review--text">
                       ({product?.countReviews} reviews)
                     </span>
@@ -183,7 +190,7 @@ const Product = () => {
               )}
 
               <div className="product__button">
-                {loading ? (
+                {isLoading ? (
                   <>
                     <Skeleton
                       height={49}
@@ -225,7 +232,7 @@ const Product = () => {
                       <Button
                         type="button"
                         onClick={handleAddToWishlist}
-                        disabled={exisWishlisttItem}
+                        // disabled={exisWishlisttItem}
                       >
                         {false ? (
                           <CircularProgress
@@ -249,7 +256,7 @@ const Product = () => {
 
           {/* Product others section */}
           <div className="product__tab">
-            <ProductTab product={product} loading={loading} />
+            {/* <ProductTab product={product} loading={isLoading} /> */}
           </div>
         </div>
       </section>

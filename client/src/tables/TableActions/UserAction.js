@@ -2,23 +2,21 @@ import { Modal } from "@mui/material";
 import cogoToast from "cogo-toast";
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import EditCategoryForm from "../../Dashboard/DashboardComponents/EditCategoryForm";
 import {
-  categoryDeleteErrorReset,
-  deleteCategory,
-} from "../../Redux/actions/categoryActions";
+  deleteUser,
+  userDeleteErrorReset,
+} from "../../App/actions/userActions";
+import EditUserForm from "../../Dashboard/DashboardComponents/EditUserForm";
 import ActionButton from "../TableComponents/ActionButton";
 
-const CategoryAction = ({ row }) => {
+const UserAction = ({ row }) => {
   // Modal state
   const [open, setOpen] = useState(false);
   const [loader, setLoader] = useState(false);
 
   // Redux element
   const dispatch = useDispatch();
-  const { loading, error, category: categories } = useSelector(
-    (state) => state.deleteCategory
-  );
+  const { loading, error, user } = useSelector((state) => state.deleteUser);
 
   // Table item edit functionality
   const handleEditClick = (x) => {
@@ -32,24 +30,24 @@ const CategoryAction = ({ row }) => {
   const handleDelete = (id) => {
     if (btnRef.current.click) {
       setLoader(true);
-      dispatch(deleteCategory(id));
+      dispatch(deleteUser(id));
     }
   };
 
   useEffect(() => {
     if (error) {
       cogoToast.error(error);
-      dispatch(categoryDeleteErrorReset());
+      dispatch(userDeleteErrorReset());
     }
-    if (categories?.message) {
+    if (user?.message) {
       cogoToast.error("Something was wrong!");
-      dispatch(categoryDeleteErrorReset());
+      dispatch(userDeleteErrorReset());
     }
-    if (categories?.success) {
+    if (user?.success) {
       cogoToast.success("Category is deleted.");
-      dispatch(categoryDeleteErrorReset());
+      dispatch(userDeleteErrorReset());
     }
-  }, [error, categories, dispatch]);
+  }, [error, user, dispatch]);
   return (
     <>
       <ActionButton
@@ -63,11 +61,11 @@ const CategoryAction = ({ row }) => {
 
       <Modal open={open} onClose={() => setOpen(false)}>
         <>
-          <EditCategoryForm setOpen={setOpen} row={row} />
+          <EditUserForm setOpen={setOpen} row={row} />
         </>
       </Modal>
     </>
   );
 };
 
-export default CategoryAction;
+export default UserAction;

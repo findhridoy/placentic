@@ -4,6 +4,7 @@
 @import "config/variables";
 @import "config/base";
 @import "config/layout";
+@import "config/controls";
 
 // Components
 @import "components/scroll";
@@ -34,4 +35,4 @@
 // @import "components/stripePayment";
 
 // Dashboard
-@import "../Dashboard/DashboardStyles/dashboardIndex";
+@import "../dashboard/DashboardStyles/dashboardIndex";

@@ -2,22 +2,22 @@ import { Modal } from "@mui/material";
 import cogoToast from "cogo-toast";
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import EditProductForm from "../../Dashboard/DashboardComponents/EditProductFrom";
 import {
-  deleteProduct,
-  productDeleteReset,
-} from "../../Redux/actions/productActions";
+  categoryDeleteErrorReset,
+  deleteCategory,
+} from "../../App/actions/categoryActions";
+import EditCategoryForm from "../../Dashboard/DashboardComponents/EditCategoryForm";
 import ActionButton from "../TableComponents/ActionButton";
 
-const ProductAction = ({ row }) => {
+const CategoryAction = ({ row }) => {
   // Modal state
   const [open, setOpen] = useState(false);
   const [loader, setLoader] = useState(false);
 
   // Redux element
   const dispatch = useDispatch();
-  const { loading, error, product } = useSelector(
-    (state) => state.deleteProduct
+  const { loading, error, category: categories } = useSelector(
+    (state) => state.deleteCategory
   );
 
   // Table item edit functionality
@@ -32,24 +32,24 @@ const ProductAction = ({ row }) => {
   const handleDelete = (id) => {
     if (btnRef.current.click) {
       setLoader(true);
-      dispatch(deleteProduct(id));
+      dispatch(deleteCategory(id));
     }
   };
 
   useEffect(() => {
     if (error) {
       cogoToast.error(error);
-      dispatch(productDeleteReset());
+      dispatch(categoryDeleteErrorReset());
     }
-    if (product?.message) {
+    if (categories?.message) {
       cogoToast.error("Something was wrong!");
-      dispatch(productDeleteReset());
+      dispatch(categoryDeleteErrorReset());
     }
-    if (product?.success) {
-      cogoToast.success("Product is deleted.");
-      dispatch(productDeleteReset());
+    if (categories?.success) {
+      cogoToast.success("Category is deleted.");
+      dispatch(categoryDeleteErrorReset());
     }
-  }, [error, product, dispatch]);
+  }, [error, categories, dispatch]);
   return (
     <>
       <ActionButton
@@ -63,11 +63,11 @@ const ProductAction = ({ row }) => {
 
       <Modal open={open} onClose={() => setOpen(false)}>
         <>
-          <EditProductForm setOpen={setOpen} row={row} />
+          <EditCategoryForm setOpen={setOpen} row={row} />
         </>
       </Modal>
     </>
   );
 };
 
-export default ProductAction;
+export default CategoryAction;

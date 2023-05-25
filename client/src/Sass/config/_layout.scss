@@ -21,78 +21,7 @@
   }
 }
 /*=================== REUSEABLE CLASSES ===================*/
-// Button
-.btn {
-  .MuiButton-root {
-    height: 2.8rem;
-    width: 9rem;
-    font-weight: $semi-bold;
-    text-transform: capitalize;
-    border-radius: 0;
-    letter-spacing: 0.8px;
-    font-family: $poppins;
-    @include small-font;
-    cursor: pointer;
-    @include breakpoint(md) {
-      height: 3rem;
-      width: 10rem;
-    }
-    &:hover {
-      @include shadow-btn;
-    }
-  }
-}
-.small__btn {
-  .MuiButton-root {
-    height: 2.3rem;
-    width: 7.8rem;
-    display: flex;
-    align-items: center;
-    font-family: $poppins;
-    gap: 0.2rem;
-    @include smaller-font;
-    @include breakpoint(md) {
-      height: 2.6rem;
-      width: 8.5rem;
-      @include smallest-font;
-    }
-    .MuiSvgIcon-root {
-      @include h3-font;
-    }
-  }
-}
-// White Button
-.btn__white {
-  .MuiButton-root {
-    background-color: $white;
-    color: $dark-alt;
-    &:hover {
-      color: $dark-alt;
-      background-color: $white;
-    }
-    &:disabled {
-      pointer-events: auto !important;
-      cursor: not-allowed !important;
-      color: $dark-alt !important;
-    }
-  }
-}
-// Dark Button
-.btn__dark {
-  .MuiButton-root {
-    background-color: $dark-alt;
-    color: $white;
-    &:hover {
-      color: $white;
-      background-color: $dark-alt;
-    }
-    &:disabled {
-      pointer-events: auto !important;
-      cursor: not-allowed !important;
-      color: $white-alt !important;
-    }
-  }
-}
+
 // Outline Button
 // .btn__outline {
 //   .MuiButton-root {
@@ -371,20 +300,6 @@
       font-weight: $semi-bold;
       margin-top: $x-0-5;
       display: inline-block;
-    }
-  }
-}
-
-// Custom Alert
-.custom__alert {
-  // margin: 2rem 0;
-  .MuiPaper-root {
-    // opacity: 0.9;
-    border-radius: 0;
-    .MuiAlert-message {
-      // color: $dark-alt;
-      font-weight: $medium;
-      font-family: $poppins;
     }
   }
 }

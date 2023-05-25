@@ -1,55 +1,29 @@
 import AddIcon from "@mui/icons-material/Add";
-import { Button, CircularProgress, Skeleton, Stack } from "@mui/material";
-import cogoToast from "cogo-toast";
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  queryProduct,
-  queryProductReset,
-} from "../Redux/actions/productActions";
-import CustomAlert from "./CustomAlert";
+import { useState } from "react";
+import { useGetProductsQuery } from "../app/services/productApi";
 import ProductItem from "./ProductItem";
+import CustomAlert from "./controls/CustomAlert";
+import CustomButton from "./controls/CustomButton";
+import ButtonSkeleton from "./skeletons/ButtonSkeleton";
+import ProductItemSkeleton from "./skeletons/ProductItemSkeleton";
 
 const Products = () => {
   // States
   // const [keyword, setKeyword] = useState("");
-  const [limit, setLimit] = useState(8);
-  const [loader, setLoader] = useState();
+  const [size, setSize] = useState(8);
 
   // Redux element
-  const dispatch = useDispatch();
   const {
-    loading,
+    isLoading,
+    isError,
     error,
-    products,
-    product: storeProducts,
-    counts,
-  } = useSelector((state) => state.queryProduct);
-
-  useEffect(() => {
-    dispatch(queryProduct(limit));
-  }, [dispatch, limit]);
-
-  useEffect(() => {
-    if (loading && !storeProducts) {
-      setLoader(true);
-    }
-    if (storeProducts) {
-      setLoader(false);
-    }
-    if (error) {
-      cogoToast.error(error);
-      dispatch(queryProductReset());
-    }
-    if (products?.message) {
-      cogoToast.error("Something was wrong!");
-      dispatch(queryProductReset());
-    }
-  }, [error, products, dispatch, loading, storeProducts]);
+    isFetching,
+    data: productData,
+  } = useGetProductsQuery(size);
 
   // load more functionality
-  const handleClick = () => {
-    setLimit((preValue) => preValue + 4);
+  const handleLoadMore = () => {
+    setSize((preValue) => preValue + 4);
   };
   return (
     <section className="products__section section">
@@ -57,56 +31,38 @@ const Products = () => {
         <div className="products__content">
           <h2 className="products__title section__title">Our Products</h2>
           <div className="products__data">
-            {loader ? (
-              [0, 1, 2, 3, 4, 5, 6, 7].map((index) => (
-                <div className="products__loader" key={index}>
-                  <Skeleton
-                    height={260}
-                    animation="wave"
-                    variant="rectangular"
-                  />
-                  <Stack marginTop={1}>
-                    <Skeleton width="100%" animation="wave" height={35} />
-                    <Stack justifyContent="space-between" direction="row">
-                      <Skeleton width={70} animation="wave" height={20} />
-                      <Skeleton width={110} animation="wave" height={20} />
-                    </Stack>
-                  </Stack>
-                </div>
+            {isLoading ? (
+              [...Array(8).keys()].map((index) => (
+                <ProductItemSkeleton key={index} />
               ))
-            ) : storeProducts?.length < 1 ? (
+            ) : isError ? (
+              <CustomAlert severity="error" message={error?.data?.message} />
+            ) : productData?.products?.length < 1 ? (
               <CustomAlert severity="info" message="No products are found!" />
             ) : (
-              storeProducts?.map((product) => (
+              productData?.products?.map((product) => (
                 <ProductItem product={product} key={product?._id} />
               ))
             )}
           </div>
 
-          {counts === products?.length || storeProducts?.length === 0 ? (
+          {productData?.counts === productData?.products?.length ||
+          productData?.products?.length === 0 ? (
             " "
           ) : (
-            <div className="product__btn btn small__btn btn__dark">
-              {loader ? (
-                <Skeleton
-                  height={42}
-                  width={150}
-                  animation="wave"
-                  variant="rectangular"
-                />
+            <>
+              {isLoading ? (
+                <ButtonSkeleton height={42} width={150} />
               ) : (
-                <Button type="button" onClick={handleClick}>
-                  {loading ? (
-                    <CircularProgress color="inherit" size={20} thickness={3} />
-                  ) : (
-                    <>
-                      <span className="btn__text">Load More</span>
-                      <AddIcon />
-                    </>
-                  )}
-                </Button>
+                <CustomButton
+                  className="product__btn btn btn__dark small__btn"
+                  text="Load More"
+                  endIcon={<AddIcon />}
+                  onClick={handleLoadMore}
+                  loading={isFetching}
+                />
               )}
-            </div>
+            </>
           )}
         </div>
       </div>

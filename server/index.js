@@ -17,9 +17,13 @@ const app = express();
 // Request Parsers
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  next();
+});
 
 // Routing Setup
-app.use("/api/users", userRouter);
+app.use("/api/user", userRouter);
 app.use("/api/category", categoryRouter);
 app.use("/api/product", productRouter);
 app.use("/api", stripeRouter);

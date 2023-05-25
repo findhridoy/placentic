@@ -13,10 +13,9 @@ import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import SearchIcon from "@mui/icons-material/Search";
 import { Avatar, Badge, IconButton } from "@mui/material";
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Link, NavLink } from "react-router-dom";
-import placentic from "../Assets/logo/placentic.png";
-import { logoutUser } from "../Redux/actions/userActions";
+import placentic from "../assets/logo/placentic.png";
 
 const Header = () => {
   const [header, setHeader] = useState(false);
@@ -25,9 +24,9 @@ const Header = () => {
 
   // Redux element
   const dispatch = useDispatch();
-  const { userInfo } = useSelector((state) => state.userLogin);
-  const { cartItems } = useSelector((state) => state.cart);
-  const { wishlistItems } = useSelector((state) => state.wishlist);
+  // const { true } = useSelector((state) => state.userLogin);
+  // const { cartItems } = useSelector((state) => state.cart);
+  // const { wishlistItems } = useSelector((state) => state.wishlist);
 
   // Header scroll
   useEffect(() => {
@@ -51,7 +50,7 @@ const Header = () => {
 
   // Logout functionality
   const logout = () => {
-    dispatch(logoutUser());
+    // dispatch(logoutUser());
   };
   return (
     <header className={header ? "header header__shadow" : "header"}>
@@ -120,7 +119,7 @@ const Header = () => {
                 <li className="nav__item2">
                   <NavLink className="nav__link2" to="/cart">
                     <IconButton aria-label="cart">
-                      <Badge badgeContent={cartItems?.length}>
+                      <Badge badgeContent={true?.length}>
                         <LocalMallIcon />
                       </Badge>
                     </IconButton>
@@ -129,13 +128,13 @@ const Header = () => {
                 <li className="nav__item2">
                   <NavLink className="nav__link2" to="/favourites">
                     <IconButton aria-label="love">
-                      <Badge badgeContent={wishlistItems?.length}>
+                      <Badge badgeContent={true?.length}>
                         <FavoriteBorderIcon />
                       </Badge>
                     </IconButton>
                   </NavLink>
                 </li>
-                {userInfo?.email && (
+                {true?.email && (
                   <li className="nav__item2">
                     <IconButton
                       aria-label="avatar"
@@ -143,8 +142,8 @@ const Header = () => {
                       onClick={handleDropdown}
                     >
                       <Avatar
-                        alt={userInfo?.name}
-                        src={userInfo?.avatar}
+                        alt={true?.name}
+                        src={true?.avatar}
                         sx={{ width: 35, height: 35 }}
                       />
                     </IconButton>
@@ -157,7 +156,7 @@ const Header = () => {
                       }
                     >
                       <ul className="dropdown__list">
-                        {userInfo?.email && userInfo?.isAdmin && (
+                        {true?.email && true?.isAdmin && (
                           <li className="dropdown__item">
                             <NavLink
                               to="/dashboard/dashboard"

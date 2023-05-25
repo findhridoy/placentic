@@ -4,12 +4,12 @@ import cogoToast from "cogo-toast";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
-import { countryData } from "../Assets/json/countryData";
-import { shippingSchema } from "../Helpers/Validation/ValidationSchema";
 import {
   updateUserProfile,
   userUpdateErrorReset,
-} from "../Redux/actions/userActions";
+} from "../App/actions/userActions";
+import { countryData } from "../Assets/json/countryData";
+import { shippingSchema } from "../Helpers/Validation/ValidationSchema";
 
 const ShippingForm = ({ user, setExpanded }) => {
   // States

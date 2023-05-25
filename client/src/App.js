@@ -1,45 +1,30 @@
-import { useEffect } from "react";
-import { useJwt } from "react-jwt";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Route, Routes } from "react-router-dom";
-import Dashboard from "./Dashboard/DashboardPages/Dashboard";
-import DashboardCategories from "./Dashboard/DashboardPages/DashboardCategories";
-import DashboardOrders from "./Dashboard/DashboardPages/DashboardOrders";
-import DashboardProducts from "./Dashboard/DashboardPages/DashboardProducts";
-import DashboardUsers from "./Dashboard/DashboardPages/DashboardUsers";
-import AdminRoutes from "./Helpers/Routes/AdminRoutes";
-import PrivateRoutes from "./Helpers/Routes/PrivateRoutes";
-import PublicRoutes from "./Helpers/Routes/PublicRoutes";
-import Cart from "./Pages/Cart";
-import Catalog from "./Pages/Catalog";
-import Checkout from "./Pages/Checkout";
-import Home from "./Pages/Home";
-import Login from "./Pages/Login";
-import Orders from "./Pages/Orders";
-import Product from "./Pages/Product";
-import Profile from "./Pages/Profile";
-import Signup from "./Pages/Signup";
-import { logoutUser } from "./Redux/actions/userActions";
+import PublicRoutes from "./helpers/Routes/PublicRoutes";
+import Home from "./pages/Home";
+import Login from "./pages/Login";
+import Product from "./pages/Product";
+import Signup from "./pages/Signup";
 
 const App = () => {
   // Redux element
   const dispatch = useDispatch();
-  const { userInfo } = useSelector((state) => state.userLogin);
+  // const { userInfo } = useSelector((state) => state.userLogin);
 
-  const { isExpired } = useJwt(userInfo?.token);
+  // const { isExpired } = useJwt(userInfo?.token);
 
-  useEffect(() => {
-    if (isExpired) {
-      dispatch(logoutUser());
-    }
-  }, [isExpired, dispatch]);
+  // useEffect(() => {
+  //   if (isExpired) {
+  //     dispatch(logoutUser());
+  //   }
+  // }, [isExpired, dispatch]);
   return (
     <>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/product/details/:id" element={<Product />} />
-        <Route path="/cart" element={<Cart />} />
-        <Route path="/catalog" element={<Catalog />} />
+        <Route path="/product/:prodId" element={<Product />} />
+        {/* <Route path="/cart" element={<Cart />} />
+        <Route path="/catalog" element={<Catalog />} /> */}
 
         {/* Public Routes */}
         <Route path="/*" element={<PublicRoutes />}>
@@ -48,20 +33,20 @@ const App = () => {
         </Route>
 
         {/* Private Routes */}
-        <Route path="/*" element={<PrivateRoutes />}>
+        {/* <Route path="/*" element={<PrivateRoutes />}>
           <Route path="profile" element={<Profile />} />
           <Route path="orders" element={<Orders />} />
           <Route path="checkout" element={<Checkout />} />
-        </Route>
+        </Route> */}
 
         {/* Only Admin can access this pages */}
-        <Route path="/dashboard/*" element={<AdminRoutes />}>
+        {/* <Route path="/dashboard/*" element={<AdminRoutes />}>
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="products" element={<DashboardProducts />} />
           <Route path="orders" element={<DashboardOrders />} />
           <Route path="categories" element={<DashboardCategories />} />
           <Route path="users" element={<DashboardUsers />} />
-        </Route>
+        </Route> */}
       </Routes>
       {/* <Kursor /> */}
     </>
