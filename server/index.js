@@ -1,5 +1,6 @@
 // External Imports
 const express = require("express");
+const cors = require("cors");
 const { success } = require("consola");
 
 // Internal Imports
@@ -17,10 +18,11 @@ const app = express();
 // Request Parsers
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "*");
-  next();
-});
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+  })
+);
 
 // Routing Setup
 app.use("/api/user", userRouter);

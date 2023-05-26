@@ -3,9 +3,9 @@ import CropIcon from "@mui/icons-material/Crop";
 import { Button, CircularProgress, Slider } from "@mui/material";
 import React, { useState } from "react";
 import Cropper from "react-easy-crop";
-import { dataURLtoFile } from "../Helpers/ImageHandler/ConvertDataURL";
-import getCroppedImg from "../Helpers/ImageHandler/CroppedImage";
-import CustomLoader from "./CustomLoader";
+import { dataURLtoFile } from "../helpers/ImageHandler/ConvertDataURL";
+import getCroppedImg from "../helpers/ImageHandler/CroppedImage";
+import CustomLoader from "./controls/CustomLoader";
 
 const ImageHandler = ({
   showImage,

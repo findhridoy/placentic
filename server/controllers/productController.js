@@ -161,7 +161,7 @@ const getAllProducts = asyncHandler(async (req, res) => {
  * @access  Public
  */
 const getProducts = asyncHandler(async (req, res) => {
-  // load more queries
+  // paginations
   const page = parseInt(req.query.page);
   const size = parseInt(req.query.size);
   const sort = parseInt(req.query.sort);

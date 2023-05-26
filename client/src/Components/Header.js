@@ -13,8 +13,9 @@ import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import SearchIcon from "@mui/icons-material/Search";
 import { Avatar, Badge, IconButton } from "@mui/material";
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, NavLink } from "react-router-dom";
+import { userLoggedOut } from "../app/features/auth/authSlice";
 import placentic from "../assets/logo/placentic.png";
 
 const Header = () => {
@@ -24,7 +25,7 @@ const Header = () => {
 
   // Redux element
   const dispatch = useDispatch();
-  // const { true } = useSelector((state) => state.userLogin);
+  const { userInfo } = useSelector((state) => state.auth);
   // const { cartItems } = useSelector((state) => state.cart);
   // const { wishlistItems } = useSelector((state) => state.wishlist);
 
@@ -50,7 +51,7 @@ const Header = () => {
 
   // Logout functionality
   const logout = () => {
-    // dispatch(logoutUser());
+    dispatch(userLoggedOut());
   };
   return (
     <header className={header ? "header header__shadow" : "header"}>
@@ -134,7 +135,7 @@ const Header = () => {
                     </IconButton>
                   </NavLink>
                 </li>
-                {true?.email && (
+                {userInfo?.email && (
                   <li className="nav__item2">
                     <IconButton
                       aria-label="avatar"
@@ -142,8 +143,8 @@ const Header = () => {
                       onClick={handleDropdown}
                     >
                       <Avatar
-                        alt={true?.name}
-                        src={true?.avatar}
+                        alt={userInfo?.name}
+                        src={userInfo?.avatar}
                         sx={{ width: 35, height: 35 }}
                       />
                     </IconButton>
@@ -156,7 +157,7 @@ const Header = () => {
                       }
                     >
                       <ul className="dropdown__list">
-                        {true?.email && true?.isAdmin && (
+                        {userInfo?.email && userInfo?.isAdmin && (
                           <li className="dropdown__item">
                             <NavLink
                               to="/dashboard/dashboard"

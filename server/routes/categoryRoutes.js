@@ -7,7 +7,7 @@ const {
   getCategories,
   updateCategory,
   deleteCategory,
-  limitCategories,
+  // limitCategories,
 } = require("../controllers/categoryController");
 const { protect, admin } = require("../middleware/authMiddleware");
 const { upload } = require("../utils/avatarUpload");
@@ -25,7 +25,7 @@ router.put(
 router.delete("/delete/:id", protect, admin, deleteCategory);
 
 // Unauthrized routes
-router.get("/category", limitCategories);
+// router.get("/category", limitCategories);
 
 // Export router
 module.exports = router;

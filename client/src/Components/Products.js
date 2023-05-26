@@ -1,6 +1,6 @@
 import AddIcon from "@mui/icons-material/Add";
 import { useState } from "react";
-import { useGetProductsQuery } from "../app/services/productApi";
+import { useGetProductsQuery } from "../app/features/products/productApi";
 import ProductItem from "./ProductItem";
 import CustomAlert from "./controls/CustomAlert";
 import CustomButton from "./controls/CustomButton";
@@ -12,7 +12,7 @@ const Products = () => {
   // const [keyword, setKeyword] = useState("");
   const [size, setSize] = useState(8);
 
-  // Redux element
+  // Redux toolkit element
   const {
     isLoading,
     isError,

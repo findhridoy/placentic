@@ -1,13 +1,16 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import { Navigate, Outlet } from "react-router-dom";
 
 const PublicRoutes = () => {
-  // Redux
-  // const { userInfo } = useSelector((state) => state.userLogin);
+  // Redux elements
+  const { userInfo } = useSelector((state) => state.auth);
 
-  const userInfo = { email: "" };
-
-  return !userInfo?.email ? <Outlet /> : <Navigate to="/" />;
+  return !userInfo?.email && !userInfo?.token ? (
+    <Outlet />
+  ) : (
+    <Navigate to="/" />
+  );
 };
 
 export default PublicRoutes;

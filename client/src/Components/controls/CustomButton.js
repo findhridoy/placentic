@@ -18,7 +18,6 @@ const CustomButton = ({
       {loading ? (
         // **Loading Button
         <Button
-          type="button"
           onClick={onClick}
           disabled={loading}
           size={size}

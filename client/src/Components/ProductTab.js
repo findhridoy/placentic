@@ -1,13 +1,14 @@
-import { Skeleton, Stack } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
-import { useTheme } from "@mui/material/styles";
 import Tab from "@mui/material/Tab";
 import Tabs from "@mui/material/Tabs";
+import { useTheme } from "@mui/material/styles";
 import PropTypes from "prop-types";
 import * as React from "react";
 import SwipeableViews from "react-swipeable-views";
 import ProductReview from "./ProductReview";
+import ProductTabSkeleton from "./skeletons/ProductTabSkeleton";
+// import ProductReview from "./ProductReview";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -56,60 +57,52 @@ const ProductTab = ({ product, loading }) => {
 
   return (
     <Box sx={{ width: "100%" }}>
-      <AppBar position="static" color="transparent">
-        {loading ? (
-          <Stack justifyContent="space-between" direction="row" spacing={1}>
-            <Skeleton
-              height={49}
-              width="100%"
-              animation="wave"
-              variant="rectangular"
-            />
-            <Skeleton
-              height={49}
-              width="100%"
-              animation="wave"
-              variant="rectangular"
-            />
-            <Skeleton
-              height={49}
-              width="100%"
-              animation="wave"
-              variant="rectangular"
-            />
-          </Stack>
-        ) : (
-          <Tabs
-            value={value}
-            onChange={handleChange}
-            indicatorColor="secondary"
-            textColor="inherit"
-            variant="fullWidth"
-            aria-label="full width tabs example"
+      {loading ? (
+        <ProductTabSkeleton />
+      ) : (
+        <>
+          <AppBar position="static" color="transparent">
+            <Tabs
+              value={value}
+              onChange={handleChange}
+              indicatorColor="secondary"
+              textColor="inherit"
+              variant="fullWidth"
+              aria-label="full width tabs example"
+            >
+              <Tab
+                label={`Reviews (${product?.countReviews})`}
+                {...a11yProps(0)}
+              />
+              <Tab label="Description" {...a11yProps(1)} />
+              <Tab label="Additional Info" {...a11yProps(2)} />
+            </Tabs>
+          </AppBar>
+
+          <SwipeableViews
+            axis={theme.direction === "rtl" ? "x-reverse" : "x"}
+            index={value}
+            onChangeIndex={handleChangeIndex}
           >
-            <Tab
-              label={`Reviews (${product?.countReviews})`}
-              {...a11yProps(0)}
-            />
-            <Tab label="Description" {...a11yProps(1)} />
-            <Tab label="Additional Info" {...a11yProps(2)} />
-          </Tabs>
-        )}
-      </AppBar>
-      <SwipeableViews
-        axis={theme.direction === "rtl" ? "x-reverse" : "x"}
-        index={value}
-        onChangeIndex={handleChangeIndex}
-      >
-        <TabPanel value={value} index={0} dir={theme.direction}>
-          <ProductReview product={product} loading={loading} />
-        </TabPanel>
-        <TabPanel value={value} index={1} dir={theme.direction}>
-          <span className="product__description">{product?.description}</span>
-          <span className="product__description">{product?.description}</span>
-        </TabPanel>
-        <TabPanel value={value} index={2} dir={theme.direction}></TabPanel>
-      </SwipeableViews>
+            <TabPanel value={value} index={0} dir={theme.direction}>
+              <ProductReview product={product} loading={loading} />
+            </TabPanel>
+            <TabPanel value={value} index={1} dir={theme.direction}>
+              <span className="product__description">
+                {product?.description}
+              </span>
+              <span className="product__description">
+                {product?.description}
+              </span>
+            </TabPanel>
+            <TabPanel value={value} index={2} dir={theme.direction}>
+              <span className="product__description">
+                There are no additional information set yet.
+              </span>
+            </TabPanel>
+          </SwipeableViews>
+        </>
+      )}
     </Box>
   );
 };

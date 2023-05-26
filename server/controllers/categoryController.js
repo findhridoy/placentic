@@ -63,8 +63,17 @@ const createCategory = asyncHandler(async (req, res) => {
  * @access  Private/Public
  */
 const getCategories = asyncHandler(async (req, res) => {
-  // find all category
-  const categories = await Category.find({}).sort({ _id: -1 });
+  // paginatations
+  const page = parseInt(req.query.page);
+  const size = parseInt(req.query.size);
+  const sort = parseInt(req.query.sort);
+  const skip = page * size;
+
+  // get total products count
+  const counts = await Category.countDocuments({});
+
+  // find all categories
+  const categories = await Category.find({}).limit(size).skip(skip).sort(sort);
 
   if (categories) {
     res.status(200).json(categories);
@@ -148,22 +157,22 @@ const deleteCategory = asyncHandler(async (req, res) => {
   }
 });
 
-// Unauthrized
-/**
- * @route   Get /api/category/category
- * @desc    Get limit categories
- * @access  Public
- */
-const limitCategories = asyncHandler(async (req, res) => {
-  // find all category
-  const categories = await Category.find({}).sort({ _id: -1 }).limit(4);
-  if (categories) {
-    res.status(200).json(categories);
-  } else {
-    res.status(400);
-    throw new Error("Categores are not found!");
-  }
-});
+// // Unauthrized
+// /**
+//  * @route   Get /api/category/category
+//  * @desc    Get limit categories
+//  * @access  Public
+//  */
+// const limitCategories = asyncHandler(async (req, res) => {
+//   // find all category
+//   const categories = await Category.find({}).sort({ _id: -1 }).limit(4);
+//   if (categories) {
+//     res.status(200).json(categories);
+//   } else {
+//     res.status(400);
+//     throw new Error("Categores are not found!");
+//   }
+// });
 
 // Export all controller function
 module.exports = {
@@ -171,5 +180,4 @@ module.exports = {
   getCategories,
   updateCategory,
   deleteCategory,
-  limitCategories,
 };

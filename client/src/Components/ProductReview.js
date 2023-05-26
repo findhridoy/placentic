@@ -1,12 +1,9 @@
-import { Skeleton } from "@mui/material";
-import { useSelector } from "react-redux";
 import ReviewComment from "./ReviewComment";
-import ReviewForm from "./ReviewForm";
 import ReviewGraph from "./ReviewGraph";
 
 const ProductReview = ({ product, loading }) => {
   // Redux element
-  const { userInfo } = useSelector((state) => state.userLogin);
+  const userInfo = { _id: "userid", isAdmin: false };
 
   // find comment by user
   const userComment = product?.reviews?.find((x) => userInfo?._id === x?.user);
@@ -17,11 +14,7 @@ const ProductReview = ({ product, loading }) => {
         <div className="productReview__container">
           {product?.countReviews === 0 && (
             <span className="productReview__epmty--text">
-              {loading ? (
-                <Skeleton width={175} animation="wave" height={30} />
-              ) : (
-                "There are no reviews yet."
-              )}
+              There are no reviews yet.
             </span>
           )}
 
@@ -29,16 +22,12 @@ const ProductReview = ({ product, loading }) => {
             <>
               {product?.countReviews > 0 && (
                 <div className="productReview__graph">
-                  <ReviewGraph product={product} loading={loading} />
+                  <ReviewGraph product={product} />
                 </div>
               )}
 
               {userComment && !userInfo?.isAdmin && (
-                <ReviewComment
-                  review={userComment}
-                  key={userComment?._id}
-                  loading={loading}
-                />
+                <ReviewComment review={userComment} key={userComment?._id} />
               )}
 
               {!userInfo?.isAdmin &&
@@ -47,11 +36,7 @@ const ProductReview = ({ product, loading }) => {
                   .map(
                     (review, index) =>
                       review?.action === "approve" && (
-                        <ReviewComment
-                          review={review}
-                          key={index}
-                          loading={loading}
-                        />
+                        <ReviewComment review={review} key={index} />
                       )
                   )}
 
@@ -62,14 +47,13 @@ const ProductReview = ({ product, loading }) => {
                     key={index + 1}
                     product={product}
                     userInfo={userInfo}
-                    loading={loading}
                   />
                 ))}
             </>
           )}
           {!loading && (
             <div className="productReview__form">
-              <ReviewForm product={product} />
+              {/* <ReviewForm product={product} /> */}
             </div>
           )}
         </div>

@@ -89,7 +89,7 @@ const userLogin = asyncHandler(async (req, res) => {
 });
 
 /**
- * @route   Get /api/users/profile
+ * @route   Get /api/user/profile
  * @desc    Get user profile
  * @access  Private/Loggedin user
  */
