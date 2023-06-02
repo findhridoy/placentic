@@ -1,10 +1,11 @@
 import CloseIcon from "@mui/icons-material/Close";
 import CropIcon from "@mui/icons-material/Crop";
-import { Button, CircularProgress, Slider } from "@mui/material";
+import { Slider } from "@mui/material";
 import React, { useState } from "react";
 import Cropper from "react-easy-crop";
 import { dataURLtoFile } from "../helpers/ImageHandler/ConvertDataURL";
 import getCroppedImg from "../helpers/ImageHandler/CroppedImage";
+import CustomButton from "./controls/CustomButton";
 import CustomLoader from "./controls/CustomLoader";
 
 const ImageHandler = ({
@@ -38,8 +39,8 @@ const ImageHandler = ({
       setAvatar(canvasURLToFile);
       setShowImage(null);
       setLoading(false);
-    } catch (e) {
-      console.error(e);
+    } catch (error) {
+      // error
     }
   };
 
@@ -72,29 +73,21 @@ const ImageHandler = ({
 
           <div className="imageHandler__btnContainer">
             <div className="button__group">
-              <div className="btn btn__dark">
-                <Button
-                  type="button"
-                  startIcon={!loading && <CropIcon />}
-                  onClick={handleCroppedImage}
-                  // disabled={loading}
-                >
-                  {loading ? (
-                    <CircularProgress color="inherit" size={30} thickness={3} />
-                  ) : (
-                    "Select Image"
-                  )}
-                </Button>
-              </div>
-              <div className="btn btn__dark">
-                <Button
-                  type="button"
-                  startIcon={<CloseIcon />}
-                  onClick={cancelCropArea}
-                >
-                  Cancel
-                </Button>
-              </div>
+              <CustomButton
+                className="btn btn__dark"
+                text="Select Image"
+                loading={loading}
+                type="button"
+                startIcon={!loading && <CropIcon />}
+                onClick={handleCroppedImage}
+              />
+              <CustomButton
+                className="btn btn__dark"
+                text="Cancel"
+                type="button"
+                startIcon={<CloseIcon />}
+                onClick={cancelCropArea}
+              />
             </div>
           </div>
         </div>

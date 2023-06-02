@@ -49,6 +49,28 @@ export const authApi = apiSlice.injectEndpoints({
         url: "/user/profile",
         method: "GET",
       }),
+      providesTags: ["Users"],
+    }),
+
+    // update user profile
+    updateProfile: builder.mutation({
+      query: (data) => ({
+        url: "/user/update",
+        method: "PUT",
+        body: data,
+      }),
+      invalidatesTags: ["Users"],
+
+      // updated fulfilled then update localstorage user data
+      async onQueryStarted(arg, { queryFulfilled, dispatch }) {
+        try {
+          const { data } = await queryFulfilled;
+          localStorage.setItem("userInfo", JSON.stringify(data));
+          dispatch(userLoggedIn(data));
+        } catch (error) {
+          // no need to catch error here
+        }
+      },
     }),
   }),
 });
@@ -57,4 +79,5 @@ export const {
   useSignupMutation,
   useLoginMutation,
   useGetProfileQuery,
+  useUpdateProfileMutation,
 } = authApi;

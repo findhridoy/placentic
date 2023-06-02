@@ -12,7 +12,7 @@ const AdminRoutes = () => {
   return userInfo?.email && userInfo?.token && userInfo?.isAdmin ? (
     <Outlet />
   ) : (
-    <Navigate to="/login" state={{ from: location }} />
+    <Navigate to="/login" state={{ from: location?.pathname }} />
   );
 };
 

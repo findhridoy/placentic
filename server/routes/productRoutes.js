@@ -23,9 +23,9 @@ router.delete("/:prodId", protect, admin, deleteProduct);
 router.get("/", getProducts);
 // router.get("/products", getAllProducts);
 router.get("/:prodId", getProduct);
-router.post("/review/:revId", protect, createProductReview);
-router.get("/review/approve/:revId", protect, admin, approveProductReview);
-router.get("/review", protect, admin, deleteProductReview);
+router.post("/review/:prodId", protect, createProductReview);
+router.get("/review/approve/:prodId", protect, admin, approveProductReview);
+router.get("/review/delete", protect, admin, deleteProductReview);
 
 // Export router
 module.exports = router;

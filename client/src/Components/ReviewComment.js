@@ -1,6 +1,11 @@
 import { Alert, Avatar } from "@mui/material";
-import { useState } from "react";
+import cogoToast from "cogo-toast";
+import { useEffect, useState } from "react";
 import Moment from "react-moment";
+import {
+  useApproveReviewMutation,
+  useRemoveReviewMutation,
+} from "../app/features/products/productApi";
 import CommentHandler from "./CommentHandler";
 import Rating from "./Rating";
 
@@ -8,60 +13,63 @@ const ReviewComment = ({ review, product, userInfo }) => {
   // States
   const [anchorEl, setAnchorEl] = useState(null);
 
-  // Redux element
-  // const dispatch = useDispatch();
-  // const { loading: deleteLoader, error, review: reviews } = useSelector(
-  //   (state) => state.deleteProductReview
-  // );
-  // const {
-  //   loading: permissionLoader,
-  //   error: approveError,
-  //   review: arrpoveReviews,
-  // } = useSelector((state) => state.permissionProductReview);
+  // Redux elements
+  const [
+    approveReview,
+    { isLoading, isError, error, data },
+  ] = useApproveReviewMutation();
+  const [
+    removeReview,
+    {
+      isLoading: deleteLoading,
+      isError: deleteIsError,
+      error: deleteError,
+      data: deleteData,
+    },
+  ] = useRemoveReviewMutation();
 
-  // Delete comment
-  const handleMenuClick = (key) => {
-    if (key === "remove") {
-      // dispatch(deleteProductReview(product?._id, review?._id));
+  // Approve and Delete comment
+  const handleMenuClick = async (action) => {
+    const queryData = {
+      prodId: product?._id,
+      revId: review?._id,
+      action,
+    };
+    if (action === "remove") {
+      await removeReview(queryData);
     }
-    if (key === "approve") {
-      // dispatch(permissionProductReview(product?._id, review?._id, key));
+    if (action === "approve") {
+      await approveReview(queryData);
     }
-    if (key === "decline") {
-      // dispatch(permissionProductReview(product?._id, review?._id, key));
+    if (action === "decline") {
+      await approveReview(queryData);
     }
     setAnchorEl(null);
   };
 
-  // useEffect(() => {
-  //   if (error) {
-  //     cogoToast.error(error);
-  //     dispatch(deleteProductReviewReset());
-  //   }
-  //   if (reviews?.message) {
-  //     cogoToast.error("Something was wrong!");
-  //     dispatch(deleteProductReviewReset());
-  //   }
-  //   if (reviews?.success) {
-  //     cogoToast.success("Your review has been deleted.");
-  //     dispatch(deleteProductReviewReset());
-  //   }
-  // }, [error, dispatch, reviews]);
+  useEffect(() => {
+    if (isError) {
+      cogoToast.error(error?.data?.message);
+    }
+    if (data?.message) {
+      cogoToast.error("Something was wrong!");
+    }
+    if (data?.success) {
+      cogoToast.success(data?.message);
+    }
+  }, [isError, error, data]);
 
-  // useEffect(() => {
-  //   if (approveError) {
-  //     cogoToast.error(approveError);
-  //     dispatch(permissionProductReviewReset());
-  //   }
-  //   if (arrpoveReviews?.message) {
-  //     cogoToast.error("Something was wrong!");
-  //     dispatch(permissionProductReviewReset());
-  //   }
-  //   if (arrpoveReviews?.success) {
-  //     cogoToast.success(arrpoveReviews?.message);
-  //     dispatch(permissionProductReviewReset());
-  //   }
-  // }, [approveError, dispatch, arrpoveReviews]);
+  useEffect(() => {
+    if (deleteIsError) {
+      cogoToast.error(deleteError?.data?.message);
+    }
+    if (deleteData?.message) {
+      cogoToast.error("Something was wrong!");
+    }
+    if (deleteData?.success) {
+      cogoToast.success("Review has been deleted.");
+    }
+  }, [deleteIsError, deleteError, deleteData]);
   return (
     <div className="reviewComment">
       <div className="reviewComment__users">
@@ -92,8 +100,8 @@ const ReviewComment = ({ review, product, userInfo }) => {
               setAnchorEl={setAnchorEl}
               handleMenuClick={handleMenuClick}
               userInfo={userInfo}
-              // deleteLoader={deleteLoader}
-              // permissionLoader={permissionLoader}
+              deleteLoader={deleteLoading}
+              permissionLoader={isLoading}
             />
           </div>
         )}

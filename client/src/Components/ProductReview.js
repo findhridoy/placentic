@@ -1,9 +1,11 @@
+import { useSelector } from "react-redux";
 import ReviewComment from "./ReviewComment";
+import ReviewForm from "./ReviewForm";
 import ReviewGraph from "./ReviewGraph";
 
 const ProductReview = ({ product, loading }) => {
   // Redux element
-  const userInfo = { _id: "userid", isAdmin: false };
+  const { userInfo } = useSelector((state) => state.auth);
 
   // find comment by user
   const userComment = product?.reviews?.find((x) => userInfo?._id === x?.user);
@@ -53,7 +55,7 @@ const ProductReview = ({ product, loading }) => {
           )}
           {!loading && (
             <div className="productReview__form">
-              {/* <ReviewForm product={product} /> */}
+              <ReviewForm product={product} />
             </div>
           )}
         </div>

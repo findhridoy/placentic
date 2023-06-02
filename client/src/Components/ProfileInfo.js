@@ -1,4 +1,3 @@
-import { Skeleton, Typography } from "@mui/material";
 import React from "react";
 
 const ListItem = ({ register, isEdit, property, value }) => {
@@ -19,74 +18,44 @@ const ListItem = ({ register, isEdit, property, value }) => {
   );
 };
 
-const ProfileInfo = ({ register, isEdit, user, loading }) => {
+const ProfileInfo = ({ register, isEdit, user }) => {
   return (
     <>
       <ul className="profileInfo__list">
-        {loading ? (
-          <Skeleton width="100%" height={40}>
-            <Typography variant="h6">.</Typography>
-          </Skeleton>
-        ) : (
-          <ListItem
-            register={register}
-            isEdit={isEdit}
-            property="name"
-            value={user?.name}
-          />
-        )}
+        <ListItem
+          register={register}
+          isEdit={isEdit}
+          property="name"
+          value={user?.name}
+        />
 
-        {loading ? (
-          <Skeleton width="100%" height={40}>
-            <Typography variant="h6">.</Typography>
-          </Skeleton>
-        ) : (
-          <ListItem
-            register={register}
-            isEdit={isEdit}
-            property="username"
-            value={user?.username}
-          />
-        )}
+        <ListItem
+          register={register}
+          isEdit={isEdit}
+          property="username"
+          value={user?.username}
+        />
 
-        {loading ? (
-          <Skeleton width="100%" height={40}>
-            <Typography variant="h6">.</Typography>
-          </Skeleton>
-        ) : (
-          <ListItem
-            register={register}
-            isEdit={isEdit}
-            property="email"
-            value={user?.email}
-          />
-        )}
+        <ListItem
+          register={register}
+          isEdit={isEdit}
+          property="email"
+          value={user?.email}
+        />
 
-        {loading ? (
-          <Skeleton width="100%" height={40}>
-            <Typography variant="h6">.</Typography>
-          </Skeleton>
-        ) : (
-          <ListItem
-            register={register}
-            isEdit={isEdit}
-            property="phone"
-            value={user?.phone}
-          />
-        )}
+        <ListItem
+          register={register}
+          isEdit={isEdit}
+          property="phone"
+          value={user?.phone}
+        />
 
-        {loading ? (
-          <Skeleton width="100%" height={40}>
-            <Typography variant="h6">.</Typography>
-          </Skeleton>
-        ) : (
-          <ListItem
-            register={register}
-            isEdit={isEdit}
-            property="country"
-            value={user?.country}
-          />
-        )}
+        <ListItem
+          register={register}
+          isEdit={isEdit}
+          property="country"
+          value={user?.country}
+        />
       </ul>
     </>
   );

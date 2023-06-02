@@ -1,14 +1,22 @@
-import { configureStore } from "@reduxjs/toolkit";
+import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { apiSlice } from "./features/api/apiSlice";
-import authSlice from "./features/auth/authSlice";
+import authSlice, { userLoggedOut } from "./features/auth/authSlice";
+import cartSlice from "./features/cart/cartSlice";
+
+// reducers
+const reducers = combineReducers({
+  [apiSlice.reducerPath]: apiSlice.reducer,
+  auth: authSlice,
+  cart: cartSlice,
+});
 
 // store congure
 export const store = configureStore({
-  // reducers
-  reducer: {
-    [apiSlice.reducerPath]: apiSlice.reducer,
-
-    auth: authSlice,
+  reducer: (state, action) => {
+    if (userLoggedOut.match(action)) {
+      state = undefined;
+    }
+    return reducers(state, action);
   },
 
   // middleware

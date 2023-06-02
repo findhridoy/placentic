@@ -8,7 +8,7 @@ const { generateToken } = require("../utils/generateToken");
 const { cloudinary } = require("../config/cloudinary");
 
 /**
- * @route   Post /api/users/register
+ * @route   Post /api/user/register
  * @desc    Register a new user
  * @access  Public
  */
@@ -57,7 +57,7 @@ const userRegister = asyncHandler(async (req, res) => {
 });
 
 /**
- * @route   Post /api/users/login
+ * @route   Post /api/user/login
  * @desc    Get token & login
  * @access  Public
  */
@@ -104,7 +104,7 @@ const getUserProfile = asyncHandler(async (req, res) => {
 });
 
 /**
- * @route   Put /api/users/update
+ * @route   Put /api/user/update
  * @desc    Update user profile
  * @access  Private/Loggedin user
  */

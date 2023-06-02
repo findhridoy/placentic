@@ -1,15 +1,18 @@
 import CloseIcon from "@mui/icons-material/Close";
-import { Avatar, Button, Skeleton, Typography } from "@mui/material";
+import { Avatar } from "@mui/material";
 import cogoToast from "cogo-toast";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { useGetProfileQuery } from "../app/features/auth/authApi";
+import {
+  useGetProfileQuery,
+  useUpdateProfileMutation,
+} from "../app/features/auth/authApi";
 import CustomBreadcrumbs from "../components/CustomBreadcrumbs";
 import ProfileInfo from "../components/ProfileInfo";
 import UserAvatar from "../components/UserAvatar";
 import CustomButton from "../components/controls/CustomButton";
+import ProfileInfoSkeleton from "../components/skeletons/ProfileInfoSkeleton";
 import Layout from "../layouts/Layout";
 import Orders from "./Orders";
 
@@ -21,9 +24,17 @@ const Profile = () => {
   // navigate
   const navigate = useNavigate();
 
-  // Redux element
-  const dispatch = useDispatch();
+  // Redux toolkit elements
   const { isLoading, isError, error, data: user } = useGetProfileQuery();
+  const [
+    updateProfile,
+    {
+      isLoading: updateLoading,
+      isError: updateIsError,
+      error: updateError,
+      data,
+    },
+  ] = useUpdateProfileMutation();
 
   useEffect(() => {
     if (isError) {
@@ -35,31 +46,8 @@ const Profile = () => {
     }
   }, [isError, error, navigate, user]);
 
-  // const {
-  //   loading: updateLoading,
-  //   error: updateError,
-  //   user: updateUser,
-  // } = useSelector((state) => state.updateUserProfile);
-
-  // useEffect(() => {
-  //   dispatch(getUserProfile("profile"));
-  // }, [dispatch, updateUser]);
-
-  // useEffect(() => {
-  //   if (error) {
-  //     cogoToast.error(error);
-  //     dispatch(userProfileErrorReset());
-  //     navigate("/");
-  //   }
-  //   if (user?.message) {
-  //     cogoToast.error("Something was wrong!");
-  //     dispatch(userProfileErrorReset());
-  //     navigate("/");
-  //   }
-  // }, [dispatch, error, navigate, user]);
-
   // React hook form own state
-  const { handleSubmit, register } = useForm();
+  const { handleSubmit, register, reset } = useForm();
 
   // React hook form data
   const onSubmit = async (data) => {
@@ -70,31 +58,32 @@ const Profile = () => {
     formData.append("username", data.username);
     formData.append("phone", data.phone);
     formData.append("country", data.country);
-    // dispatch(updateUserProfile(formData));
+
+    // dispatch data
+    await updateProfile(formData);
   };
 
-  // useEffect(() => {
-  //   if (updateError) {
-  //     cogoToast.error(updateError);
-  //     dispatch(userUpdateErrorReset());
-  //   }
-  //   if (
-  //     updateUser?.error_code === 11000 &&
-  //     updateUser?.error_pattern.username
-  //   ) {
-  //     cogoToast.error("Username is already exist.");
-  //     dispatch(userUpdateErrorReset());
-  //   }
-  //   if (updateUser?.error_code === 11000 && updateUser?.error_pattern.email) {
-  //     cogoToast.error("Email is already exist.");
-  //     dispatch(userUpdateErrorReset());
-  //   }
-  //   if (updateUser?.email) {
-  //     cogoToast.success("Updated successfully.");
-  //     dispatch(userUpdateErrorReset());
-  //     setIsEdit(false);
-  //   }
-  // }, [updateError, updateUser, dispatch]);
+  useEffect(() => {
+    if (updateIsError) {
+      cogoToast.error(updateError?.data?.message);
+    }
+    if (data?.error_code === 11000 && data?.error_pattern?.username) {
+      cogoToast.error("Username is already exist.");
+    }
+    if (data?.error_code === 11000 && data?.error_pattern?.email) {
+      cogoToast.error("Email is already exist.");
+    }
+    if (data?.email) {
+      cogoToast.success("Updated successfully.");
+      setIsEdit(false);
+    }
+  }, [updateError, updateIsError, data]);
+
+  // Cancel edit and reset field
+  const handleCancel = () => {
+    setIsEdit(!isEdit);
+    reset();
+  };
   return (
     <Layout>
       <CustomBreadcrumbs title="Profile" />
@@ -102,65 +91,57 @@ const Profile = () => {
         <div className="container">
           <div className="profile__content">
             <div className="profile__info">
-              <form onSubmit={handleSubmit(onSubmit)}>
-                {isEdit ? (
-                  <UserAvatar setAvatar={setAvatar} user={user} />
-                ) : isLoading ? (
-                  <Skeleton variant="circular" width={150} height={150} />
-                ) : (
-                  <Avatar
-                    sx={{ width: 150, height: 150 }}
-                    alt={user?.name}
-                    src={user?.avatar}
-                  />
-                )}
-                {isLoading ? (
-                  <Skeleton width="94%">
-                    <Typography variant="h2">.</Typography>
-                  </Skeleton>
-                ) : (
-                  <h2 className="profile__name">Hello! {user?.name}</h2>
-                )}
-
-                <ProfileInfo
-                  register={register}
-                  isEdit={isEdit}
-                  user={user}
-                  loading={isLoading}
-                />
-
-                {isEdit &&
-                  (isLoading ? (
-                    ""
-                  ) : (
-                    <div className="button__group">
-                      <CustomButton
-                        className="profile__btn btn btn__dark"
-                        text="Update Profile"
-                        loading={false}
-                        type="submit"
-                      />
-                      <CustomButton
-                        className="profile__btn btn btn__dark"
-                        text="Cancel"
-                        loading={false}
-                        type="submit"
-                        onClick={() => setIsEdit(!isEdit)}
-                        startIcon={<CloseIcon />}
-                      />
-                    </div>
-                  ))}
-              </form>
               {isLoading ? (
-                <Skeleton variant="rectangular" width="94%" height={48} />
+                <ProfileInfoSkeleton />
               ) : (
-                <div className="profile__btn btn btn__dark">
+                <>
+                  <form onSubmit={handleSubmit(onSubmit)}>
+                    {isEdit ? (
+                      <UserAvatar setAvatar={setAvatar} user={user} />
+                    ) : (
+                      <Avatar
+                        sx={{ width: 150, height: 150 }}
+                        alt={user?.name}
+                        src={user?.avatar}
+                      />
+                    )}
+
+                    <h2 className="profile__name">Hello! {user?.name}</h2>
+
+                    <ProfileInfo
+                      register={register}
+                      isEdit={isEdit}
+                      user={user}
+                    />
+
+                    {isEdit && (
+                      <div className="button__group">
+                        <CustomButton
+                          className="profile__btn btn small__btn btn__dark"
+                          text="Update Profile"
+                          loading={updateLoading}
+                          type="submit"
+                        />
+                        <CustomButton
+                          className="profile__btn btn small__btn btn__dark"
+                          text="Cancel"
+                          type="submit"
+                          onClick={handleCancel}
+                          startIcon={<CloseIcon />}
+                        />
+                      </div>
+                    )}
+                  </form>
+
                   {!isEdit && user && (
-                    <Button type="button" onClick={() => setIsEdit(!isEdit)}>
-                      Edit Profile
-                    </Button>
+                    <CustomButton
+                      className="profile__btn btn small__btn btn__dark"
+                      text="Edit Profile"
+                      type="button"
+                      onClick={() => setIsEdit(!isEdit)}
+                    />
                   )}
-                </div>
+                </>
               )}
             </div>
 

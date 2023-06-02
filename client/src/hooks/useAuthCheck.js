@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { isExpired } from "react-jwt";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { userLoggedIn, userLoggedOut } from "../app/features/auth/authSlice";
 
 const useAuthCheck = () => {
@@ -9,21 +9,20 @@ const useAuthCheck = () => {
 
   // redux element
   const dispatch = useDispatch();
+  const { userInfo } = useSelector((state) => state.auth);
 
   useEffect(() => {
-    const authUser = localStorage.getItem("userInfo");
-    if (authUser) {
-      const user = JSON.parse(authUser);
-      const isExpiredToken = isExpired(user?.token);
+    if (userInfo) {
+      const isExpiredToken = isExpired(userInfo?.token);
       if (isExpiredToken) {
         dispatch(userLoggedOut());
       }
-      if (user?.email && user?.token) {
-        dispatch(userLoggedIn(user));
+      if (userInfo?.email && userInfo?.token) {
+        dispatch(userLoggedIn(userInfo));
       }
     }
     setAuthCheckd(true);
-  }, [dispatch]);
+  }, [dispatch, userInfo]);
 
   return authCheckd;
 };

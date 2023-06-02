@@ -5,11 +5,13 @@
   width: 100%;
   left: 0;
   top: 0;
+  right: 0;
   z-index: 1599;
   display: flex;
   flex-direction: column;
   gap: 2rem;
   padding: 2rem;
+
   .reactEasyCrop_Container {
     position: relative;
     height: 80%;

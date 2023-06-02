@@ -198,13 +198,13 @@ const getProduct = asyncHandler(async (req, res) => {
 });
 
 /**
- * @route   Post /api/product/review/:revId
+ * @route   Post /api/product/review/:prodId
  * @desc    Create a product review
  * @access  Private
  */
 const createProductReview = asyncHandler(async (req, res) => {
   // find product by id
-  const product = await Product.findById(req.params.id);
+  const product = await Product.findById(req.params.prodId);
 
   if (product) {
     // check exist review
@@ -277,22 +277,22 @@ const createProductReview = asyncHandler(async (req, res) => {
 });
 
 /**
- * @route   Post /api/product/review/approve/:revId?
+ * @route   Post /api/product/review/approve/:prodId?
  * @desc    Approve, Declien a product review
  * @access  Private/Admin
  */
 const approveProductReview = asyncHandler(async (req, res) => {
   // find product by id
-  const product = await Product.findById(req.params.id);
+  const product = await Product.findById(req.params.prodId);
 
   if (product) {
     // check exist review
     const reviewExist = product.reviews.find(
-      (x) => req.query.reviewID.toString() === x._id.toString()
+      (x) => req.query.revId.toString() === x._id.toString()
     );
 
     if (reviewExist) {
-      if (req.query.request === "approve") {
+      if (req.query.action === "approve") {
         reviewExist.action = "approve";
 
         // update count reviews
@@ -314,7 +314,7 @@ const approveProductReview = asyncHandler(async (req, res) => {
           message: "Comment is approved.",
         });
       }
-      if (req.query.request === "decline") {
+      if (req.query.action === "decline") {
         reviewExist.action = "decline";
 
         // save in database
@@ -332,17 +332,17 @@ const approveProductReview = asyncHandler(async (req, res) => {
 });
 
 /**
- * @route   Post /api/product/review?
+ * @route   Post /api/product/review/delete?prodId&?revId
  * @desc    Delete a product review
  * @access  Private/Admin
  */
 const deleteProductReview = asyncHandler(async (req, res) => {
   // find product by id
-  const product = await Product.findById(req.query.productID);
+  const product = await Product.findById(req.query.prodId);
 
   if (product) {
     const result = product.reviews.filter((p, index) => {
-      if (p._id.toString() === req.query.reviewID.toString()) {
+      if (p._id.toString() === req.query.revId.toString()) {
         product.reviews.splice(index, 1); //remove the mached object from the original array
         return p;
       }

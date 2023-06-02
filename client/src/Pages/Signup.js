@@ -39,7 +39,7 @@ const Signup = () => {
   const navigate = useNavigate();
 
   // redirect
-  let from = location?.state?.from?.pathname || "/";
+  let from = location?.state?.from || "/";
 
   useEffect(() => {
     if (isError) {
@@ -49,7 +49,7 @@ const Signup = () => {
       cogoToast.error("Something was wrong!");
     }
     if (isSuccess && data) {
-      navigate(from);
+      navigate(from, { replace: true });
     }
   }, [error, navigate, from, isError, data, isSuccess]);
 
