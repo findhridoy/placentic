@@ -161,6 +161,22 @@ const getAllProducts = asyncHandler(async (req, res) => {
  * @access  Public
  */
 const getProducts = asyncHandler(async (req, res) => {
+  // search products by keyword and filter by category or get all products
+  const queries = req.query.keyword
+    ? {
+        title: {
+          $regex: req.query.keyword,
+          $options: "i",
+        },
+      }
+    : req.query.categories
+    ? {
+        category: {
+          $in: req.query.categories,
+        },
+      }
+    : {};
+
   // paginations
   const page = parseInt(req.query.page);
   const size = parseInt(req.query.size);
@@ -168,10 +184,13 @@ const getProducts = asyncHandler(async (req, res) => {
   const skip = page * size;
 
   // get total products count
-  const counts = await Product.countDocuments({});
+  const counts = await Product.countDocuments({ ...queries });
 
   // find all products
-  const products = await Product.find({}).limit(size).skip(skip).sort(sort);
+  const products = await Product.find({ ...queries })
+    .limit(size)
+    .skip(skip)
+    .sort(sort);
 
   if (products) {
     res.status(200).json({ products, counts });

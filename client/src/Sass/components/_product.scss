@@ -117,7 +117,15 @@
             width: 100% !important;
             text-transform: uppercase;
             @include smaller-font;
-            gap: 0.4rem;
+
+            &:disabled {
+              color: $cyan !important;
+              opacity: 1;
+              cursor: not-allowed !important;
+              .MuiSvgIcon-root {
+                color: $cyan;
+              }
+            }
           }
         }
       }

@@ -64,7 +64,7 @@
       }
     }
     .productLayout__content {
-      .productLayout__data{
+      .productLayout__data {
         display: grid;
         column-gap: 1rem;
         row-gap: 3rem;
@@ -74,6 +74,13 @@
         // }
         @include breakpoint(xl) {
           grid-template-columns: repeat(3, minmax(min-content, 1fr));
+        }
+      }
+      .productLayout__btn {
+        width: 100%;
+        margin-top: $x-2-75;
+        .MuiButton-root {
+          width: 100%;
         }
       }
     }

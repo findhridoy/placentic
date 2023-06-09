@@ -2,66 +2,36 @@ import AddIcon from "@mui/icons-material/Add";
 import { Skeleton, Stack } from "@mui/material";
 import MenuItem from "@mui/material/MenuItem";
 import MenuList from "@mui/material/MenuList";
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  categoryList,
-  categoryListReset,
-} from "../App/actions/categoryActions";
-import { productList, productListReset } from "../App/actions/productActions";
-import CustomAlert from "../Components/CustomAlert";
-import ProductItem from "../Components/ProductItem";
+import { useState } from "react";
+import { useGetCategoriesQuery } from "../app/features/categories/categoryApi";
+import { useGetProductsQuery } from "../app/features/products/productApi";
+import ProductItem from "../components/ProductItem";
+import CustomAlert from "../components/controls/CustomAlert";
+import CustomButton from "../components/controls/CustomButton";
+import ButtonSkeleton from "../components/skeletons/ButtonSkeleton";
 import Layout from "./Layout";
 
 const ProductLayout = ({ children }) => {
   // States
-  const [filterProduct, setFilterProduct] = useState([]);
+  const [queries, setQueries] = useState("");
+  const [size, setSize] = useState(6);
   // const [keyword, setKeyword] = useState("");
 
-  // Redux element
-  const dispatch = useDispatch();
-  const { loading: catLoading, error: catError, categories } = useSelector(
-    (state) => state.categoryList
-  );
-  const { loading, error, products } = useSelector(
-    (state) => state.productList
-  );
+  // Redux toolkit element
+  const { isLoading, data: categories } = useGetCategoriesQuery();
+  const {
+    isLoading: productLoading,
+    isFetching,
+    data: productsData,
+  } = useGetProductsQuery(`product?size=${size}&categories=${queries}`);
 
-  // Get categories
-  useEffect(() => {
-    dispatch(categoryList("categories"));
-
-    return () => {
-      dispatch(categoryListReset());
-    };
-  }, [dispatch]);
-
-  // Get products
-  useEffect(() => {
-    dispatch(productList("products"));
-
-    return () => {
-      dispatch(productListReset());
-    };
-  }, [dispatch]);
-
-  useEffect(() => {
-    setFilterProduct(products);
-  }, [setFilterProduct, products]);
-
-  // Handle filter
-  const handleFilter = (key) => {
-    const filterd = products?.filter((x) => x.category === key);
-
-    if (filterd) {
-      setFilterProduct(filterd);
-    } else {
-      setFilterProduct([]);
-    }
+  const handleFilter = (category) => {
+    setQueries(category);
   };
+
   // load more functionality
-  const handleClick = () => {
-    // setLimit((preValue) => preValue + 3);
+  const handleLoadMore = () => {
+    setSize((preValue) => preValue + 3);
   };
   return (
     <Layout>
@@ -69,14 +39,12 @@ const ProductLayout = ({ children }) => {
         <div className="container">
           <div className="productLayout__container">
             <div className="productLayout__menu">
-              {catLoading && <h4>Loading.....</h4>}
+              {isLoading && <h4>Loading.....</h4>}
               <h4 className="menu__title">
                 Categories <AddIcon />
               </h4>
               <MenuList>
-                <MenuItem onClick={() => setFilterProduct(products)}>
-                  All
-                </MenuItem>
+                <MenuItem onClick={() => handleFilter("")}>All</MenuItem>
                 {categories?.map((category) => (
                   <MenuItem
                     onClick={() => handleFilter(category?.title)}
@@ -88,12 +56,16 @@ const ProductLayout = ({ children }) => {
               </MenuList>
 
               <h4 className="menu__title">
-                Ratings <AddIcon />
+                Filter By <AddIcon />
+              </h4>
+
+              <h4 className="menu__title">
+                Other <AddIcon />
               </h4>
             </div>
             <div className="productLayout__content">
               <div className="productLayout__data">
-                {loading ? (
+                {productLoading ? (
                   [0, 1, 2, 3, 4, 5].map((index) => (
                     <div className="products__loader" key={index}>
                       <Skeleton
@@ -110,8 +82,8 @@ const ProductLayout = ({ children }) => {
                       </Stack>
                     </div>
                   ))
-                ) : filterProduct?.length ? (
-                  filterProduct?.map((product) => (
+                ) : productsData?.products?.length ? (
+                  productsData?.products?.map((product) => (
                     <ProductItem product={product} key={product?._id} />
                   ))
                 ) : (
@@ -121,37 +93,26 @@ const ProductLayout = ({ children }) => {
                   />
                 )}
               </div>
-            </div>
 
-            {/* {counts === products?.length || storeProducts?.length === 0 ? (
-              " "
-            ) : (
-              <div className="product__btn btn small__btn btn__dark">
-                {false ? (
-                  <Skeleton
-                    height={42}
-                    width={150}
-                    animation="wave"
-                    variant="rectangular"
-                  />
-                ) : (
-                  <Button type="button" onClick={handleClick}>
-                    {loading ? (
-                      <CircularProgress
-                        color="inherit"
-                        size={20}
-                        thickness={3}
-                      />
-                    ) : (
-                      <>
-                        <span className="btn__text">Load More</span>
-                        <AddIcon />
-                      </>
-                    )}
-                  </Button>
-                )}
-              </div>
-            )} */}
+              {productsData?.counts === productsData?.products?.length ||
+              productsData?.products?.length === 0 ? (
+                " "
+              ) : (
+                <>
+                  {productLoading ? (
+                    <ButtonSkeleton height={40} width="100%" marginTop={5} />
+                  ) : (
+                    <CustomButton
+                      className="productLayout__btn btn small__btn btn__dark"
+                      text="Load More"
+                      endIcon={<AddIcon />}
+                      onClick={handleLoadMore}
+                      loading={isFetching}
+                    />
+                  )}
+                </>
+              )}
+            </div>
           </div>
         </div>
       </section>

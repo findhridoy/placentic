@@ -124,8 +124,9 @@
           gap: 0.2rem;
           color: $dark-alt;
           cursor: pointer;
+          background-color: transparent !important;
           @include smallest-font;
-          font-weight: $semi-bold;
+          font-weight: $bold;
           border-right: $border-gray;
           margin-right: $x-0-75;
           padding-right: $x-0-75;
@@ -141,12 +142,26 @@
             border-right: none;
             margin-right: 0;
             padding-right: 0;
+            &:hover {
+              color: $red !important;
+              .MuiSvgIcon-root {
+                color: $red;
+              }
+            }
           }
           &:hover {
-            color: $cyan;
+            color: $cyan !important;
             .MuiSvgIcon-root {
               color: $cyan;
             }
+          }
+        }
+
+        .active__btn {
+          color: $cyan;
+          cursor: not-allowed;
+          .MuiSvgIcon-root {
+            color: $cyan;
           }
         }
       }

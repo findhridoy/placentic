@@ -6,11 +6,11 @@ import RadioGroup from "@mui/material/RadioGroup";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import CartItem from "../Components/CartItem";
-import CartSubtotal from "../Components/CartSubtotal";
-import CustomAlert from "../Components/CustomAlert";
-import CustomBreadcrumbs from "../Components/CustomBreadcrumbs";
-import Layout from "../Layouts/Layout";
+import CartItem from "../components/CartItem";
+import CartSubtotal from "../components/CartSubtotal";
+import CustomBreadcrumbs from "../components/CustomBreadcrumbs";
+import CustomAlert from "../components/controls/CustomAlert";
+import Layout from "../layouts/Layout";
 
 const Cart = () => {
   // States
@@ -35,7 +35,7 @@ const Cart = () => {
             <div className="cart__content">
               <div className="cart__item">
                 {cartItems?.map((cartItem) => (
-                  <CartItem cartItem={cartItem} key={cartItem?.product} />
+                  <CartItem cartItem={cartItem} key={cartItem?._id} />
                 ))}
               </div>
               <div className="cart__checkout">

@@ -3,31 +3,37 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import RemoveIcon from "@mui/icons-material/Remove";
 import { IconButton } from "@mui/material";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { addToCart, removeFromCart } from "../App/actions/cartActions";
+import { removeFromCart, updateCartItem } from "../app/features/cart/cartSlice";
+import { addToWishList } from "../app/features/wishList/wishListSlice";
 
 const CartItem = ({ cartItem }) => {
   // Redux element
   const dispatch = useDispatch();
+  const existWishListItem = useSelector((state) =>
+    state.wishList?.wishListItems?.some((x) => cartItem?._id === x._id)
+  );
 
   // Product quantity setup
   const handleQuantity = (action) => {
-    if (action === "add") {
-      let qty = cartItem?.quantity + 1;
-      dispatch(addToCart(cartItem, qty));
-    }
-    if (action === "remove") {
-      let qty = cartItem?.quantity - 1;
-      dispatch(addToCart(cartItem, qty));
-    }
+    const cartData = {
+      _id: cartItem?._id,
+      key: action,
+    };
+
+    dispatch(updateCartItem(cartData));
   };
 
   // Remove from cart
-  const handleRemoveFromCart = () => {
-    dispatch(removeFromCart(cartItem?.product));
+  const handleRemoveFromCart = (cartItem) => {
+    dispatch(removeFromCart(cartItem));
   };
 
+  // Add to wishlist functionality
+  const handleAddToWishlist = (cartItem) => {
+    dispatch(addToWishList(cartItem));
+  };
   return (
     <div className="cartItem">
       <div className="cartItem__image">
@@ -50,15 +56,13 @@ const CartItem = ({ cartItem }) => {
             </span>
           </div>
 
-          <span className="cartItem__totalPrice">
-            ${cartItem?.price * cartItem?.quantity}
-          </span>
+          <span className="cartItem__totalPrice">${cartItem?.totalPrice}</span>
         </div>
 
         <div className="cartItem__action">
           <div className="cartItem__count">
             <IconButton
-              onClick={() => handleQuantity("remove")}
+              onClick={() => handleQuantity("decrease")}
               disabled={cartItem?.quantity < 2}
               size="small"
             >
@@ -66,7 +70,7 @@ const CartItem = ({ cartItem }) => {
             </IconButton>
             <input type="text" disabled value={cartItem?.quantity} />
             <IconButton
-              onClick={() => handleQuantity("add")}
+              onClick={() => handleQuantity("increase")}
               disabled={
                 cartItem?.quantity === cartItem?.countInStock ||
                 cartItem?.countInStock === 0
@@ -78,11 +82,25 @@ const CartItem = ({ cartItem }) => {
           </div>
 
           <div className="cartItem__button--group">
-            <span className="cartItem__btn">
-              <FavoriteIcon fontSize="small" />
-              <span className="btn__text">Save</span>
-            </span>
-            <span className="cartItem__btn" onClick={handleRemoveFromCart}>
+            {existWishListItem ? (
+              <span className="cartItem__btn active__btn">
+                <FavoriteIcon fontSize="small" />
+                <span className="btn__text">Saved</span>
+              </span>
+            ) : (
+              <span
+                className="cartItem__btn"
+                onClick={() => handleAddToWishlist(cartItem)}
+              >
+                <FavoriteIcon fontSize="small" />
+                <span className="btn__text">Save</span>
+              </span>
+            )}
+
+            <span
+              className="cartItem__btn"
+              onClick={() => handleRemoveFromCart(cartItem)}
+            >
               <DeleteIcon fontSize="small" />
               <span className="btn__text">Remove</span>
             </span>

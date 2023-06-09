@@ -4,7 +4,7 @@ import CategoryIcon from "@mui/icons-material/Category";
 import CloseIcon from "@mui/icons-material/Close";
 import CollectionsBookmarkIcon from "@mui/icons-material/CollectionsBookmark";
 import DashboardIcon from "@mui/icons-material/Dashboard";
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import FavoriteIcon from "@mui/icons-material/Favorite";
 import LibraryBooksIcon from "@mui/icons-material/LibraryBooks";
 import LocalMallIcon from "@mui/icons-material/LocalMall";
 import LoginIcon from "@mui/icons-material/Login";
@@ -26,8 +26,8 @@ const Header = () => {
   // Redux element
   const dispatch = useDispatch();
   const { userInfo } = useSelector((state) => state.auth);
-  // const { cartItems } = useSelector((state) => state.cart);
-  // const { wishlistItems } = useSelector((state) => state.wishlist);
+  const { cartItems } = useSelector((state) => state.cart);
+  const { wishListItems } = useSelector((state) => state.wishList);
 
   // Header scroll
   useEffect(() => {
@@ -120,7 +120,7 @@ const Header = () => {
                 <li className="nav__item2">
                   <NavLink className="nav__link2" to="/cart">
                     <IconButton aria-label="cart">
-                      <Badge badgeContent={true?.length}>
+                      <Badge badgeContent={cartItems?.length}>
                         <LocalMallIcon />
                       </Badge>
                     </IconButton>
@@ -129,8 +129,8 @@ const Header = () => {
                 <li className="nav__item2">
                   <NavLink className="nav__link2" to="/favourites">
                     <IconButton aria-label="love">
-                      <Badge badgeContent={true?.length}>
-                        <FavoriteBorderIcon />
+                      <Badge badgeContent={wishListItems?.length}>
+                        <FavoriteIcon />
                       </Badge>
                     </IconButton>
                   </NavLink>

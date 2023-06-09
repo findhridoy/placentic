@@ -3,6 +3,8 @@ import CustomLoader from "./components/controls/CustomLoader";
 import PrivateRoutes from "./helpers/Routes/PrivateRoutes";
 import PublicRoutes from "./helpers/Routes/PublicRoutes";
 import useAuthCheck from "./hooks/useAuthCheck";
+import Cart from "./pages/Cart";
+import Collection from "./pages/Collection";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Product from "./pages/Product";
@@ -19,8 +21,8 @@ const App = () => {
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/product/:prodId" element={<Product />} />
-      {/* <Route path="/cart" element={<Cart />} />
-        <Route path="/catalog" element={<Catalog />} /> */}
+      <Route path="/cart" element={<Cart />} />
+      <Route path="/collection" element={<Collection />} />
 
       {/* Public Routes */}
       <Route path="/*" element={<PublicRoutes />}>

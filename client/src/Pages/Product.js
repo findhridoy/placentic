@@ -1,11 +1,15 @@
 import AddIcon from "@mui/icons-material/Add";
+import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import RemoveIcon from "@mui/icons-material/Remove";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { IconButton } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
+import { addToCart } from "../app/features/cart/cartSlice";
 import { useGetProductQuery } from "../app/features/products/productApi";
+import { addToWishList } from "../app/features/wishList/wishListSlice";
 import ProductTab from "../components/ProductTab";
 import Rating from "../components/Rating";
 import CustomAlert from "../components/controls/CustomAlert";
@@ -22,47 +26,14 @@ const Product = () => {
   // react router
   const { prodId } = useParams();
 
-  // Redux toolkit element
+  // Redux elements
+  const dispatch = useDispatch();
   const { isLoading, isError, error, data: product } = useGetProductQuery(
     prodId
   );
-
-  // const dispatch = useDispatch();
-  // const { loading, error, product } = useSelector((state) => state.getProduct);
-  // const { review: reviews } = useSelector((state) => state.deleteProductReview);
-  // const { review } = useSelector((state) => state.createProductReview);
-  // const { review: arrpoveReviews } = useSelector(
-  //   (state) => state.permissionProductReview
-  // );
-  // const { wishlistItems } = useSelector((state) => state.wishlist);
-
-  useEffect(
-    () => {
-      // dispatch(getProduct(id));
-
-      return () => {
-        // dispatch(getProductReset());
-      };
-    },
-    [
-      // dispatch,
-      // id,
-      // reviews?.success,
-      // review?.success,
-      // arrpoveReviews?.success,
-    ]
+  const existWishListItem = useSelector((state) =>
+    state.wishList?.wishListItems?.some((x) => product?._id === x._id)
   );
-
-  // useEffect(() => {
-  //   if (error) {
-  //     cogoToast.error(error);
-  //     dispatch(getProductReset());
-  //   }
-  //   if (product?.message) {
-  //     cogoToast.error("Something was wrong!");
-  //     dispatch(getProductReset());
-  //   }
-  // }, [error, product, dispatch]);
 
   // Product quantity setup
   const handleQuantity = (action) => {
@@ -76,14 +47,32 @@ const Product = () => {
 
   // Add to cart functionality
   const handleAddToCart = () => {
-    // dispatch(addToCart(product, quantity));
-  };
+    const productData = {
+      _id: product?._id,
+      title: product?.title,
+      price: product?.price,
+      image: product?.image,
+      countInStock: product?.countInStock,
+      quantity,
+      totalPrice: product?.price * quantity,
+    };
 
-  // const exisWishlisttItem = wishlistItems?.find((x) => product?._id === x._id);
+    dispatch(addToCart(productData));
+  };
 
   // Add to wishlist functionality
   const handleAddToWishlist = () => {
-    // dispatch(addToWishlist(product));
+    const productData = {
+      _id: product?._id,
+      title: product?.title,
+      price: product?.price,
+      image: product?.image,
+      countInStock: product?.countInStock,
+      quantity: 1,
+      totalPrice: product?.price * 1,
+    };
+
+    dispatch(addToWishList(productData));
   };
   return (
     <Layout>
@@ -170,15 +159,26 @@ const Product = () => {
                       <>
                         <CustomButton
                           className="product__btn btn btn__dark"
-                          text="ADD TO CART"
+                          text={"ADD TO CART"}
                           endIcon={<ShoppingCartIcon />}
                           onClick={handleAddToCart}
                         />
 
                         <CustomButton
                           className="product__btn btn btn__white"
-                          text="Add to wish list"
-                          endIcon={<FavoriteBorderIcon />}
+                          text={
+                            existWishListItem
+                              ? "Wish Listed"
+                              : "Add to wish list"
+                          }
+                          disabled={existWishListItem}
+                          endIcon={
+                            existWishListItem ? (
+                              <FavoriteIcon />
+                            ) : (
+                              <FavoriteBorderIcon />
+                            )
+                          }
                           onClick={handleAddToWishlist}
                         />
                       </>

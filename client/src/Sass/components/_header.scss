@@ -175,6 +175,12 @@
           .dropdown__show {
             display: block;
           }
+
+          // Badge Icon
+          .MuiBadge-badge {
+            background-color: $cyan !important;
+            color: $white;
+          }
         }
       }
     }
