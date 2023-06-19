@@ -1,6 +1,6 @@
-import CheckoutSubtotal from "../Components/CheckoutSubtotal";
-import CustomAccordion from "../Components/CustomAccordion";
-import CustomBreadcrumbs from "../Components/CustomBreadcrumbs";
+import CheckoutSubtotal from "../components/CheckoutSubtotal";
+import CustomizeAccordion from "../components/CustomizeAccordion";
+import CustomBreadcrumbs from "../components/controls/CustomBreadcrumbs";
 
 const Checkout = () => {
   return (
@@ -24,7 +24,7 @@ const Checkout = () => {
               </div>
             </div> */}
 
-            <CustomAccordion />
+            <CustomizeAccordion />
           </div>
 
           <div className="chekout__subtotal">

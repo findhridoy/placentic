@@ -6,13 +6,13 @@ import { IconButton } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { removeFromCart, updateCartItem } from "../app/features/cart/cartSlice";
-import { addToWishList } from "../app/features/wishList/wishListSlice";
+import { addToWishlist } from "../app/features/wishlist/wishlistSlice";
 
 const CartItem = ({ cartItem }) => {
   // Redux element
   const dispatch = useDispatch();
-  const existWishListItem = useSelector((state) =>
-    state.wishList?.wishListItems?.some((x) => cartItem?._id === x._id)
+  const existWishlistItem = useSelector((state) =>
+    state.wishlist?.wishlistItems?.some((x) => cartItem?._id === x._id)
   );
 
   // Product quantity setup
@@ -32,7 +32,7 @@ const CartItem = ({ cartItem }) => {
 
   // Add to wishlist functionality
   const handleAddToWishlist = (cartItem) => {
-    dispatch(addToWishList(cartItem));
+    dispatch(addToWishlist(cartItem));
   };
   return (
     <div className="cartItem">
@@ -82,7 +82,7 @@ const CartItem = ({ cartItem }) => {
           </div>
 
           <div className="cartItem__button--group">
-            {existWishListItem ? (
+            {existWishlistItem ? (
               <span className="cartItem__btn active__btn">
                 <FavoriteIcon fontSize="small" />
                 <span className="btn__text">Saved</span>

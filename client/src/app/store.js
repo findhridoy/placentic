@@ -2,14 +2,14 @@ import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { apiSlice } from "./features/api/apiSlice";
 import authSlice, { userLoggedOut } from "./features/auth/authSlice";
 import cartSlice from "./features/cart/cartSlice";
-import wishListSlice from "./features/wishList/wishListSlice";
+import wishlistSlice from "./features/wishlist/wishlistSlice";
 
 // reducers
 const reducers = combineReducers({
   [apiSlice.reducerPath]: apiSlice.reducer,
   auth: authSlice,
   cart: cartSlice,
-  wishList: wishListSlice,
+  wishlist: wishlistSlice,
 });
 
 // store congure

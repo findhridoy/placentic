@@ -27,7 +27,7 @@ const Header = () => {
   const dispatch = useDispatch();
   const { userInfo } = useSelector((state) => state.auth);
   const { cartItems } = useSelector((state) => state.cart);
-  const { wishListItems } = useSelector((state) => state.wishList);
+  const { wishlistItems } = useSelector((state) => state.wishlist);
 
   // Header scroll
   useEffect(() => {
@@ -76,7 +76,7 @@ const Header = () => {
             <div className="nav__menu">
               <ul className="nav__list">
                 <li className="nav__item">
-                  <NavLink className="nav__link" to="/collection">
+                  <NavLink className="nav__link" to="/shop/collection">
                     <CollectionsBookmarkIcon />
                     <span className="nav__text">Collection</span>
                   </NavLink>
@@ -118,7 +118,7 @@ const Header = () => {
                   </IconButton>
                 </li>
                 <li className="nav__item2">
-                  <NavLink className="nav__link2" to="/cart">
+                  <NavLink className="nav__link2" to="/shop/cart">
                     <IconButton aria-label="cart">
                       <Badge badgeContent={cartItems?.length}>
                         <LocalMallIcon />
@@ -127,9 +127,9 @@ const Header = () => {
                   </NavLink>
                 </li>
                 <li className="nav__item2">
-                  <NavLink className="nav__link2" to="/favourites">
+                  <NavLink className="nav__link2" to="/shop/favourites">
                     <IconButton aria-label="love">
-                      <Badge badgeContent={wishListItems?.length}>
+                      <Badge badgeContent={wishlistItems?.length}>
                         <FavoriteIcon />
                       </Badge>
                     </IconButton>
@@ -148,6 +148,7 @@ const Header = () => {
                         sx={{ width: 35, height: 35 }}
                       />
                     </IconButton>
+
                     {/* Dropdown menu */}
                     <div
                       className={

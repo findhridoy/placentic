@@ -6,6 +6,7 @@ export const categoryApi = apiSlice.injectEndpoints({
     getCategories: builder.query({
       query: (size, sort) => ({
         url: `category?size=${size}&sort=${sort}`,
+        // url: `category`,
         method: "GET",
       }),
     }),

@@ -1,0 +1,45 @@
+.customDropdown {
+  border: $border-gray;
+  display: flex;
+  align-items: center;
+  padding-left: $x-0-75;
+  .customDropdown__title {
+    font-weight: $bold;
+    text-transform: uppercase;
+    font-family: $nunito;
+    @include smaller-font;
+  }
+  .customDropdown__dropdown {
+    .customDropdown__control {
+      border: none;
+      background-color: transparent;
+      border-radius: 0;
+      .customDropdown__placeholder {
+        font-weight: $bold;
+        text-transform: uppercase;
+        font-family: $nunito;
+        @include smaller-font;
+        // opacity: 0.8;
+        color: $cyan;
+      }
+      .MuiSvgIcon-root {
+        display: block;
+        position: absolute;
+        right: 3px;
+        top: 2px;
+        font-size: 1.8rem;
+      }
+    }
+    .customDropdown__menu {
+      font-weight: $semi-bold;
+      text-transform: uppercase;
+      font-family: $poppins;
+      @include smaller-font;
+      border: none;
+      background: $white;
+      .is-selected {
+        background-color: $cyan-alt;
+      }
+    }
+  }
+}

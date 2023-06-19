@@ -8,9 +8,10 @@ import {
   useGetProfileQuery,
   useUpdateProfileMutation,
 } from "../app/features/auth/authApi";
-import CustomBreadcrumbs from "../components/CustomBreadcrumbs";
+import profileImage from "../assets/banners/profile1.jpg";
 import ProfileInfo from "../components/ProfileInfo";
 import UserAvatar from "../components/UserAvatar";
+import CustomBreadcrumbs from "../components/controls/CustomBreadcrumbs";
 import CustomButton from "../components/controls/CustomButton";
 import ProfileInfoSkeleton from "../components/skeletons/ProfileInfoSkeleton";
 import Layout from "../layouts/Layout";
@@ -86,7 +87,7 @@ const Profile = () => {
   };
   return (
     <Layout>
-      <CustomBreadcrumbs title="Profile" />
+      <CustomBreadcrumbs title="Profile" image={profileImage} />
       <section className="profile section">
         <div className="container">
           <div className="profile__content">

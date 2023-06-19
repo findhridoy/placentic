@@ -20,14 +20,15 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    // origin: "http://localhost:3000",
+    origin: "*",
   })
 );
 
 // Routing Setup
-app.use("/api/user", userRouter);
-app.use("/api/category", categoryRouter);
-app.use("/api/product", productRouter);
+app.use("/api/v1/user", userRouter);
+app.use("/api/v1/category", categoryRouter);
+app.use("/api/v1/product", productRouter);
 app.use("/api", stripeRouter);
 
 // Default Error Handler

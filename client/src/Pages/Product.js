@@ -9,7 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 import { addToCart } from "../app/features/cart/cartSlice";
 import { useGetProductQuery } from "../app/features/products/productApi";
-import { addToWishList } from "../app/features/wishList/wishListSlice";
+import { addToWishlist } from "../app/features/wishlist/wishlistSlice";
 import ProductTab from "../components/ProductTab";
 import Rating from "../components/Rating";
 import CustomAlert from "../components/controls/CustomAlert";
@@ -31,8 +31,8 @@ const Product = () => {
   const { isLoading, isError, error, data: product } = useGetProductQuery(
     prodId
   );
-  const existWishListItem = useSelector((state) =>
-    state.wishList?.wishListItems?.some((x) => product?._id === x._id)
+  const existWishlistItem = useSelector((state) =>
+    state.wishlist?.wishlistItems?.some((x) => product?._id === x._id)
   );
 
   // Product quantity setup
@@ -72,7 +72,7 @@ const Product = () => {
       totalPrice: product?.price * 1,
     };
 
-    dispatch(addToWishList(productData));
+    dispatch(addToWishlist(productData));
   };
   return (
     <Layout>
@@ -167,13 +167,13 @@ const Product = () => {
                         <CustomButton
                           className="product__btn btn btn__white"
                           text={
-                            existWishListItem
+                            existWishlistItem
                               ? "Wish Listed"
                               : "Add to wish list"
                           }
-                          disabled={existWishListItem}
+                          disabled={existWishlistItem}
                           endIcon={
-                            existWishListItem ? (
+                            existWishlistItem ? (
                               <FavoriteIcon />
                             ) : (
                               <FavoriteBorderIcon />

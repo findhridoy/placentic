@@ -1,5 +1,5 @@
 import React from "react";
-import product from "../assets/products/header-sofa-img.png";
+import product from "../assets/hero/hero2.png";
 import CustomButton from "./controls/CustomButton";
 
 const Hero = () => {

@@ -6,10 +6,11 @@ import RadioGroup from "@mui/material/RadioGroup";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import cartImage from "../assets/banners/cart1.jpg";
 import CartItem from "../components/CartItem";
 import CartSubtotal from "../components/CartSubtotal";
-import CustomBreadcrumbs from "../components/CustomBreadcrumbs";
 import CustomAlert from "../components/controls/CustomAlert";
+import CustomBreadcrumbs from "../components/controls/CustomBreadcrumbs";
 import Layout from "../layouts/Layout";
 
 const Cart = () => {
@@ -21,7 +22,7 @@ const Cart = () => {
   return (
     <Layout>
       <section className="cart__section ">
-        <CustomBreadcrumbs title="Shopping Cart" />
+        <CustomBreadcrumbs title="Shopping cart" image={cartImage} />
         <div className="container">
           <div className="cart__header">
             <h2 className="cart__title">Your cart items</h2>

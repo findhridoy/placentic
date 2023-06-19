@@ -4,9 +4,10 @@
   left: 0;
   z-index: $z-99;
   width: 100%;
-  background-color: $white-alt;
-  @include header-shadow(-30px);
-  @include transition(500ms);
+  // background-color: $white-alt;
+  background-color: transparent;
+  // @include header-shadow(-30px);
+  @include transition(300ms);
   @include header-height;
 
   .nav {
@@ -190,4 +191,5 @@
 // when scroll down
 .header__shadow {
   @include header-shadow(-10px);
+  background-color: $white-alt;
 }

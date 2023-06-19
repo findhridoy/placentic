@@ -1,36 +1,62 @@
 .customBreadcrumbs {
-  //   background-color: $gray;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.5rem;
-  padding: $x-1 0;
-  .customBreadcrumbs__title {
-    color: $dark-alt;
-    font-weight: $bold;
-    @include big-font;
-    opacity: 0.8;
-    font-family: $dancing;
+  position: relative;
+  height: 250px;
+  width: 100%;
+  margin-bottom: $x-1-75;
+  @include breakpoint(md) {
+    height: 380px;
   }
-  .MuiLink-root {
-    color: $cyan;
-    font-weight: $medium;
-    font-family: $poppins;
-    @include small-font;
-    text-decoration: none;
-    text-transform: capitalize;
-    cursor: pointer;
-    @include transition(200ms);
-    &:hover {
-      text-decoration: underline;
+  .customBreadcrumbs__container {
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    position: absolute;
+    top: -3.5rem;
+    height: calc(100% + 3.5rem);
+    width: 100%;
+    @include breakpoint(md) {
+      top: -4rem;
+      height: calc(100% + 4rem);
     }
-  }
-  .breadcrumbs__text {
-    @extend .MuiLink-root;
-    cursor: initial;
-    color: $dark-alt;
-    &:hover {
-      text-decoration: none;
+    .customBreadcrumbs__content {
+      height: calc(250px + 3.5rem);
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      margin-top: $x-1-75;
+      @include breakpoint(md) {
+        height: calc(380px + 4rem);
+      }
+
+      .customBreadcrumbs__title {
+        color: $dark-alt;
+        font-weight: $bolder;
+        @include big-font;
+        // opacity: 0.8;
+        font-family: $nunito;
+      }
+      .MuiLink-root {
+        color: $cyan;
+        font-weight: $semi-bold;
+        font-family: $montserrat;
+        @include smallest-font;
+        text-decoration: none;
+        text-transform: uppercase;
+        cursor: pointer;
+        @include transition(200ms);
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+      .breadcrumbs__text {
+        @extend .MuiLink-root;
+        cursor: initial;
+        color: $dark-alt;
+        &:hover {
+          text-decoration: none;
+        }
+      }
     }
   }
 }

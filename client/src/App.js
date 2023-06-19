@@ -4,9 +4,11 @@ import PrivateRoutes from "./helpers/Routes/PrivateRoutes";
 import PublicRoutes from "./helpers/Routes/PublicRoutes";
 import useAuthCheck from "./hooks/useAuthCheck";
 import Cart from "./pages/Cart";
+import Checkout from "./pages/Checkout";
 import Collection from "./pages/Collection";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
+import Orders from "./pages/Orders";
 import Product from "./pages/Product";
 import Profile from "./pages/Profile";
 import Signup from "./pages/Signup";
@@ -21,8 +23,8 @@ const App = () => {
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/product/:prodId" element={<Product />} />
-      <Route path="/cart" element={<Cart />} />
-      <Route path="/collection" element={<Collection />} />
+      <Route path="/shop/cart" element={<Cart />} />
+      <Route path="/shop/collection" element={<Collection />} />
 
       {/* Public Routes */}
       <Route path="/*" element={<PublicRoutes />}>
@@ -33,8 +35,8 @@ const App = () => {
       {/* Private Routes */}
       <Route path="/*" element={<PrivateRoutes />}>
         <Route path="profile" element={<Profile />} />
-        {/* <Route path="orders" element={<Orders />} />
-          <Route path="checkout" element={<Checkout />} /> */}
+        <Route path="orders" element={<Orders />} />
+        <Route path="checkout" element={<Checkout />} />
       </Route>
 
       {/* Only Admin can access this pages */}

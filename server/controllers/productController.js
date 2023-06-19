@@ -4,6 +4,7 @@ const asyncHandler = require("express-async-handler");
 // Internal Imports
 const Product = require("../models/productModel");
 const { cloudinary } = require("../config/cloudinary");
+const Apifeatures = require("../utils/ApiFeatures");
 
 /**
  * @route   Post /api/product
@@ -156,44 +157,49 @@ const getAllProducts = asyncHandler(async (req, res) => {
 });
 
 /**
+ * @route   Get /api/product/categories
+ * @desc    Get all categories that using by products
+ * @access  Public
+ */
+const getCategoriesByProduct = asyncHandler(async (req, res) => {
+  const productCount = await Product.countDocuments();
+  const categories = await Product.aggregate([
+    { $unwind: "$category" },
+    { $group: { _id: "$category", productCount: { $sum: 1 } } },
+    { $addFields: { title: "$_id" } },
+    { $project: { _id: 0 } },
+    { $sort: { category: 1 } },
+  ]);
+
+  if (categories) {
+    res.status(200).json({ categories, productCount });
+  } else {
+    res.status(404);
+    throw new Error("Categories are not found");
+  }
+});
+
+/**
  * @route   Get /api/product?sort=1&page=1&size=4
- * @desc    Get all product
+ * @desc    Get all product with filter
  * @access  Public
  */
 const getProducts = asyncHandler(async (req, res) => {
-  // search products by keyword and filter by category or get all products
-  const queries = req.query.keyword
-    ? {
-        title: {
-          $regex: req.query.keyword,
-          $options: "i",
-        },
-      }
-    : req.query.categories
-    ? {
-        category: {
-          $in: req.query.categories,
-        },
-      }
-    : {};
+  // using reuseable class for filter, sort, paginate
+  const features = new Apifeatures(
+    Product.find(),
+    req.query,
+    Product.countDocuments()
+  )
+    .filter()
+    .sort()
+    .paginate();
 
-  // paginations
-  const page = parseInt(req.query.page);
-  const size = parseInt(req.query.size);
-  const sort = parseInt(req.query.sort);
-  const skip = page * size;
-
-  // get total products count
-  const counts = await Product.countDocuments({ ...queries });
-
-  // find all products
-  const products = await Product.find({ ...queries })
-    .limit(size)
-    .skip(skip)
-    .sort(sort);
+  const counts = await features.countsQuery;
+  const products = await features.query;
 
   if (products) {
-    res.status(200).json({ products, counts });
+    res.status(200).json({ counts, products });
   } else {
     res.status(404);
     throw new Error("Products not found");
@@ -404,6 +410,7 @@ module.exports = {
   deleteProduct,
   getAllProducts,
   getProducts,
+  getCategoriesByProduct,
   getProduct,
   createProductReview,
   approveProductReview,

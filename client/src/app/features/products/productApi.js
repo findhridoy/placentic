@@ -10,6 +10,14 @@ export const productApi = apiSlice.injectEndpoints({
       }),
     }),
 
+    // get categories by product
+    getCategoriesByProduct: builder.query({
+      query: () => ({
+        url: "product/categories",
+        method: "GET",
+      }),
+    }),
+
     // get product by id
     getProduct: builder.query({
       query: (prodId) => ({
@@ -51,6 +59,7 @@ export const productApi = apiSlice.injectEndpoints({
 
 export const {
   useGetProductsQuery,
+  useGetCategoriesByProductQuery,
   useGetProductQuery,
   useCreateReviewMutation,
   useApproveReviewMutation,

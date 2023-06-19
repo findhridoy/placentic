@@ -2,32 +2,32 @@ import { createSlice } from "@reduxjs/toolkit";
 import cogoToast from "cogo-toast";
 
 // cart items from storage
-const wishListItems = JSON.parse(localStorage.getItem("wishList"))
-  ? JSON.parse(localStorage.getItem("wishList"))
+const wishlistItems = JSON.parse(localStorage.getItem("wishlist"))
+  ? JSON.parse(localStorage.getItem("wishlist"))
   : [];
 
-// wishList slice
-const wishListSlice = createSlice({
+// wishlist slice
+const wishlistSlice = createSlice({
   name: "wishList",
-  initialState: { wishListItems },
+  initialState: { wishlistItems },
   reducers: {
-    addToWishList: (state, action) => {
-      state.wishListItems.push(action.payload);
-      localStorage.setItem("wishList", JSON.stringify(state.wishListItems));
+    addToWishlist: (state, action) => {
+      state.wishlistItems.push(action.payload);
+      localStorage.setItem("wishList", JSON.stringify(state.wishlistItems));
       cogoToast.success(`${action.payload?.title} is added your wish list.`);
     },
 
-    removeFromWishList: (state, action) => {
-      const newWishListItems = state.wishListItems?.filter(
+    removeFromWishlist: (state, action) => {
+      const newWishlistItems = state.wishlistItems?.filter(
         (x) => x._id !== action.payload?._id
       );
 
-      state.wishListItems = newWishListItems;
-      localStorage.setItem("wishList", JSON.stringify(state.wishListItems));
+      state.wishlistItems = newWishlistItems;
+      localStorage.setItem("wishList", JSON.stringify(state.wishlistItems));
       cogoToast.success(`${action.payload?.title} is removed.`);
     },
   },
 });
 
-export const { addToWishList, removeFromWishList } = wishListSlice.actions;
-export default wishListSlice.reducer;
+export const { addToWishlist, removeFromWishlist } = wishlistSlice.actions;
+export default wishlistSlice.reducer;

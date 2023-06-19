@@ -1,8 +1,8 @@
 // section height
-@mixin section-height($vh) {
-  height: calc($vh - 3.5rem);
+@mixin section-height($height) {
+  height: calc($height - 3.5rem);
   @include breakpoint(md) {
-    height: calc($vh - 4rem);
+    height: calc($height - 4rem);
   }
 }
 

@@ -2,7 +2,7 @@
 import StarBorderIcon from "@mui/icons-material/StarBorder";
 import Box from "@mui/material/Box";
 import Rating from "@mui/material/Rating";
-import * as React from "react";
+import React, { useState } from "react";
 
 const labels = {
   0.5: "Useless",
@@ -22,7 +22,7 @@ function getLabelText(value) {
 }
 
 const ReviewRating = ({ value, setValue, errors }) => {
-  const [hover, setHover] = React.useState(-1);
+  const [hover, setHover] = useState(-1);
 
   return (
     <div

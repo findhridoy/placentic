@@ -103,3 +103,59 @@
   justify-content: center;
   z-index: 9999;
 }
+
+// **Custom Viewer
+.customViewer {
+  border: $border-gray;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: $x-0-25 $x-0-75;
+  .customViewer__title {
+    font-weight: $bold;
+    text-transform: uppercase;
+    font-family: $nunito;
+    @include smaller-font;
+  }
+  .customViewer__icons {
+    display: flex;
+    align-items: center;
+    gap: 0.1rem;
+    .active__viewer {
+      .MuiIconButton-root {
+        background-color: $cyan-alt;
+      }
+      .MuiSvgIcon-root {
+        color: $cyan;
+      }
+    }
+  }
+}
+
+// **Custom Accordion
+.customAccordion {
+  .MuiAccordion-root {
+    background-color: transparent;
+    box-shadow: none;
+    padding: $x-0-75 $x-0-75 0 $x-0-75;
+
+    .MuiSvgIcon-root {
+      color: $white;
+    }
+
+    .customAccordion__title {
+      color: $white;
+      text-transform: uppercase;
+      font-weight: $semi-bold;
+      // font-family: $nunito;
+      letter-spacing: 0.03rem;
+      // display: flex;
+      // justify-content: space-between;
+      // align-items: center;
+      // padding: $x-1-75 $x-1 $x-0-5;
+    }
+    .MuiAccordionDetails-root {
+      padding: 0;
+    }
+  }
+}

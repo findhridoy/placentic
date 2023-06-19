@@ -6,6 +6,7 @@ const {
   addProduct,
   updateProduct,
   deleteProduct,
+  getCategoriesByProduct,
   // getAllProducts,
   getProduct,
   createProductReview,
@@ -21,6 +22,7 @@ router.post("/", protect, admin, upload.single("image"), addProduct);
 router.put("/:prodId", protect, admin, upload.single("image"), updateProduct);
 router.delete("/:prodId", protect, admin, deleteProduct);
 router.get("/", getProducts);
+router.get("/categories", getCategoriesByProduct);
 // router.get("/products", getAllProducts);
 router.get("/:prodId", getProduct);
 router.post("/review/:prodId", protect, createProductReview);

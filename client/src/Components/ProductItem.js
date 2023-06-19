@@ -5,7 +5,7 @@ import { IconButton, Stack } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { addToCart } from "../app/features/cart/cartSlice";
-import { addToWishList } from "../app/features/wishList/wishListSlice";
+import { addToWishlist } from "../app/features/wishlist/wishlistSlice";
 import Rating from "./Rating";
 
 const ProductItem = ({ product }) => {
@@ -17,8 +17,8 @@ const ProductItem = ({ product }) => {
   const existCartItem = useSelector((state) =>
     state.cart?.cartItems?.some((x) => product?._id === x?._id)
   );
-  const existWishListItem = useSelector((state) =>
-    state.wishList?.wishListItems?.some((x) => product?._id === x._id)
+  const existWishlistItem = useSelector((state) =>
+    state.wishlist?.wishlistItems?.some((x) => product?._id === x._id)
   );
 
   const productData = {
@@ -38,7 +38,7 @@ const ProductItem = ({ product }) => {
 
   // Add to wishlist functionality
   const handleAddToWishlist = () => {
-    dispatch(addToWishList(productData));
+    dispatch(addToWishlist(productData));
   };
 
   return (
@@ -53,7 +53,7 @@ const ProductItem = ({ product }) => {
             </IconButton>
             <IconButton
               onClick={handleAddToWishlist}
-              disabled={existWishListItem}
+              disabled={existWishlistItem}
             >
               <FavoriteBorderIcon />
             </IconButton>

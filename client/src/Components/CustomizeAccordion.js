@@ -4,10 +4,7 @@ import MuiAccordionDetails from "@mui/material/AccordionDetails";
 import MuiAccordionSummary from "@mui/material/AccordionSummary";
 import { styled } from "@mui/material/styles";
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { getUserProfile } from "../App/actions/userActions";
-import ShippingForm from "./ShippingForm";
-import StripePayment from "./StripePayment";
+import { useDispatch } from "react-redux";
 
 // Mui element
 const Accordion = styled((props) => (
@@ -24,7 +21,7 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
   borderTop: "1px solid rgba(0, 0, 0, .125)",
 }));
 
-const CustomAccordion = () => {
+const CustomizeAccordion = () => {
   // Mui element
   const handleChange = (panel) => (event, newExpanded) => {
     setExpanded(newExpanded ? panel : false);
@@ -32,16 +29,18 @@ const CustomAccordion = () => {
 
   // *Redux element
   const dispatch = useDispatch();
-  const { user } = useSelector((state) => state.userProfile);
-  const { user: updateUser } = useSelector((state) => state.updateUserProfile);
+  // const { user } = useSelector((state) => state.userProfile);
+  // const { user: updateUser } = useSelector((state) => state.updateUserProfile);
+
+  const user = {};
 
   // States
   const [expanded, setExpanded] = useState(user?.address ? "panel3" : "panel2");
   const [action, setAction] = useState(user?.address ? true : false);
 
   useEffect(() => {
-    dispatch(getUserProfile("profile"));
-  }, [dispatch, updateUser]);
+    // dispatch(getUserProfile("profile"));
+  }, [dispatch]);
 
   // console.log(userInfo);
 
@@ -100,7 +99,7 @@ const CustomAccordion = () => {
           </div>
         </MuiAccordionSummary>
         <AccordionDetails>
-          <ShippingForm user={user} setExpanded={setExpanded} />
+          {/* <ShippingForm user={user} setExpanded={setExpanded} /> */}
         </AccordionDetails>
       </Accordion>
 
@@ -124,11 +123,9 @@ const CustomAccordion = () => {
             <span className="user__phone">024652124154</span> */}
           </div>
         </MuiAccordionSummary>
-        <AccordionDetails>
-          <StripePayment />
-        </AccordionDetails>
+        <AccordionDetails>{/* <StripePayment /> */}</AccordionDetails>
       </Accordion>
     </div>
   );
 };
-export default CustomAccordion;
+export default CustomizeAccordion;

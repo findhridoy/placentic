@@ -1,73 +1,126 @@
 .productLayout {
-  margin-bottom: $x-3;
+  margin: $x-3 0;
+
   .productLayout__container {
-    display: grid;
+    display: block;
     // place-items: center;
-    grid-template-columns: 260px 1fr;
+    grid-template-columns: 240px 1fr;
     gap: 2rem;
     @include breakpoint(md) {
-      // place-items: initial;
+      display: grid;
     }
 
     .productLayout__menu {
       background-color: $dark-alt;
       @include box-shadow;
       height: max-content;
+      display: none;
 
-      .menu__title {
-        color: $white;
-        text-transform: uppercase;
-        font-weight: $semi-bold;
-        letter-spacing: 0.03rem;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: $x-1-75 $x-1 $x-0-5;
+      @include breakpoint(md) {
+        display: block;
       }
-      .MuiList-root {
-        // display: flex;
-        // flex-direction: column;
-        // gap: 1rem;
-        // margin-top: $x-1-75;
-        .MuiMenuItem-root {
-          // position: relative;
 
+      .MuiList-root {
+        .MuiMenuItem-root {
+          position: relative;
           color: $white-alt;
           font-weight: $medium;
           font-family: $poppins;
           @include smaller-font;
-          letter-spacing: 0.01rem;
-
-          &:hover {
-            opacity: 1;
-          }
-
-          // .active__link {
-          //   opacity: 1;
-          //   border-color: $dark-alt;
-          //   &::before {
-          //     position: absolute;
-          //     content: "";
-          //     width: 5px;
-          //     height: 5px;
-          //     border-radius: 50%;
-          //     background-color: $white-alt;
-          //     top: 50%;
-          //     transform: translateY(-50%);
-          //     left: -10px;
-          //   }
-          // }
+        }
+        .Mui-selected {
+          color: $cyan;
         }
       }
-      .price__slider {
-        padding: 0 $x-1-5;
+
+      .priceRange__slider {
+        padding: $x-0-75 $x-1-75 0 $x-1;
+
+        .priceRange__title {
+          color: $white;
+          text-transform: capitalize;
+          font-weight: $semi-bold;
+        }
+        .slider {
+          padding-left: 0.4rem;
+        }
+
+        .MuiSlider-root {
+          color: $white-alt;
+        }
+        .MuiSlider-track {
+          color: $white-alt;
+          opacity: 0.4;
+        }
+        .MuiSlider-thumb {
+          border-radius: 0;
+        }
+        .MuiSlider-valueLabelOpen {
+          color: $white-alt;
+          opacity: 0.8;
+          font-family: $nunito;
+          @include smaller-font;
+          top: 42px;
+          background-color: transparent;
+        }
+      }
+
+      .raitngs {
+        padding: $x-0-75 $x-1-75 0 $x-1;
+        margin-top: $x-1;
+        .raitngs__title {
+          color: $white;
+          text-transform: capitalize;
+          font-weight: $semi-bold;
+        }
+        .raitng {
+          margin-left: -0.2rem;
+          margin-top: $x-0-25;
+        }
+        .MuiSvgIcon-root {
+          color: $cyan !important;
+          // @include h2-font;
+          // opacity: 0.9;
+        }
       }
     }
     .productLayout__content {
-      .productLayout__data {
+      .productLayout__header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: $x-1-75;
+        .productLayout__foundsTitle {
+          color: $dark;
+          font-weight: $medium;
+          font-family: $poppins;
+          @include small-font;
+
+          display: none;
+          @include breakpoint(md) {
+            display: block;
+          }
+
+          .active__founds {
+            color: $cyan;
+          }
+        }
+        .productLayout__right {
+          display: flex;
+          justify-content: space-between;
+          width: 100%;
+          gap: 1rem;
+          @include breakpoint(md) {
+            justify-content: initial;
+            width: initial;
+          }
+        }
+      }
+      .productLayout__grid {
         display: grid;
         column-gap: 1rem;
         row-gap: 3rem;
+        place-items: center;
         // grid-template-columns: repeat(auto-fit, minmax(min-content, 1fr));
         // @include breakpoint(sm) {
         //   // grid-template-columns: repeat(auto-fill, minmax(225px, 1fr));
@@ -76,6 +129,11 @@
           grid-template-columns: repeat(3, minmax(min-content, 1fr));
         }
       }
+
+      .productLayout__list {
+        // margin-top: $x-1-75;
+      }
+
       .productLayout__btn {
         width: 100%;
         margin-top: $x-2-75;

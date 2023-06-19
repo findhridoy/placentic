@@ -358,9 +358,13 @@
   .css-d0uhtl {
     color: $dark-alt;
     font-weight: $semi-bold;
-    @include h4-font;
+    @include normal-font;
     opacity: 0.9;
     margin-left: 0;
+
+    @include breakpoint(md) {
+      margin-top: $x-0-25;
+    }
   }
 }
 
