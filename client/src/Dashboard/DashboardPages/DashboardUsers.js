@@ -4,10 +4,10 @@ import cogoToast from "cogo-toast";
 import { useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useGlobalFilter, usePagination, useTable } from "react-table";
+import { getUseryList, userListReset } from "../../App/actions/userActions";
 import CustomAlert from "../../Components/CustomAlert";
 import CustomTable from "../../ReactTable/CustomTable";
 import { userColumn } from "../../ReactTable/TableColumns/UserColumn";
-import { getUseryList, userListReset } from "../../Redux/actions/userActions";
 import DashboardLayout from "../DashboardLayout/DashboardLayout";
 
 const DashboardUsers = () => {

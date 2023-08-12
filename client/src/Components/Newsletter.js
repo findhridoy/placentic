@@ -1,5 +1,5 @@
-import { Button } from "@mui/material";
 import React from "react";
+import CustomButton from "./controls/CustomButton";
 
 const Newsletter = () => {
   return (
@@ -14,9 +14,10 @@ const Newsletter = () => {
           </div>
           <div className="newsletter__input">
             <input type="text" placeholder="Your email" />
-            <div className="newsletter__btn btn btn__dark">
-              <Button>Subscribe</Button>
-            </div>
+            <CustomButton
+              className="newsletter__btn btn btn__dark"
+              text="Subscribe"
+            />
           </div>
         </div>
       </div>

@@ -5,13 +5,13 @@ import { useEffect, useMemo, useState } from "react";
 import "react-dropdown/style.css";
 import { useDispatch, useSelector } from "react-redux";
 import { useGlobalFilter, usePagination, useTable } from "react-table";
-import CustomAlert from "../../Components/CustomAlert";
-import CustomTable from "../../ReactTable/CustomTable";
-import { categoryColumn } from "../../ReactTable/TableColumns/CategoryColumn";
 import {
   categoryList,
   categoryListReset,
-} from "../../Redux/actions/categoryActions";
+} from "../../App/actions/categoryActions";
+import CustomAlert from "../../Components/CustomAlert";
+import CustomTable from "../../ReactTable/CustomTable";
+import { categoryColumn } from "../../ReactTable/TableColumns/CategoryColumn";
 import AddCategoryForm from "../DashboardComponents/AddCategoryForm";
 import CustomTableLoader from "../DashboardComponents/CustomTableLoader";
 import DashboardLayout from "../DashboardLayout/DashboardLayout";

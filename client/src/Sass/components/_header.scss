@@ -4,9 +4,10 @@
   left: 0;
   z-index: $z-99;
   width: 100%;
-  background-color: $white-alt;
-  @include header-shadow(-30px);
-  @include transition(500ms);
+  // background-color: $white-alt;
+  background-color: transparent;
+  // @include header-shadow(-30px);
+  @include transition(300ms);
   @include header-height;
 
   .nav {
@@ -134,6 +135,7 @@
             right: 0.3rem;
             top: 3.2rem;
             display: none;
+            @include box-shadow;
             .dropdown__list {
               background-color: $white;
               padding: $x-0-75;
@@ -174,6 +176,12 @@
           .dropdown__show {
             display: block;
           }
+
+          // Badge Icon
+          .MuiBadge-badge {
+            background-color: $cyan !important;
+            color: $white;
+          }
         }
       }
     }
@@ -183,4 +191,5 @@
 // when scroll down
 .header__shadow {
   @include header-shadow(-10px);
+  background-color: $white-alt;
 }

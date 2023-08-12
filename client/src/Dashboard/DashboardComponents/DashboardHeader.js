@@ -10,7 +10,7 @@ import { Avatar, IconButton } from "@mui/material";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
-import { logoutUser } from "../../Redux/actions/userActions";
+import { userLoggedOut } from "../../app/features/auth/authSlice";
 
 const DashboardHeader = ({ title, filter, setFilter }) => {
   const [showSearchBox, setShowSearchBox] = useState(false);
@@ -18,7 +18,7 @@ const DashboardHeader = ({ title, filter, setFilter }) => {
 
   // Redux element
   const dispatch = useDispatch();
-  const { userInfo } = useSelector((state) => state.userLogin);
+  const { userInfo } = useSelector((state) => state.auth);
 
   // Handle dropdown
   const handleDropdown = () => {
@@ -27,7 +27,7 @@ const DashboardHeader = ({ title, filter, setFilter }) => {
 
   // Logout functionality
   const logout = () => {
-    dispatch(logoutUser());
+    dispatch(userLoggedOut());
   };
 
   return (

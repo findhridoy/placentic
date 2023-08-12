@@ -1,12 +1,7 @@
-import { Button, Skeleton } from "@mui/material";
-import cogoToast from "cogo-toast";
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  categoryLimitList,
-  categoryLimitListReset,
-} from "../Redux/actions/categoryActions";
-import CustomAlert from "./CustomAlert";
+import { Skeleton } from "@mui/material";
+import { useGetCategoriesQuery } from "../app/features/categories/categoryApi";
+import CustomAlert from "./controls/CustomAlert";
+import CustomButton from "./controls/CustomButton";
 
 const CategoryItem = ({ category }) => {
   return (
@@ -14,45 +9,38 @@ const CategoryItem = ({ category }) => {
       <div className="category__img">
         <img src={category?.image} alt="Category Img" />
       </div>
-      <div className="category__btn btn small__btn btn__white">
-        <Button>{category?.message}</Button>
-      </div>
+
+      <CustomButton
+        className="category__btn btn small__btn btn__white"
+        text={category?.message}
+      />
     </div>
   );
 };
 
 const Category = () => {
-  // Redux element
-  const dispatch = useDispatch();
-  const { loading, error, categories } = useSelector(
-    (state) => state.categoryLimitList
+  const size = 4;
+  const sort = -1;
+
+  // Redux toolkit element
+  const { isLoading, isError, error, data: categories } = useGetCategoriesQuery(
+    size,
+    sort
   );
 
-  useEffect(() => {
-    dispatch(categoryLimitList("category"));
-  }, [dispatch]);
-
-  useEffect(() => {
-    if (error) {
-      cogoToast.error(error);
-      dispatch(categoryLimitListReset());
-    }
-    if (categories?.message) {
-      cogoToast.error("Something was wrong!");
-      dispatch(categoryLimitListReset());
-    }
-  }, [error, categories, dispatch]);
   return (
     <section className="category__section section">
       <div className="container">
         <h2 className="category__title section__title">Top Category</h2>
         <div className="category__content">
           <div className="category__data">
-            {loading ? (
-              [0, 1, 2, 3].map((index) => (
+            {isLoading ? (
+              [...Array(4).keys()].map((index) => (
                 <Skeleton variant="rectangular" key={index} />
               ))
-            ) : categories?.length === 0 ? (
+            ) : isError ? (
+              <CustomAlert severity="error" message={error?.data?.message} />
+            ) : categories?.length < 1 ? (
               <CustomAlert severity="info" message="No categories are found!" />
             ) : (
               categories?.map((category) => (

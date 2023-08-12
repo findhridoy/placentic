@@ -1,0 +1,34 @@
+// All filters component style is here included...
+.filterLayout {
+  padding: $x-0-5 $x-1-25;
+  .filterLayout__title {
+    // font-family: $montserrat;
+    font-weight: $semi-bold;
+    color: $dark-alt;
+    @include h3-font;
+  }
+
+  .filterLyout__data {
+    margin-top: $x-0-25;
+    .MuiFormControlLabel-root {
+      .MuiFormControlLabel-label {
+        font-family: $poppins !important;
+        font-weight: $semi-bold;
+        color: $dark-alt;
+        opacity: 0.9;
+        @include small-font;
+        display: flex;
+        align-items: center;
+
+        .MuiSvgIcon-root {
+          color: $cyan;
+          @include h3-font;
+          // opacity: 0.6;
+        }
+      }
+      .Mui-checked {
+        color: $cyan !important;
+      }
+    }
+  }
+}

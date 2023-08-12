@@ -4,9 +4,10 @@ const asyncHandler = require("express-async-handler");
 // Internal Imports
 const Product = require("../models/productModel");
 const { cloudinary } = require("../config/cloudinary");
+const Apifeatures = require("../utils/ApiFeatures");
 
 /**
- * @route   Post /api/product/add
+ * @route   Post /api/product
  * @desc    Add a new product
  * @access  Private/Admin
  */
@@ -46,7 +47,7 @@ const addProduct = asyncHandler(async (req, res) => {
 });
 
 /**
- * @route   Put /api/product/update/:id
+ * @route   Put /api/product/:prodId
  * @desc    Update product
  * @access  Private/Admin
  */
@@ -106,7 +107,7 @@ const updateProduct = asyncHandler(async (req, res) => {
 });
 
 /**
- * @route   Delete /api/product/delete/:id
+ * @route   Delete /api/product/:prodId
  * @desc    Delete product
  * @access  Private/Admin
  */
@@ -130,33 +131,12 @@ const deleteProduct = asyncHandler(async (req, res) => {
 });
 
 /**
- * @route   Get /api/product/products
+ * @route   Get /api/product/products?keyword=afgad
  * @desc    Get all products
- * @access  Private/Admin
+ * @access  Private/Admin/Public
  */
 const getAllProducts = asyncHandler(async (req, res) => {
-  // find all products
-  const product = await Product.find({});
-  if (product) {
-    res.status(200).json(product);
-  } else {
-    res.status(404);
-    throw new Error("Products not found");
-  }
-});
-
-/**
- * @route   Get /api/product?keword=keword
- * @desc    Get all products/search/limit
- * @access  Public
- */
-const getProducts = asyncHandler(async (req, res) => {
-  // load more queries
-  const limit = parseInt(req.query.limit);
-  const page = 1;
-  const skip = limit * (page - 1);
-
-  // search products by keyword
+  // search products by keyword or get all products
   const keyword = req.query.keyword
     ? {
         title: {
@@ -166,17 +146,10 @@ const getProducts = asyncHandler(async (req, res) => {
       }
     : {};
 
-  // get total products count
-  const counts = await Product.countDocuments({ ...keyword });
-
   // find all products
-  const products = await Product.find({ ...keyword })
-    .limit(limit)
-    .skip(skip)
-    .sort({ _id: -1 });
-
-  if (products) {
-    res.status(200).json({ products, counts });
+  const product = await Product.find({ ...keyword });
+  if (product) {
+    res.status(200).json(product);
   } else {
     res.status(404);
     throw new Error("Products not found");
@@ -184,13 +157,64 @@ const getProducts = asyncHandler(async (req, res) => {
 });
 
 /**
- * @route   Get /api/product/product/:id
- * @desc    Get single product
- * @access  Private/Admin
+ * @route   Get /api/product/categories
+ * @desc    Get all categories that using by products
+ * @access  Public
+ */
+const getCategoriesByProduct = asyncHandler(async (req, res) => {
+  const productCount = await Product.countDocuments();
+  const categories = await Product.aggregate([
+    { $unwind: "$category" },
+    { $group: { _id: "$category", productCount: { $sum: 1 } } },
+    { $addFields: { title: "$_id" } },
+    { $project: { _id: 0 } },
+    { $sort: { category: 1 } },
+    //   { $match: { ratings: { $lte: req.query.ratings } } },
+  ]);
+
+  if (categories) {
+    res.status(200).json({ categories, productCount });
+  } else {
+    res.status(404);
+    throw new Error("Categories are not found");
+  }
+});
+
+/**
+ * @route   Get /api/product?sort=1&page=1&size=4
+ * @desc    Get all product with filter
+ * @access  Public
+ */
+const getProducts = asyncHandler(async (req, res) => {
+  // using reuseable class for filter, sort, paginate
+  const features = new Apifeatures(
+    Product.find(),
+    req.query,
+    Product.countDocuments()
+  )
+    .sort()
+    .paginate()
+    .filter();
+
+  const counts = await features.countsQuery;
+  const products = await features.query;
+
+  if (products) {
+    res.status(200).json({ counts, products });
+  } else {
+    res.status(404);
+    throw new Error("Products not found");
+  }
+});
+
+/**
+ * @route   Get /api/product/prodId
+ * @desc    Get single product by ID
+ * @access  Public
  */
 const getProduct = asyncHandler(async (req, res) => {
   // find product by id
-  const product = await Product.findById(req.params.id);
+  const product = await Product.findById(req.params.prodId);
   if (product) {
     res.status(200).json(product);
   } else {
@@ -200,13 +224,13 @@ const getProduct = asyncHandler(async (req, res) => {
 });
 
 /**
- * @route   Post /api/product/review/:id
+ * @route   Post /api/product/review/:prodId
  * @desc    Create a product review
  * @access  Private
  */
 const createProductReview = asyncHandler(async (req, res) => {
   // find product by id
-  const product = await Product.findById(req.params.id);
+  const product = await Product.findById(req.params.prodId);
 
   if (product) {
     // check exist review
@@ -279,22 +303,22 @@ const createProductReview = asyncHandler(async (req, res) => {
 });
 
 /**
- * @route   Post /api/product/review/approve/:id?
+ * @route   Post /api/product/review/approve/:prodId?
  * @desc    Approve, Declien a product review
  * @access  Private/Admin
  */
 const approveProductReview = asyncHandler(async (req, res) => {
   // find product by id
-  const product = await Product.findById(req.params.id);
+  const product = await Product.findById(req.params.prodId);
 
   if (product) {
     // check exist review
     const reviewExist = product.reviews.find(
-      (x) => req.query.reviewID.toString() === x._id.toString()
+      (x) => req.query.revId.toString() === x._id.toString()
     );
 
     if (reviewExist) {
-      if (req.query.request === "approve") {
+      if (req.query.action === "approve") {
         reviewExist.action = "approve";
 
         // update count reviews
@@ -316,7 +340,7 @@ const approveProductReview = asyncHandler(async (req, res) => {
           message: "Comment is approved.",
         });
       }
-      if (req.query.request === "decline") {
+      if (req.query.action === "decline") {
         reviewExist.action = "decline";
 
         // save in database
@@ -334,17 +358,17 @@ const approveProductReview = asyncHandler(async (req, res) => {
 });
 
 /**
- * @route   Post /api/product/review?
+ * @route   Post /api/product/review/delete?prodId&?revId
  * @desc    Delete a product review
  * @access  Private/Admin
  */
 const deleteProductReview = asyncHandler(async (req, res) => {
   // find product by id
-  const product = await Product.findById(req.query.productID);
+  const product = await Product.findById(req.query.prodId);
 
   if (product) {
     const result = product.reviews.filter((p, index) => {
-      if (p._id.toString() === req.query.reviewID.toString()) {
+      if (p._id.toString() === req.query.revId.toString()) {
         product.reviews.splice(index, 1); //remove the mached object from the original array
         return p;
       }
@@ -387,6 +411,7 @@ module.exports = {
   deleteProduct,
   getAllProducts,
   getProducts,
+  getCategoriesByProduct,
   getProduct,
   createProductReview,
   approveProductReview,

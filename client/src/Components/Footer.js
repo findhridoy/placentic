@@ -1,7 +1,12 @@
-import React from "react";
+import Newsletter from "./Newsletter";
 
 const Footer = () => {
-  return <div>Footer</div>;
+  return (
+    <div>
+      <Newsletter />
+      footer
+    </div>
+  );
 };
 
 export default Footer;

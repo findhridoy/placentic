@@ -21,76 +21,29 @@
   }
 }
 /*=================== REUSEABLE CLASSES ===================*/
-// Button
-.btn {
-  .MuiButton-root {
-    height: 2.8rem;
-    width: 9rem;
-    font-weight: $semi-bold;
-    text-transform: capitalize;
-    border-radius: 0;
-    letter-spacing: 0.8px;
-    @include small-font;
-    cursor: pointer;
-    @include breakpoint(md) {
-      height: 3rem;
-      width: 10rem;
-    }
-    &:hover {
-      @include shadow-btn;
-    }
+// ** Background white with absolute
+.bg__white {
+  position: relative;
+  padding: $x-1;
+  // margin: $x-1-75 0;
+  @include breakpoint(md) {
+    padding: $x-1-75;
   }
-}
-.small__btn {
-  .MuiButton-root {
-    height: 2.3rem;
-    width: 7.8rem;
-    display: flex;
-    align-items: center;
-    gap: 0.2rem;
-    @include smaller-font;
-    @include breakpoint(md) {
-      height: 2.6rem;
-      width: 8.5rem;
-      @include smallest-font;
-    }
-    .MuiSvgIcon-root {
-      @include h3-font;
-    }
-  }
-}
-// White Button
-.btn__white {
-  .MuiButton-root {
+
+  &::before {
+    content: "";
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    left: 0;
+    top: 0;
     background-color: $white;
-    color: $dark-alt;
-    &:hover {
-      color: $dark-alt;
-      background-color: $white;
-    }
-    &:disabled {
-      pointer-events: auto !important;
-      cursor: not-allowed !important;
-      color: $dark-alt !important;
-    }
+    z-index: -1;
+    border-radius: 10px;
+    opacity: 0.6;
   }
 }
-// Dark Button
-.btn__dark {
-  .MuiButton-root {
-    background-color: $dark-alt;
-    color: $white;
-    &:hover {
-      color: $white;
-      background-color: $dark-alt;
-    }
-    &:disabled {
-      pointer-events: auto !important;
-      cursor: not-allowed !important;
-      color: $white-alt !important;
-    }
-  }
-}
+
 // Outline Button
 // .btn__outline {
 //   .MuiButton-root {
@@ -373,37 +326,6 @@
   }
 }
 
-// Custom Alert
-.custom__alert {
-  // margin: 2rem 0;
-  .MuiPaper-root {
-    // opacity: 0.9;
-    border-radius: 0;
-    .MuiAlert-message {
-      // color: $dark-alt;
-      font-weight: $medium;
-      font-family: $poppins;
-    }
-  }
-}
-
-// Custom Loader
-.customLoader {
-  position: fixed;
-  height: calc(100% - 4rem);
-  width: calc(100% - 12rem);
-  right: 0;
-  // left: 0;
-  bottom: 0;
-  // background-color: $white-alt;
-  // background-color: gray;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 9999;
-}
-
 .MuiTypography-root {
   line-height: 1 !important;
 }
@@ -436,9 +358,13 @@
   .css-d0uhtl {
     color: $dark-alt;
     font-weight: $semi-bold;
-    @include h4-font;
+    @include normal-font;
     opacity: 0.9;
     margin-left: 0;
+
+    @include breakpoint(md) {
+      margin-top: $x-0-25;
+    }
   }
 }
 
@@ -451,6 +377,6 @@
 
 // Badge Icon
 .MuiBadge-badge {
-  background-color: $cyan !important;
-  color: $white;
+  // background-color: $cyan !important;
+  // color: $white;
 }

@@ -4,7 +4,7 @@ import CategoryIcon from "@mui/icons-material/Category";
 import CloseIcon from "@mui/icons-material/Close";
 import CollectionsBookmarkIcon from "@mui/icons-material/CollectionsBookmark";
 import DashboardIcon from "@mui/icons-material/Dashboard";
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import FavoriteIcon from "@mui/icons-material/Favorite";
 import LibraryBooksIcon from "@mui/icons-material/LibraryBooks";
 import LocalMallIcon from "@mui/icons-material/LocalMall";
 import LoginIcon from "@mui/icons-material/Login";
@@ -15,8 +15,8 @@ import { Avatar, Badge, IconButton } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, NavLink } from "react-router-dom";
-import placentic from "../Assets/logo/placentic.png";
-import { logoutUser } from "../Redux/actions/userActions";
+import { userLoggedOut } from "../app/features/auth/authSlice";
+import placentic from "../assets/logo/placentic.png";
 
 const Header = () => {
   const [header, setHeader] = useState(false);
@@ -25,7 +25,7 @@ const Header = () => {
 
   // Redux element
   const dispatch = useDispatch();
-  const { userInfo } = useSelector((state) => state.userLogin);
+  const { userInfo } = useSelector((state) => state.auth);
   const { cartItems } = useSelector((state) => state.cart);
   const { wishlistItems } = useSelector((state) => state.wishlist);
 
@@ -51,7 +51,7 @@ const Header = () => {
 
   // Logout functionality
   const logout = () => {
-    dispatch(logoutUser());
+    dispatch(userLoggedOut());
   };
   return (
     <header className={header ? "header header__shadow" : "header"}>
@@ -76,7 +76,7 @@ const Header = () => {
             <div className="nav__menu">
               <ul className="nav__list">
                 <li className="nav__item">
-                  <NavLink className="nav__link" to="/collection">
+                  <NavLink className="nav__link" to="/shop/collection">
                     <CollectionsBookmarkIcon />
                     <span className="nav__text">Collection</span>
                   </NavLink>
@@ -118,7 +118,7 @@ const Header = () => {
                   </IconButton>
                 </li>
                 <li className="nav__item2">
-                  <NavLink className="nav__link2" to="/cart">
+                  <NavLink className="nav__link2" to="/shop/cart">
                     <IconButton aria-label="cart">
                       <Badge badgeContent={cartItems?.length}>
                         <LocalMallIcon />
@@ -127,10 +127,10 @@ const Header = () => {
                   </NavLink>
                 </li>
                 <li className="nav__item2">
-                  <NavLink className="nav__link2" to="/favourites">
+                  <NavLink className="nav__link2" to="/shop/favourites">
                     <IconButton aria-label="love">
                       <Badge badgeContent={wishlistItems?.length}>
-                        <FavoriteBorderIcon />
+                        <FavoriteIcon />
                       </Badge>
                     </IconButton>
                   </NavLink>
@@ -148,6 +148,7 @@ const Header = () => {
                         sx={{ width: 35, height: 35 }}
                       />
                     </IconButton>
+
                     {/* Dropdown menu */}
                     <div
                       className={

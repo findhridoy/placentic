@@ -1,66 +1,57 @@
-import { useEffect } from "react";
-import { useJwt } from "react-jwt";
-import { useDispatch, useSelector } from "react-redux";
 import { Route, Routes } from "react-router-dom";
-import Dashboard from "./Dashboard/DashboardPages/Dashboard";
-import DashboardCategories from "./Dashboard/DashboardPages/DashboardCategories";
-import DashboardOrders from "./Dashboard/DashboardPages/DashboardOrders";
-import DashboardProducts from "./Dashboard/DashboardPages/DashboardProducts";
-import DashboardUsers from "./Dashboard/DashboardPages/DashboardUsers";
-import AdminRoutes from "./Helpers/Routes/AdminRoutes";
-import PrivateRoutes from "./Helpers/Routes/PrivateRoutes";
-import PublicRoutes from "./Helpers/Routes/PublicRoutes";
-import Cart from "./Pages/Cart";
-import Home from "./Pages/Home";
-import Login from "./Pages/Login";
-import Orders from "./Pages/Orders";
-import Product from "./Pages/Product";
-import Profile from "./Pages/Profile";
-import Signup from "./Pages/Signup";
-import { logoutUser } from "./Redux/actions/userActions";
+import CustomLoader from "./components/controls/CustomLoader";
+import Dashboard from "./dashboard/DashboardPages/Dashboard";
+import DashboardProducts from "./dashboard/DashboardPages/DashboardProducts";
+import AdminRoutes from "./helpers/Private/AdminRoutes";
+import PrivateRoutes from "./helpers/Private/PrivateRoutes";
+import PublicRoutes from "./helpers/Private/PublicRoutes";
+import useAuthCheck from "./hooks/useAuthCheck";
+import Cart from "./pages/Cart";
+import Checkout from "./pages/Checkout";
+import Collection from "./pages/Collection";
+import Home from "./pages/Home";
+import Login from "./pages/Login";
+import Orders from "./pages/Orders";
+import Product from "./pages/Product";
+import Profile from "./pages/Profile";
+import Signup from "./pages/Signup";
 
 const App = () => {
-  // Redux element
-  const dispatch = useDispatch();
-  const { userInfo } = useSelector((state) => state.userLogin);
+  // Check user authentication
+  const authCheckd = useAuthCheck();
 
-  const { isExpired } = useJwt(userInfo?.token);
+  return !authCheckd ? (
+    <CustomLoader size={36} />
+  ) : (
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/product/:prodId" element={<Product />} />
+      <Route path="/shop/cart" element={<Cart />} />
+      <Route path="/shop/collection" element={<Collection />} />
 
-  useEffect(() => {
-    if (isExpired) {
-      dispatch(logoutUser());
-    }
-  }, [isExpired, dispatch]);
-  return (
-    <>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/product/details/:id" element={<Product />} />
-        <Route path="/cart" element={<Cart />} />
+      {/* Public Routes */}
+      <Route path="/*" element={<PublicRoutes />}>
+        <Route path="login" element={<Login />} />
+        <Route path="signup" element={<Signup />} />
+      </Route>
 
-        {/* Public Routes */}
-        <Route path="/*" element={<PublicRoutes />}>
-          <Route path="login" element={<Login />} />
-          <Route path="signup" element={<Signup />} />
-        </Route>
+      {/* Private Routes */}
+      <Route path="/*" element={<PrivateRoutes />}>
+        <Route path="profile" element={<Profile />} />
+        <Route path="orders" element={<Orders />} />
+        <Route path="checkout" element={<Checkout />} />
+      </Route>
 
-        {/* Private Routes */}
-        <Route path="/*" element={<PrivateRoutes />}>
-          <Route path="profile" element={<Profile />} />
-          <Route path="orders" element={<Orders />} />
-        </Route>
-
-        {/* Only Admin can access this pages */}
-        <Route path="/dashboard/*" element={<AdminRoutes />}>
-          <Route path="dashboard" element={<Dashboard />} />
-          <Route path="products" element={<DashboardProducts />} />
-          <Route path="orders" element={<DashboardOrders />} />
+      {/* Only Admin can access this pages */}
+      <Route path="/dashboard/*" element={<AdminRoutes />}>
+        <Route path="dashboard" element={<Dashboard />} />
+        <Route path="products" element={<DashboardProducts />} />
+        {/* <Route path="orders" element={<DashboardOrders />} />
           <Route path="categories" element={<DashboardCategories />} />
-          <Route path="users" element={<DashboardUsers />} />
-        </Route>
-      </Routes>
+          <Route path="users" element={<DashboardUsers />} /> */}
+      </Route>
       {/* <Kursor /> */}
-    </>
+    </Routes>
   );
 };
 

@@ -1,6 +1,6 @@
-import { Button } from "@mui/material";
 import React from "react";
-import product from "../Assets/products/header-sofa-img.png";
+import product from "../assets/hero/hero2.png";
+import CustomButton from "./controls/CustomButton";
 
 const Hero = () => {
   return (
@@ -16,9 +16,10 @@ const Hero = () => {
               repellendus, mollitia itaque totam eos iste perferendis officiis,
               sed in enim laborum quam labore quibusdam non?
             </p>
-            <div className="hero__btn btn btn__white">
-              <Button>Discover</Button>
-            </div>
+            <CustomButton
+              className="hero__btn btn btn__white"
+              text="Discover"
+            />
           </div>
           <div className="hero__image">
             <img src={product} alt="Products" />

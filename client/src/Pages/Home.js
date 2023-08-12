@@ -1,9 +1,7 @@
-import React from "react";
-import Category from "../Components/Category";
-import Hero from "../Components/Hero";
-import Newsletter from "../Components/Newsletter";
-import Products from "../Components/Products";
-import Layout from "../Layouts/Layout";
+import Category from "../components/Category";
+import Hero from "../components/Hero";
+import Products from "../components/Products";
+import Layout from "../layouts/Layout";
 
 const Home = () => {
   return (
@@ -11,7 +9,6 @@ const Home = () => {
       <Hero />
       <Category />
       <Products />
-      <Newsletter />
     </Layout>
   );
 };

@@ -8,7 +8,7 @@ const { generateToken } = require("../utils/generateToken");
 const { cloudinary } = require("../config/cloudinary");
 
 /**
- * @route   Post /api/users/register
+ * @route   Post /api/user/register
  * @desc    Register a new user
  * @access  Public
  */
@@ -57,7 +57,7 @@ const userRegister = asyncHandler(async (req, res) => {
 });
 
 /**
- * @route   Post /api/users/login
+ * @route   Post /api/user/login
  * @desc    Get token & login
  * @access  Public
  */
@@ -89,7 +89,7 @@ const userLogin = asyncHandler(async (req, res) => {
 });
 
 /**
- * @route   Get /api/users/profile
+ * @route   Get /api/user/profile
  * @desc    Get user profile
  * @access  Private/Loggedin user
  */
@@ -104,7 +104,7 @@ const getUserProfile = asyncHandler(async (req, res) => {
 });
 
 /**
- * @route   Put /api/users/update
+ * @route   Put /api/user/update
  * @desc    Update user profile
  * @access  Private/Loggedin user
  */
@@ -127,6 +127,9 @@ const updateUserProfile = asyncHandler(async (req, res) => {
       country: req.body.country || user.country,
       avatar: result.secure_url || user.avatar,
       avatar_id: result.public_id || user.avatar_id,
+      address: req.body.address || user.address,
+      city: req.body.city || user.city,
+      zip_code: req.body.zip_code || user.zip_code,
     };
 
     user = await User.findByIdAndUpdate(req.user._id, updatedUser, {
@@ -150,6 +153,9 @@ const updateUserProfile = asyncHandler(async (req, res) => {
       email: req.body.email || user.email,
       phone: req.body.phone || user.phone,
       country: req.body.country || user.country,
+      address: req.body.address || user.address,
+      city: req.body.city || user.city,
+      zip_code: req.body.zip_code || user.zip_code,
     };
 
     user = await User.findByIdAndUpdate(req.user._id, updatedUser, {

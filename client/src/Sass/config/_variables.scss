@@ -1,5 +1,6 @@
 /*********** Google Font ***/
 @import url("https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;500;600;700&family=Poppins:wght@100;200;300;400;500;600;700;800&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&family=Nunito+Sans:wght@200;300;400;500;600;700;800;900;1000&display=swap");
 @import "breakpoints";
 /*********** Sass Variables ***/
 /******* Colors ***/
@@ -14,10 +15,10 @@ $primary: hsl(208, 95%, 44%);
 
 $white: hsl(0, 0%, 100%);
 $white-alt: hsl(228, 14%, 93%);
-$gray: hsl(0, 0%, 76%);
+$gray: #c2c2c2;
 $dark: hsl(0, 0%, 0%);
 $dark-alt: hsl(228, 4%, 25%);
-$cyan: hsla(187, 94%, 39%, 0.993);
+$cyan: hsla(187, 94%, 39%, 0.992);
 $cyan-alt: hsl(206, 59%, 89%);
 $red: hsla(1, 82%, 49%, 0.918);
 $green: hsl(120, 94%, 34%);
@@ -25,6 +26,8 @@ $green: hsl(120, 94%, 34%);
 /******* Font Family ***/
 $poppins: "Poppins", sans-serif;
 $dancing: "Dancing Script", cursive;
+$montserrat: "Montserrat", sans-serif;
+$nunito: "Nunito Sans", sans-serif;
 
 /******* Font Weight ***/
 $light: 300;

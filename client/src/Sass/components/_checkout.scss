@@ -1,0 +1,32 @@
+.checkout__section {
+  @include body-margin(minus);
+  padding-bottom: 3rem;
+  .customBreadcrumbs__container {
+    height: 100%;
+    top: 0;
+  }
+  .checkout__container {
+    @include breakpoint(sm) {
+      display: grid;
+      gap: 1.5rem;
+    }
+    @include breakpoint(md) {
+      gap: 1rem;
+      grid-template-columns: 1fr 0.5fr;
+    }
+    @include breakpoint(lg) {
+      gap: 2.5rem;
+    }
+
+    .chekout__subtotal {
+      min-width: 340px;
+      margin-top: $x-1-5;
+      @include breakpoint(sm) {
+        margin-top: 0;
+      }
+      // .cartSubtotal {
+      //   margin-top: 0;
+      // }
+    }
+  }
+}

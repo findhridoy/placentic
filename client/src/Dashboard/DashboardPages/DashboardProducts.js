@@ -1,124 +1,139 @@
-import AddIcon from "@mui/icons-material/Add";
-import { Button, Skeleton } from "@mui/material";
+import FilterAltIcon from "@mui/icons-material/FilterAlt";
+import FilterListIcon from "@mui/icons-material/FilterList";
+import { Divider } from "@mui/material";
 import Modal from "@mui/material/Modal";
-import cogoToast from "cogo-toast";
-import { useEffect, useMemo, useState } from "react";
+import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
+import { useMemo, useState } from "react";
 import "react-dropdown/style.css";
-import { useDispatch, useSelector } from "react-redux";
-import { useGlobalFilter, usePagination, useTable } from "react-table";
-import CustomAlert from "../../Components/CustomAlert";
-import CustomTable from "../../ReactTable/CustomTable";
-import { productColumn } from "../../ReactTable/TableColumns/ProductColumn";
 import {
-  productList,
-  productListReset,
-} from "../../Redux/actions/productActions";
-import AddProductForm from "../DashboardComponents/AddProductForm";
+  useGetCategoriesByProductQuery,
+  useGetProductsQuery,
+} from "../../app/features/products/productApi";
+import { productColumn } from "../../tables/TableColumns/ProductColumn";
+import Tables from "../../tables/Tables";
+import CategoryFilter from "../DashboardComponents/FiltersComponents/CategoryFilter";
+import PriceFilter from "../DashboardComponents/FiltersComponents/PriceFilter";
+import RatingFilter from "../DashboardComponents/FiltersComponents/RatingFilter";
+import SortFilter from "../DashboardComponents/FiltersComponents/SortFilter";
+import MenuButton from "../DashboardComponents/MenuButton";
 import DashboardLayout from "../DashboardLayout/DashboardLayout";
 
 const DashboardProducts = () => {
   // States
   const [open, setOpen] = useState(false);
+  const [sort, setSort] = useState("");
+  const [rating, setRating] = useState(0);
+  const [categories, setCategories] = useState([]);
+  const [price, setPrice] = useState({
+    gte: 0,
+    lte: 100,
+  });
+  const [{ pageIndex, pageSize }, setPagination] = useState({
+    pageIndex: 0,
+    pageSize: 8,
+  });
 
   // Redux element
-  const dispatch = useDispatch();
-  const { loading, error, products } = useSelector(
-    (state) => state.productList
-  );
-  const { product } = useSelector((state) => state.createProduct);
-  const { product: deletedProduct } = useSelector(
-    (state) => state.deleteProduct
-  );
-  const { product: updatedProduct } = useSelector(
-    (state) => state.updateProduct
+  const { data: categoryData } =
+    useGetCategoriesByProductQuery(`product/categories`);
+
+  const {
+    isLoading,
+    isError,
+    error,
+    isFetching,
+    data: productData,
+  } = useGetProductsQuery(
+    `product?page=${pageIndex}&size=${pageSize}&category=${categories}&price[gte]=${price?.gte}&price[lte]=${price?.lte}&ratings[gte]=${rating}&sort=${sort}`
   );
 
-  useEffect(() => {
-    dispatch(productList("products"));
+  // filter reset handler
+  const resetHandler = () => {
+    setRating(0);
+    setCategories("");
+    setPrice({
+      gte: 0,
+      lte: 100,
+    });
+  };
 
-    return () => {
-      dispatch(productListReset());
-    };
-  }, [dispatch, product?.success, updatedProduct?.success, deletedProduct]);
-
-  useEffect(() => {
-    if (error) {
-      cogoToast.error(error);
-      dispatch(productListReset());
-      // navigate("/");
-    }
-    if (products?.message) {
-      cogoToast.error("Something was wrong!");
-      dispatch(productListReset());
-      // navigate("/");
-    }
-  }, [error, products, dispatch]);
+  // sort reset handler
+  const resetSortHandler = () => {
+    setSort("");
+  };
 
   // React table elements
-  const data = useMemo(() => (products?.length ? products : []), [products]);
-  const columns = useMemo(() => productColumn, []);
-
-  const tableInstance = useTable(
-    {
-      columns,
-      data,
-      initialState: { hiddenColumns: ["image", "_id", "description"] },
-    },
-    useGlobalFilter,
-    usePagination
+  const data = useMemo(
+    () => (productData?.products?.length ? productData?.products : []),
+    [productData?.products]
   );
 
-  const { state, setGlobalFilter } = tableInstance;
-  const { globalFilter } = state;
+  const columns = useMemo(() => productColumn, []);
+  const pagination = useMemo(
+    () => ({ pageIndex, pageSize }),
+    [pageIndex, pageSize]
+  );
+
+  // table instance
+  const table = useReactTable({
+    data,
+    columns,
+    pageCount: Math.ceil(productData?.counts / pageSize) || 0,
+    state: {
+      columnVisibility: { _id: false, image: false, description: false },
+      pagination,
+    },
+    onPaginationChange: setPagination,
+    manualPagination: true,
+    getCoreRowModel: getCoreRowModel(),
+  });
 
   return (
-    <DashboardLayout
-      title="Product Inventory"
-      filter={globalFilter}
-      setFilter={setGlobalFilter}
-    >
-      <section className="dp__section">
-        <div className="dp__container">
-          <div className="dp__header">
-            {loading ? (
-              <Skeleton width={140} animation="wave" height={35} />
-            ) : (
-              <h4 className="header__title">Product list</h4>
-            )}
-            <div className="dp__categories">
-              {loading ? (
-                <Skeleton
-                  width={130}
-                  variant="rectangular"
-                  animation="wave"
-                  height={35}
-                />
-              ) : (
-                <div className="btn small__btn btn__dark">
-                  <Button type="button" onClick={() => setOpen(true)}>
-                    <span className="btn__text">Add Product</span>
-                    <AddIcon />
-                  </Button>
-                </div>
-              )}
-            </div>
-          </div>
+    <DashboardLayout title="Product Inventory">
+      <Tables
+        table={table}
+        isSearchField={true}
+        isFilterButton={true}
+        FilterButtonComponent={
+          <MenuButton
+            buttonText="Filter By"
+            buttonIconComponent={<FilterAltIcon fontSize="small" />}
+            resetText="Reset Filters"
+            resetHandler={resetHandler}
+          >
+            <CategoryFilter
+              categories={categories}
+              setCategories={setCategories}
+              categoryData={categoryData}
+            />
+            <Divider sx={{ my: 0.5 }} />
+            <PriceFilter price={price} setPrice={setPrice} />
+            <Divider sx={{ my: 0.5 }} />
+            <RatingFilter rating={rating} setRating={setRating} />
+          </MenuButton>
+        }
+        isSortButton={true}
+        SortButtonComponent={
+          <MenuButton
+            buttonText="Sort By"
+            buttonIconComponent={<FilterListIcon fontSize="small" />}
+            resetText="Reset"
+            resetHandler={resetSortHandler}
+          >
+            <SortFilter sort={sort} setSort={setSort} />
+          </MenuButton>
+        }
+        isExportButton={true}
+        isAddButton={true}
+        addButtonText="Add New"
+        isLoading={isLoading || isFetching}
+        isError={isError}
+        error={error}
+      />
 
-          {!loading && products?.length === 0 ? (
-            <CustomAlert severity="info" message="No products found!" />
-          ) : (
-            <div className="dp__products">
-              <CustomTable tableInstance={tableInstance} loading={loading} />
-            </div>
-          )}
-        </div>
-
-        <Modal open={open} onClose={() => setOpen(false)}>
-          <>
-            <AddProductForm setOpen={setOpen} />
-          </>
-        </Modal>
-      </section>
+      <Modal open={open} onClose={() => setOpen(false)}>
+        <>{/* <AddProductForm setOpen={setOpen} /> */}</>
+      </Modal>
     </DashboardLayout>
   );
 };

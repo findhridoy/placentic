@@ -1,6 +1,6 @@
 import React from "react";
-import CustomBreadcrumbs from "../Components/CustomBreadcrumbs";
-import Layout from "../Layouts/Layout";
+import CustomBreadcrumbs from "../components/controls/CustomBreadcrumbs";
+import Layout from "../layouts/Layout";
 
 const Orders = ({ profile }) => {
   return profile ? (

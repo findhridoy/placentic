@@ -5,12 +5,12 @@ import cogoToast from "cogo-toast";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
-import { addProductSchema } from "../../Helpers/Validation/ValidationSchema";
-import { categoryList } from "../../Redux/actions/categoryActions";
+import { categoryList } from "../../App/actions/categoryActions";
 import {
   createProduct,
   productCreateReset,
-} from "../../Redux/actions/productActions";
+} from "../../App/actions/productActions";
+import { addProductSchema } from "../../Helpers/Validation/ValidationSchema";
 import FormImageControl from "./FormImageControl";
 
 const AddProductForm = ({ setOpen }) => {

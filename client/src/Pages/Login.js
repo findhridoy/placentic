@@ -1,21 +1,23 @@
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Button, CircularProgress, IconButton } from "@mui/material";
+import { IconButton } from "@mui/material";
 import cogoToast from "cogo-toast";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import placentic from "../Assets/logo/placentic.png";
-import { loginSchema } from "../Helpers/Validation/ValidationSchema";
-import { loginUser, userErrorReset } from "../Redux/actions/userActions";
+import { useLoginMutation } from "../app/features/auth/authApi";
+import placentic from "../assets/logo/placentic.png";
+import CustomButton from "../components/controls/CustomButton";
+import { loginSchema } from "../helpers/Validation/ValidationSchema";
 
 const Login = () => {
   // Password hide/show state
   const [showPass, setShowPass] = useState(false);
 
-  // Redux element
-  const dispatch = useDispatch();
-  const { loading, error, userInfo } = useSelector((state) => state.userLogin);
+  // Redux toolkit element
+  const [
+    login,
+    { isLoading, isError, error, isSuccess, data },
+  ] = useLoginMutation();
 
   // React hook form own state
   const {
@@ -28,27 +30,26 @@ const Login = () => {
 
   // React hook form data submit
   const onSubmit = async (data) => {
-    dispatch(loginUser(data));
+    await login(data);
   };
 
   const location = useLocation();
   const navigate = useNavigate();
 
-  let { from } = location.state || { from: { pathname: "/" } };
+  // redirect
+  let from = location?.state?.from || "/";
 
   useEffect(() => {
-    if (error) {
-      cogoToast.error(error);
-      dispatch(userErrorReset());
+    if (isError) {
+      cogoToast.error(error?.data?.message);
     }
-    if (userInfo?.message) {
+    if (data?.message) {
       cogoToast.error("Something was wrong!");
-      dispatch(userErrorReset());
     }
-    if (userInfo?.email) {
-      navigate(from);
+    if (isSuccess && data) {
+      navigate(from, { replace: true });
     }
-  }, [error, navigate, from, userInfo, dispatch]);
+  }, [error, navigate, from, isError, data, isSuccess]);
   return (
     <section className="sl__section main__bg">
       <div className="sl__container">
@@ -115,15 +116,12 @@ const Login = () => {
               </Link>
             </div>
 
-            <div className="sl__btn btn btn__dark">
-              <Button type="submit">
-                {loading ? (
-                  <CircularProgress color="inherit" size={30} />
-                ) : (
-                  "Login"
-                )}
-              </Button>
-            </div>
+            <CustomButton
+              className="sl__btn btn btn__dark"
+              text="Login"
+              loading={isLoading}
+              type="submit"
+            />
 
             <div className="form__footer">
               <span className="form__footer--text">

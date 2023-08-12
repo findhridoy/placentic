@@ -74,10 +74,20 @@ const userUpdateSchema = Yup.object({
     .max(10, "Username must be between 5 and 10 characters."),
 });
 
+// Shipping Address Schema
+const shippingSchema = Yup.object({
+  country: Yup.string().required("Country field can not be empty."),
+  phone_number: Yup.string().required("Phone number field can not be empty."),
+  address: Yup.string().required("Address field can not be empty."),
+  city: Yup.string().required("City field can not be empty."),
+  zip_code: Yup.string().required("ZIP code field can not be empty."),
+});
+
 export {
   signUpSchema,
   loginSchema,
   categorySchema,
   addProductSchema,
   userUpdateSchema,
+  shippingSchema,
 };

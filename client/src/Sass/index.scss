@@ -4,6 +4,7 @@
 @import "config/variables";
 @import "config/base";
 @import "config/layout";
+@import "config/controls";
 
 // Components
 @import "components/scroll";
@@ -18,6 +19,7 @@
 @import "components/imageHandler";
 @import "components/login&signup";
 @import "components/profile";
+@import "components/productLayout";
 @import "components/productItem";
 @import "components/product";
 @import "components/productReview";
@@ -26,6 +28,16 @@
 @import "components/reviewComment";
 @import "components/cart";
 @import "components/cartItem";
+@import "components/cartSubtotal";
+@import "components/checkout";
+@import "components/customizeAccordion";
+@import "components/shippingForm";
+@import "components/customDropdown";
+@import "components/productListItem";
+// @import "components/stripePayment";
 
 // Dashboard
-@import "../Dashboard/DashboardStyles/dashboardIndex";
+@import "../dashboard/DashboardStyles/dashboardIndex";
+
+// Table
+@import "../tables/tables";
