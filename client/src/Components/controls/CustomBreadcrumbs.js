@@ -13,27 +13,27 @@ const CustomBreadcrumbs = ({ title, image }) => {
         className="customBreadcrumbs__container"
         style={{ backgroundImage: `url(${image})` }}
       >
-        <div className="container">
-          <div className="customBreadcrumbs__content">
-            <h2 className="customBreadcrumbs__title">{title}</h2>
-            <Breadcrumbs aria-label="breadcrumb">
-              <Link onClick={() => navigate("/")}>Home</Link>
-              {pathnames?.map((name, index) => {
-                const lastName = index === pathnames.length - 0;
-                const routeTo = `/${pathnames.slice(0, index + 1).join("/")}`;
+        {/* <div className=""> */}
+        <div className="customBreadcrumbs__content container">
+          <h2 className="customBreadcrumbs__title">{title}</h2>
+          <Breadcrumbs aria-label="breadcrumb">
+            <Link onClick={() => navigate("/")}>Home</Link>
+            {pathnames?.map((name, index) => {
+              const lastName = index === pathnames.length - 0;
+              const routeTo = `/${pathnames.slice(0, index + 1).join("/")}`;
 
-                return !lastName ? (
-                  <span className="breadcrumbs__text" key={index}>
-                    {name}
-                  </span>
-                ) : (
-                  <Link onClick={() => navigate(routeTo)} key={index}>
-                    {name}
-                  </Link>
-                );
-              })}
-            </Breadcrumbs>
-          </div>
+              return !lastName ? (
+                <span className="breadcrumbs__text" key={index}>
+                  {name}
+                </span>
+              ) : (
+                <Link onClick={() => navigate(routeTo)} key={index}>
+                  {name}
+                </Link>
+              );
+            })}
+          </Breadcrumbs>
+          {/* </div> */}
         </div>
       </div>
     </div>

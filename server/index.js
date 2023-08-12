@@ -1,7 +1,7 @@
 // External Imports
 const express = require("express");
 const cors = require("cors");
-const { success } = require("consola");
+const { success, info } = require("consola");
 
 // Internal Imports
 const { PORT } = require("./config");
@@ -29,7 +29,7 @@ app.use(
 app.use("/api/v1/user", userRouter);
 app.use("/api/v1/category", categoryRouter);
 app.use("/api/v1/product", productRouter);
-app.use("/api", stripeRouter);
+app.use("/api/v1", stripeRouter);
 
 // Default Error Handler
 app.use(notFound);
@@ -40,7 +40,7 @@ connectMDB();
 
 // Start Listening for the server on Port
 app.listen(PORT, () => {
-  success({
+  info({
     message: `Server started on Port ${PORT}`,
     badge: true,
   });

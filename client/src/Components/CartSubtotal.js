@@ -13,7 +13,7 @@ const CartSubtotal = ({ shippingMode, cartItems }) => {
 
   // shipping price
   const shipping =
-    shippingMode === "free" ? 0 : shippingMode === "paid" ? 9.9 : 0;
+    shippingMode === "free" ? 0 : shippingMode === "costly" ? 9.9 : 0;
 
   // price object
   const amount = {

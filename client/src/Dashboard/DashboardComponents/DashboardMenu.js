@@ -5,7 +5,7 @@ import DashboardIcon from "@mui/icons-material/Dashboard";
 import GroupIcon from "@mui/icons-material/Group";
 import React from "react";
 import { Link, NavLink } from "react-router-dom";
-import placentic from "../../Assets/logo/placentic.png";
+import placentic from "../../assets/logo/placentic.png";
 
 const DashboardMenu = () => (
   <aside className="dashboard__menu">

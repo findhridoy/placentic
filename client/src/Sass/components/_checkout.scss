@@ -1,89 +1,32 @@
 .checkout__section {
   @include body-margin(minus);
+  padding-bottom: 3rem;
+  .customBreadcrumbs__container {
+    height: 100%;
+    top: 0;
+  }
   .checkout__container {
-    display: grid;
-    gap: 1.5rem;
-    max-width: 980px;
-    margin: 0 auto;
+    @include breakpoint(sm) {
+      display: grid;
+      gap: 1.5rem;
+    }
     @include breakpoint(md) {
       gap: 1rem;
       grid-template-columns: 1fr 0.5fr;
     }
     @include breakpoint(lg) {
       gap: 2.5rem;
-      // grid-template-columns: 1fr 0.5fr;
-    }
-    .chekout__content {
-      .checkout__login {
-        position: relative;
-        padding: $x-0-75 $x-1;
-        margin-top: $x-1;
-        display: flex;
-        // flex-direction: column;
-        gap: 2rem;
-        &::before {
-          content: "";
-          position: absolute;
-          height: 100%;
-          width: 100%;
-          left: 0;
-          top: 0;
-          background-color: $white;
-          z-index: -1;
-          // border-radius: 8px;
-          opacity: 0.8;
-          // @include box-shadow;
-        }
-
-        .login__checkbox {
-          border: $border-gray;
-          height: 1.5rem;
-          width: 1.5rem;
-          border-radius: 50%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-
-          .checkbox__text {
-            @include smaller-font;
-            font-weight: $semi-bold;
-            color: $dark;
-          }
-        }
-
-        .login__details {
-          .login__check {
-            display: flex;
-            color: $dark;
-            gap: 0.5rem;
-
-            .MuiSvgIcon-root {
-              @include h4-font;
-            }
-            .login__text {
-              @include small-font;
-              font-weight: $medium;
-              text-transform: uppercase;
-              color: $dark-alt;
-              opacity: 0.8;
-            }
-          }
-
-          .user__name {
-            @include small-font;
-            font-weight: $semi-bold;
-            color: $dark;
-            margin-right: $x-1-25;
-          }
-          .user__phone {
-            @extend .user__name;
-          }
-        }
-      }
     }
 
     .chekout__subtotal {
       min-width: 340px;
+      margin-top: $x-1-5;
+      @include breakpoint(sm) {
+        margin-top: 0;
+      }
+      // .cartSubtotal {
+      //   margin-top: 0;
+      // }
     }
   }
 }

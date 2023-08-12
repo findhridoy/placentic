@@ -5,7 +5,8 @@ import {
   useStripe,
 } from "@stripe/react-stripe-js";
 import { useEffect, useState } from "react";
-import CustomAlert from "./CustomAlert";
+import CustomAlert from "./controls/CustomAlert";
+// import CustomAlert from "./CustomAlert";
 
 const PaymentForm = () => {
   const stripe = useStripe();

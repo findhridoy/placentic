@@ -43,6 +43,10 @@
     }
 
     .accordion__summery {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
       .accordion__title {
         display: flex;
         color: $dark;
@@ -53,25 +57,55 @@
         }
         .title__text {
           @include small-font;
-          font-weight: $medium;
+          font-family: $montserrat;
+          font-weight: $semi-bold;
           text-transform: uppercase;
           color: $dark-alt;
-          opacity: 0.8;
+          opacity: 0.9;
         }
       }
 
-      .user__name {
+      .user__name,
+      .user__email {
         @include small-font;
         font-weight: $semi-bold;
         color: $dark;
         margin-right: $x-1-25;
       }
-      .user__phone {
-        @extend .user__name;
+      // .user__phone {
+      //   @extend .user__name;
+      // }
+
+      .accordion__btn {
+        .MuiButton-root {
+          height: 2.3rem;
+          width: 7.8rem;
+          display: flex;
+          align-items: center;
+          font-family: $poppins;
+          font-weight: $semi-bold;
+          letter-spacing: 0;
+          background-color: $dark-300;
+          color: $dark;
+          @include smaller-font;
+          @include breakpoint(md) {
+            @include smallest-font;
+          }
+          .MuiSvgIcon-root {
+            @include h3-font;
+          }
+        }
       }
     }
   }
   .MuiAccordionSummary-root.Mui-disabled {
     opacity: 1 !important;
+  }
+
+  .MuiAccordionDetails-root {
+    padding: $x-1 $x-1-5;
+    .accordion__radio {
+      margin-left: 0.1rem;
+    }
   }
 }

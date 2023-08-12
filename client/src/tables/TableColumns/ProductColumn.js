@@ -1,67 +1,67 @@
 // import CloseIcon from "@mui/icons-material/Close";
 import { Avatar, Stack } from "@mui/material";
-import React from "react";
+// import React from "react";
 import Moment from "react-moment";
 import ProductAction from "../TableActions/ProductAction";
 
 // Product column
 export const productColumn = [
   {
-    Header: "Title",
-    accessor: "title",
-    Cell: ({ row }) => (
+    accessorKey: "title",
+    header: "Title",
+    cell: ({ row }) => (
       <Stack direction="row" spacing={1} alignItems="center">
         <Avatar
           alt="product image"
-          src={row?.values.image}
+          src={row?.original?.image}
           sx={{ width: 35, height: 35 }}
         />
-        <span>{row?.values.title}</span>
+        <span>{row?.original?.title}</span>
       </Stack>
     ),
   },
   {
-    Header: "Category",
-    accessor: "category",
+    accessorKey: "category",
+    header: "Category",
   },
   {
-    Header: "Price",
-    accessor: "price",
+    accessorKey: "price",
+    header: "Price",
   },
   {
-    Header: "Reviews",
-    accessor: "countReviews",
+    accessorKey: "countReviews",
+    header: "Reviews",
   },
   {
-    Header: "Stock",
-    accessor: "countInStock",
+    accessorKey: "countInStock",
+    header: "Stock",
   },
   {
-    Header: "Id",
-    accessor: "_id",
+    accessorKey: "_id",
+    header: "Id",
   },
   {
-    Header: "Image",
-    accessor: "image",
+    accessorKey: "image",
+    header: "Image",
   },
   {
-    Header: "Description",
-    accessor: "description",
+    accessorKey: "description",
+    header: "Description",
   },
 
   {
-    Header: "Date",
-    accessor: "updatedAt",
-    Cell: ({ row }) => (
+    accessorKey: "updatedAt",
+    header: "Date",
+    cell: ({ row }) => (
       <Moment format="D MMM YYYY" withTitle>
-        {row?.values.updatedAt}
+        {row?.original?.updatedAt}
       </Moment>
     ),
   },
 
   {
-    Header: "Action",
-    accessor: "action",
-    Cell: ({ row }) => <ProductAction row={row} />,
+    accessorKey: "action",
+    header: "Action",
+    cell: ({ row }) => <ProductAction row={row} />,
   },
 ];

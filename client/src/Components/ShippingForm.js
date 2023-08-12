@@ -3,22 +3,28 @@ import { Button, CircularProgress } from "@mui/material";
 import cogoToast from "cogo-toast";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  updateUserProfile,
-  userUpdateErrorReset,
-} from "../App/actions/userActions";
-import { countryData } from "../Assets/json/countryData";
-import { shippingSchema } from "../Helpers/Validation/ValidationSchema";
+import { useDispatch } from "react-redux";
+// import {
+//   updateUserProfile,
+//   userUpdateErrorReset,
+// } from "../App/actions/userActions";
+import { useUpdateProfileMutation } from "../app/features/auth/authApi";
+import { countryData } from "../assets/json/countryData";
+import { shippingSchema } from "../helpers/Validation/ValidationSchema";
 
 const ShippingForm = ({ user, setExpanded }) => {
   // States
 
   // Redux element
   const dispatch = useDispatch();
-  const { loading, error, user: updateUser } = useSelector(
-    (state) => state.updateUserProfile
-  );
+  // const { loading, error, user: updateUser } = useSelector(
+  //   (state) => state.updateUserProfile
+  // );
+
+  const [
+    updateProfile,
+    { isLoading, isError, error, data: updateUser },
+  ] = useUpdateProfileMutation();
 
   console.log(updateUser);
 
@@ -42,24 +48,24 @@ const ShippingForm = ({ user, setExpanded }) => {
       formData.append("country", data.country);
 
       // send data to backend
-      dispatch(updateUserProfile(formData));
+      // dispatch(updateUserProfile(formData));
     }
   };
 
   useEffect(() => {
     if (error) {
       cogoToast.error(error);
-      dispatch(userUpdateErrorReset());
+      // dispatch(userUpdateErrorReset());
     }
 
     if (updateUser?.message) {
       cogoToast.success("Something was wrong! try again.");
-      dispatch(userUpdateErrorReset());
+      // dispatch(userUpdateErrorReset());
       return;
     }
     if (updateUser) {
       cogoToast.success("Shipping address was saved.");
-      dispatch(userUpdateErrorReset());
+      // dispatch(userUpdateErrorReset());
       setExpanded("panel3");
     }
   }, [error, updateUser, dispatch, setExpanded]);
@@ -151,7 +157,7 @@ const ShippingForm = ({ user, setExpanded }) => {
 
         <div className="shippingForm__btn btn small__btn btn__dark">
           <Button type="submit" style={{ width: "100%", marginTop: "0.5rem" }}>
-            {loading ? (
+            {isLoading ? (
               <CircularProgress color="inherit" size={24} thickness={3} />
             ) : (
               "Save Address"

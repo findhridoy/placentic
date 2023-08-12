@@ -1,10 +1,15 @@
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import { Button } from "@mui/material";
 import MuiAccordion from "@mui/material/Accordion";
 import MuiAccordionDetails from "@mui/material/AccordionDetails";
 import MuiAccordionSummary from "@mui/material/AccordionSummary";
 import { styled } from "@mui/material/styles";
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useGetProfileQuery } from "../app/features/auth/authApi";
+import { paymentOption } from "../assets/json/radioData";
+import ShippingForm from "./ShippingForm";
+import StripePayment from "./StripePayment";
+import CustomRadioGroup from "./controls/CustomRadioGroup";
 
 // Mui element
 const Accordion = styled((props) => (
@@ -22,27 +27,28 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
 }));
 
 const CustomizeAccordion = () => {
+  // *Redux element
+  const { data: user } = useGetProfileQuery();
+
+  console.log(user);
+
+  // States
+  const [isAddress, setIsAddress] = useState(false);
+  const [expanded, setExpanded] = useState("panel2");
+  const [radioMode, setRadioMode] = useState("now");
+
+  useEffect(() => {
+    if (user?.address && user.zip_code) {
+      setIsAddress(true);
+    }
+  }, [user]);
+
+  console.log(isAddress);
+
   // Mui element
   const handleChange = (panel) => (event, newExpanded) => {
     setExpanded(newExpanded ? panel : false);
   };
-
-  // *Redux element
-  const dispatch = useDispatch();
-  // const { user } = useSelector((state) => state.userProfile);
-  // const { user: updateUser } = useSelector((state) => state.updateUserProfile);
-
-  const user = {};
-
-  // States
-  const [expanded, setExpanded] = useState(user?.address ? "panel3" : "panel2");
-  const [action, setAction] = useState(user?.address ? true : false);
-
-  useEffect(() => {
-    // dispatch(getUserProfile("profile"));
-  }, [dispatch]);
-
-  // console.log(userInfo);
 
   return (
     <div className="custom__accordion">
@@ -59,23 +65,24 @@ const CustomizeAccordion = () => {
           }
         >
           <div className="accordion__summery">
-            <div className="accordion__title">
-              <span className="title__text">Login</span>
-              {user?.email && <CheckCircleIcon color="success" />}
+            <div>
+              <div className="accordion__title">
+                <span className="title__text">Login</span>
+                {user?.email && <CheckCircleIcon color="success" />}
+              </div>
+              <span className="user__name">{user?.name}</span>
+              <br />
+              <span className="user__email">{user?.email}</span>
             </div>
-            <span className="user__name">{user?.name}</span>
-            <span className="user__phone">
-              {/* {user?.phone ? "+880-" + user?.phone : ""} */}
-              {user?.email}
-            </span>
           </div>
         </MuiAccordionSummary>
       </Accordion>
 
       <Accordion
-        expanded={expanded === "panel2"}
+        expanded={!isAddress && expanded === "panel2"}
         onChange={handleChange("panel2")}
-        disabled={action}
+
+        // disabled={user?.address ? true : false}
       >
         <MuiAccordionSummary
           expandIcon={
@@ -85,21 +92,29 @@ const CustomizeAccordion = () => {
           }
         >
           <div className="accordion__summery">
-            <div className="accordion__title">
-              <span className="title__text">Shipping Address</span>
-              {user?.address && <CheckCircleIcon color="success" />}
+            <div>
+              <div className="accordion__title">
+                <span className="title__text">Shipping Address</span>
+                {user?.address && <CheckCircleIcon color="success" />}
+              </div>
+
+              {user?.address && (
+                <span className="user__name">
+                  {user?.phone ? "+880" + user?.phone : ""}, {user?.address}{" "}
+                  <br /> {user?.city}-{user?.zip_code}, {user?.country}
+                </span>
+              )}
             </div>
 
-            {user?.address && (
-              <span className="user__name">
-                {user?.phone}, {user?.address} <br /> {user?.city}-
-                {user?.zip_code}, {user?.country}
-              </span>
-            )}
+            <div className="accordion__btn btn">
+              <Button onClick={() => setIsAddress(false)}>
+                <span className="btn__text">Change</span>
+              </Button>
+            </div>
           </div>
         </MuiAccordionSummary>
         <AccordionDetails>
-          {/* <ShippingForm user={user} setExpanded={setExpanded} /> */}
+          <ShippingForm user={user} setExpanded={setExpanded} />
         </AccordionDetails>
       </Accordion>
 
@@ -119,11 +134,19 @@ const CustomizeAccordion = () => {
               <span className="title__text">Payment Method</span>
               <CheckCircleIcon color="success" />
             </div>
-            {/* <span className="user__name">User</span>
-            <span className="user__phone">024652124154</span> */}
           </div>
         </MuiAccordionSummary>
-        <AccordionDetails>{/* <StripePayment /> */}</AccordionDetails>
+        <AccordionDetails>
+          <div className="accordion__radio">
+            <CustomRadioGroup
+              radioMode={radioMode}
+              setRadioMode={setRadioMode}
+              radioData={paymentOption}
+            />
+          </div>
+
+          {radioMode === "now" && <StripePayment />}
+        </AccordionDetails>
       </Accordion>
     </div>
   );

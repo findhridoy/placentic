@@ -1,12 +1,6 @@
 import { Modal } from "@mui/material";
-import cogoToast from "cogo-toast";
-import React, { useEffect, useRef, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  deleteProduct,
-  productDeleteReset,
-} from "../../App/actions/productActions";
-import EditProductForm from "../../Dashboard/DashboardComponents/EditProductFrom";
+import React, { useRef, useState } from "react";
+import { useDispatch } from "react-redux";
 import ActionButton from "../TableComponents/ActionButton";
 
 const ProductAction = ({ row }) => {
@@ -16,9 +10,9 @@ const ProductAction = ({ row }) => {
 
   // Redux element
   const dispatch = useDispatch();
-  const { loading, error, product } = useSelector(
-    (state) => state.deleteProduct
-  );
+  // const { loading, error, product } = useSelector(
+  //   (state) => state.deleteProduct
+  // );
 
   // Table item edit functionality
   const handleEditClick = (x) => {
@@ -32,24 +26,24 @@ const ProductAction = ({ row }) => {
   const handleDelete = (id) => {
     if (btnRef.current.click) {
       setLoader(true);
-      dispatch(deleteProduct(id));
+      // dispatch(deleteProduct(id));
     }
   };
 
-  useEffect(() => {
-    if (error) {
-      cogoToast.error(error);
-      dispatch(productDeleteReset());
-    }
-    if (product?.message) {
-      cogoToast.error("Something was wrong!");
-      dispatch(productDeleteReset());
-    }
-    if (product?.success) {
-      cogoToast.success("Product is deleted.");
-      dispatch(productDeleteReset());
-    }
-  }, [error, product, dispatch]);
+  // useEffect(() => {
+  //   if (error) {
+  //     cogoToast.error(error);
+  //     dispatch(productDeleteReset());
+  //   }
+  //   if (product?.message) {
+  //     cogoToast.error("Something was wrong!");
+  //     dispatch(productDeleteReset());
+  //   }
+  //   if (product?.success) {
+  //     cogoToast.success("Product is deleted.");
+  //     dispatch(productDeleteReset());
+  //   }
+  // }, [error, product, dispatch]);
   return (
     <>
       <ActionButton
@@ -57,14 +51,12 @@ const ProductAction = ({ row }) => {
         handleDelete={handleDelete}
         row={row}
         loader={loader}
-        loading={loading}
+        loading={false}
         btnRef={btnRef}
       />
 
       <Modal open={open} onClose={() => setOpen(false)}>
-        <>
-          <EditProductForm setOpen={setOpen} row={row} />
-        </>
+        <>{/* <EditProductForm setOpen={setOpen} row={row} /> */}</>
       </Modal>
     </>
   );

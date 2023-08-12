@@ -125,3 +125,28 @@
 // ![GitHub stats](https://github-readme-stats.vercel.app/api?username=findhridoy&show_icons=true)
 // ![GitHub streak stats](https://github-readme-streak-stats.herokuapp.com/?user=findhridoy)
 // ![GitHub Activity Graph](https://activity-graph.herokuapp.com/graph?username=findhridoy)
+
+/* <div className="dp__header">
+{isLoading ? (
+  <Skeleton width={140} animation="wave" height={35} />
+) : (
+  <h4 className="header__title">Product list</h4>
+)}
+<div className="dp__categories">
+  {isLoading ? (
+    <Skeleton
+      width={130}
+      variant="rectangular"
+      animation="wave"
+      height={35}
+    />
+  ) : (
+    <div className="btn small__btn btn__dark">
+      <Button type="button" onClick={() => setOpen(true)}>
+        <span className="btn__text">Add Product</span>
+        <AddIcon />
+      </Button>
+    </div>
+  )}
+</div>
+</div> */

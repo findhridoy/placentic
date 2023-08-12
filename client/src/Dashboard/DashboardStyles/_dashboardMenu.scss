@@ -59,7 +59,7 @@
           flex-direction: row;
           gap: 0.8rem;
           padding: $x-0-5 0 $x-0-5 $x-1-5;
-          border-left: 2px solid transparent;
+          border-left: 3px solid transparent;
         }
         @include breakpoint(lg) {
           padding: $x-0-75 0 $x-0-75 $x-1-5;
@@ -82,14 +82,41 @@
         &:hover {
           color: $cyan;
           @include breakpoint(md) {
-            border-left: 2px solid $cyan;
+            border-left: 3px solid $cyan;
+            // background-color: $white-alt;
           }
         }
       }
       .active__link {
         color: $cyan;
         @include breakpoint(md) {
-          border-left: 2px solid $cyan;
+          border-left: 3px solid $cyan;
+          background-color: $white-alt;
+          position: relative;
+
+          &::before {
+            content: "";
+            position: absolute;
+            background-color: transparent;
+            bottom: -50px;
+            right: 0;
+            height: 50px;
+            width: 30px;
+            border-top-right-radius: 15px;
+            box-shadow: 0 -25px 0 0 $white-alt;
+          }
+
+          &::after {
+            content: "";
+            position: absolute;
+            background-color: transparent;
+            top: -50px;
+            right: 0;
+            height: 50px;
+            width: 30px;
+            border-bottom-right-radius: 15px;
+            box-shadow: 0 25px 0 0 $white-alt;
+          }
         }
       }
     }

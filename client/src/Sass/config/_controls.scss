@@ -8,6 +8,8 @@
     border-radius: 0;
     letter-spacing: 0.8px;
     font-family: $poppins;
+    // display: flex;
+    // align-items: center;
     @include small-font;
     box-shadow: none;
     cursor: pointer;
@@ -23,14 +25,15 @@
 .small__btn {
   .MuiButton-root {
     height: 2.3rem;
-    width: 7.8rem;
+    width: 7.9rem;
     display: flex;
     align-items: center;
     font-family: $poppins;
+    letter-spacing: 0;
     @include smaller-font;
     @include breakpoint(md) {
-      height: 2.6rem;
-      width: 8.5rem;
+      height: 2.4rem;
+      width: 8rem;
       @include smallest-font;
     }
     .MuiSvgIcon-root {
@@ -40,7 +43,8 @@
 }
 // White Button
 .btn__white {
-  .MuiButton-root {
+  .MuiButton-root,
+  .MuiIconButton-root {
     background-color: $white;
     color: $dark-alt;
     &:hover {
@@ -57,7 +61,8 @@
 }
 // Dark Button
 .btn__dark {
-  .MuiButton-root {
+  .MuiButton-root,
+  .MuiIconButton-root {
     background-color: $dark-alt;
     color: $white;
     &:hover {
@@ -70,6 +75,15 @@
       color: $white !important;
       background-color: $dark-alt !important;
     }
+  }
+}
+
+// **Outline Button
+.outline__dark {
+  .MuiButton-root {
+    border: 1px solid $dark-alt;
+    color: $dark;
+    background-color: transparent;
   }
 }
 
@@ -157,5 +171,27 @@
     .MuiAccordionDetails-root {
       padding: 0;
     }
+  }
+}
+
+// **Custom Radio Group
+.customRadioGroup {
+  .MuiRadio-root {
+    padding: 5px;
+    margin-right: $x-0-25;
+  }
+
+  .MuiTypography-root {
+    font-family: $poppins;
+    color: $dark-alt;
+    @include smaller-font;
+    font-weight: $semi-bold;
+    @include breakpoint(sm) {
+      // @include smallest-font;
+    }
+  }
+
+  .MuiRadio-root.Mui-checked {
+    color: $dark-alt;
   }
 }

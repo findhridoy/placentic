@@ -169,6 +169,7 @@ const getCategoriesByProduct = asyncHandler(async (req, res) => {
     { $addFields: { title: "$_id" } },
     { $project: { _id: 0 } },
     { $sort: { category: 1 } },
+    //   { $match: { ratings: { $lte: req.query.ratings } } },
   ]);
 
   if (categories) {
@@ -191,9 +192,9 @@ const getProducts = asyncHandler(async (req, res) => {
     req.query,
     Product.countDocuments()
   )
-    .filter()
     .sort()
-    .paginate();
+    .paginate()
+    .filter();
 
   const counts = await features.countsQuery;
   const products = await features.query;

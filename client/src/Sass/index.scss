@@ -30,7 +30,7 @@
 @import "components/cartItem";
 @import "components/cartSubtotal";
 @import "components/checkout";
-@import "components/customAccordion";
+@import "components/customizeAccordion";
 @import "components/shippingForm";
 @import "components/customDropdown";
 @import "components/productListItem";
@@ -38,3 +38,6 @@
 
 // Dashboard
 @import "../dashboard/DashboardStyles/dashboardIndex";
+
+// Table
+@import "../tables/tables";

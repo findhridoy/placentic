@@ -61,25 +61,6 @@
         opacity: 0.9;
         margin-bottom: $x-0-25;
       }
-
-      .MuiRadio-root {
-        padding: 5px;
-        margin-right: $x-0-25;
-      }
-
-      .MuiTypography-root {
-        font-family: $poppins;
-        color: $dark-alt;
-        @include smaller-font;
-        font-weight: $semi-bold;
-        @include breakpoint(sm) {
-          @include smallest-font;
-        }
-      }
-
-      .MuiRadio-root.Mui-checked {
-        color: $dark-alt;
-      }
     }
   }
 }

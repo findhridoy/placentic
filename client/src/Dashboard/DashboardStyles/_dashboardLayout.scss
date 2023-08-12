@@ -25,9 +25,9 @@
     }
 
     .dashboardLayout__pages {
-      padding: $x-1;
+      // padding: $x-1;
       @include breakpoint(sm) {
-        padding: $x-1-5;
+        // padding: $x-0-25;
       }
     }
   }

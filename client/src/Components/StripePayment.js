@@ -14,15 +14,18 @@ const StripePayment = () => {
   useEffect(() => {
     // Create PaymentIntent as soon as the page loads
     const fetcher = async () => {
-      const { data } = await axios.post("api/create-payment-intent", {
-        items: [{ id: "xl-tshirt" }],
-      });
+      const { data } = await axios.post(
+        "http://localhost:5000/api/v1/create-payment-intent",
+        {
+          items: [{ id: "xl-tshirt" }],
+        }
+      );
 
       setClientSecret(data?.clientSecret);
     };
 
     fetcher();
-  }, [clientSecret]);
+  }, []);
 
   const appearance = {
     theme: "stripe",

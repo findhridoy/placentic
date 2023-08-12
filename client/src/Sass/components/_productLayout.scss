@@ -27,6 +27,15 @@
           font-weight: $medium;
           font-family: $poppins;
           @include smaller-font;
+          display: flex;
+          justify-content: space-between;
+
+          // Badge Icon
+          .MuiBadge-badge {
+            background-color: $cyan !important;
+            color: $white-alt;
+            font-family: $montserrat;
+          }
         }
         .Mui-selected {
           color: $cyan;

@@ -1,7 +1,10 @@
 import { Route, Routes } from "react-router-dom";
 import CustomLoader from "./components/controls/CustomLoader";
-import PrivateRoutes from "./helpers/Routes/PrivateRoutes";
-import PublicRoutes from "./helpers/Routes/PublicRoutes";
+import Dashboard from "./dashboard/DashboardPages/Dashboard";
+import DashboardProducts from "./dashboard/DashboardPages/DashboardProducts";
+import AdminRoutes from "./helpers/Private/AdminRoutes";
+import PrivateRoutes from "./helpers/Private/PrivateRoutes";
+import PublicRoutes from "./helpers/Private/PublicRoutes";
 import useAuthCheck from "./hooks/useAuthCheck";
 import Cart from "./pages/Cart";
 import Checkout from "./pages/Checkout";
@@ -40,13 +43,13 @@ const App = () => {
       </Route>
 
       {/* Only Admin can access this pages */}
-      {/* <Route path="/dashboard/*" element={<AdminRoutes />}>
-          <Route path="dashboard" element={<Dashboard />} />
-          <Route path="products" element={<DashboardProducts />} />
-          <Route path="orders" element={<DashboardOrders />} />
+      <Route path="/dashboard/*" element={<AdminRoutes />}>
+        <Route path="dashboard" element={<Dashboard />} />
+        <Route path="products" element={<DashboardProducts />} />
+        {/* <Route path="orders" element={<DashboardOrders />} />
           <Route path="categories" element={<DashboardCategories />} />
-          <Route path="users" element={<DashboardUsers />} />
-        </Route> */}
+          <Route path="users" element={<DashboardUsers />} /> */}
+      </Route>
       {/* <Kursor /> */}
     </Routes>
   );

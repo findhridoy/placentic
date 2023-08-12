@@ -11,23 +11,19 @@
     background-repeat: no-repeat;
     background-position: center;
     position: absolute;
-    top: -3.5rem;
     height: calc(100% + 3.5rem);
+    top: -3.5rem;
     width: 100%;
+    display: flex;
+    align-items: center;
+
     @include breakpoint(md) {
-      top: -4rem;
       height: calc(100% + 4rem);
+      top: -4rem;
     }
+
     .customBreadcrumbs__content {
-      height: calc(250px + 3.5rem);
       width: 100%;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      margin-top: $x-1-75;
-      @include breakpoint(md) {
-        height: calc(380px + 4rem);
-      }
 
       .customBreadcrumbs__title {
         color: $dark-alt;

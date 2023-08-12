@@ -12,8 +12,8 @@ export const productApi = apiSlice.injectEndpoints({
 
     // get categories by product
     getCategoriesByProduct: builder.query({
-      query: () => ({
-        url: "product/categories",
+      query: (url) => ({
+        url: url,
         method: "GET",
       }),
     }),

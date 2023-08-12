@@ -1,6 +1,6 @@
 import AddIcon from "@mui/icons-material/Add";
 import StarBorderIcon from "@mui/icons-material/StarBorder";
-import { Rating, Slider } from "@mui/material";
+import { Badge, Rating, Slider } from "@mui/material";
 import MenuItem from "@mui/material/MenuItem";
 import MenuList from "@mui/material/MenuList";
 import { useState } from "react";
@@ -21,13 +21,12 @@ import Layout from "./Layout";
 
 const ProductLayout = ({ children }) => {
   // States
-  const [queries, setQueries] = useState("");
   const [size, setSize] = useState(6);
   const [sort, setSort] = useState("");
-  const [ratingValue, setRatingValue] = useState(0);
+  const [price, setPrice] = useState([0, 100]);
+  const [rating, setRating] = useState(0);
+  const [categories, setCategories] = useState([]);
   const [viewer, setViewer] = useState("grid");
-
-  // const [keyword, setKeyword] = useState("");
 
   // sorting options
   const options = [
@@ -40,7 +39,9 @@ const ProductLayout = ({ children }) => {
   ];
 
   // Redux toolkit element
-  const { isLoading, data: categoryData } = useGetCategoriesByProductQuery();
+  const { isLoading, data: categoryData } = useGetCategoriesByProductQuery(
+    `product/categories?ratings=${rating}`
+  );
 
   const {
     isLoading: productLoading,
@@ -49,24 +50,34 @@ const ProductLayout = ({ children }) => {
     error,
     data: productsData,
   } = useGetProductsQuery(
-    `product?page=${1}&size=${size}&category=${queries}&sort=${sort}`
+    `product?page=${1}&size=${size}&category=${categories}&price[gte]=${
+      price[0]
+    }&price[lte]=${price[1]}&ratings[gte]=${rating}&sort=${sort}`
   );
 
-  console.log(productsData);
-
-  const handleFilter = (category) => {
-    setQueries(category);
+  // category filter handler
+  const handleCategoryFilter = (category) => {
+    if (categories?.includes(category)) {
+      setCategories((preValue) => preValue.filter((x) => x !== category));
+    } else {
+      setCategories((preValue) => [...preValue, category]);
+    }
   };
-
-  // load more functionality
-  const handleLoadMore = () => {
+  // price filter handler
+  const handlePriceFilter = (event, newValue) => {
+    setPrice(newValue);
+  };
+  // rating filter handler
+  const handleRatingFilter = (event, newValue) => {
+    if (newValue === null) {
+      setRating(0);
+    } else {
+      setRating(newValue);
+    }
+  };
+  // loadmore handler
+  const handleLoadmore = () => {
     setSize((preValue) => preValue + 3);
-  };
-
-  const [value, setValue] = useState([1, 100]);
-
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
   };
 
   return (
@@ -79,19 +90,17 @@ const ProductLayout = ({ children }) => {
 
               <CustomAccordion title="Categories">
                 <MenuList>
-                  <MenuItem
-                    onClick={() => handleFilter("")}
-                    selected={queries === "" ? true : false}
-                  >
-                    All Collection ({categoryData?.productCount})
-                  </MenuItem>
                   {categoryData?.categories?.map((category) => (
                     <MenuItem
-                      onClick={() => handleFilter(category?.title)}
+                      onClick={() => handleCategoryFilter(category?.title)}
                       key={category?.title}
-                      selected={queries === category?.title ? true : false}
+                      divider={true}
+                      selected={
+                        categories?.includes(category?.title) ? true : false
+                      }
                     >
-                      {category?.title} ({category?.productCount})
+                      {category?.title}
+                      <Badge badgeContent={category?.productCount} />
                     </MenuItem>
                   ))}
                 </MenuList>
@@ -104,8 +113,8 @@ const ProductLayout = ({ children }) => {
                   <div className="slider">
                     <Slider
                       size="small"
-                      value={value}
-                      onChange={handleChange}
+                      value={price}
+                      onChange={handlePriceFilter}
                       valueLabelDisplay="on"
                       valueLabelFormat={(e) => `$ ${e}`}
                       min={1}
@@ -118,11 +127,10 @@ const ProductLayout = ({ children }) => {
 
                   <div className="raitng">
                     <Rating
-                      value={ratingValue}
+                      value={rating}
+                      defaultValue={0}
                       precision={0.5}
-                      onChange={(event, newValue) => {
-                        setRatingValue(newValue);
-                      }}
+                      onChange={handleRatingFilter}
                       emptyIcon={<StarBorderIcon />}
                     />
                   </div>
@@ -148,7 +156,11 @@ const ProductLayout = ({ children }) => {
                 )}
 
                 <div className="productLayout__right">
-                  <CustomDropdown options={options} updateStates={setSort} />
+                  <CustomDropdown
+                    options={options}
+                    selectedStates={sort}
+                    updateStates={setSort}
+                  />
                   <CustomViewer viewer={viewer} setViewer={setViewer} />
                 </div>
               </div>
@@ -200,7 +212,7 @@ const ProductLayout = ({ children }) => {
                       className="productLayout__btn btn small__btn btn__dark"
                       text="Load More"
                       endIcon={<AddIcon />}
-                      onClick={handleLoadMore}
+                      onClick={handleLoadmore}
                       loading={isFetching}
                     />
                   )}
