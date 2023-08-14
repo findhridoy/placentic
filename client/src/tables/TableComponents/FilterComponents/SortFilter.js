@@ -1,6 +1,6 @@
 import { FormControlLabel, FormGroup, Radio, RadioGroup } from "@mui/material";
 import React from "react";
-import FilterLayout from "../../DashboardLayout/FilterLayout";
+import FilterLayout from "../../TableLayout/FilterLayout";
 
 const SortFilter = ({ sort, setSort }) => {
   const handleChange = (event) => {
@@ -11,7 +11,7 @@ const SortFilter = ({ sort, setSort }) => {
   const sortOptions = [
     // { label: "Default", value: "" },
     { label: "Name", value: "title" },
-    { label: "Oldest First", value: "-createdAt" },
+    { label: "Newest First", value: "-createdAt" },
     { label: "Modification Time", value: "updatedAt" },
     { label: "Price: Low to High", value: "price" },
     { label: "Price: High to Low", value: "-price" },

@@ -1,6 +1,6 @@
 import { Checkbox, FormControlLabel, FormGroup } from "@mui/material";
 import React from "react";
-import FilterLayout from "../../DashboardLayout/FilterLayout";
+import FilterLayout from "../../TableLayout/FilterLayout";
 
 const CategoryFilter = ({ categories, setCategories, categoryData }) => {
   const handleCheckBox = (event) => {
@@ -12,22 +12,9 @@ const CategoryFilter = ({ categories, setCategories, categoryData }) => {
     }
   };
 
-  console.log(categories);
-
   return (
     <FilterLayout title="Category">
       <FormGroup>
-        {/* <FormControlLabel
-          control={
-            <Checkbox
-              size="small"
-              defaultChecked
-              onChange={handleCheckBox}
-              value=""
-            />
-          }
-          label="All"
-        /> */}
         {categoryData?.categories?.map((category) => (
           <FormControlLabel
             key={category?.title}

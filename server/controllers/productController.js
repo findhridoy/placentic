@@ -192,6 +192,7 @@ const getProducts = asyncHandler(async (req, res) => {
     req.query,
     Product.countDocuments()
   )
+    .search()
     .sort()
     .paginate()
     .filter();

@@ -1,0 +1,40 @@
+.MuiDialog-root {
+  .MuiPaper-root {
+    text-align: center;
+    padding: $x-1 0;
+    border-radius: 8px;
+    @include breakpoint(sm) {
+      padding: $x-1-5 0;
+    }
+
+    .deleteDialog__error--icon {
+      .MuiSvgIcon-root {
+        font-size: 4rem !important;
+        color: $red;
+      }
+    }
+    h2 {
+      font-weight: $semi-bold;
+      @include h3-font;
+      color: $dark-alt;
+    }
+
+    .deleteDialog__content {
+      font-weight: $semi-bold;
+      @include small-font;
+      color: $dark-alt;
+    }
+
+    .MuiDialogActions-root {
+      justify-content: center;
+      .deleteDialog__button {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        @include breakpoint(sm) {
+          gap: 1rem;
+        }
+      }
+    }
+  }
+}

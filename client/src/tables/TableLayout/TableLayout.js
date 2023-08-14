@@ -1,75 +1,96 @@
 import AddIcon from "@mui/icons-material/Add";
-import IosShareIcon from "@mui/icons-material/IosShare";
 import SearchIcon from "@mui/icons-material/Search";
-import { CircularProgress, IconButton, Pagination } from "@mui/material";
+import {
+  Button,
+  CircularProgress,
+  IconButton,
+  Pagination,
+} from "@mui/material";
 import { flexRender } from "@tanstack/react-table";
-import React from "react";
-import CustomAlert from "../components/controls/CustomAlert";
-import CustomButton from "../components/controls/CustomButton";
+import React, { useEffect, useState } from "react";
+import CustomAlert from "../../components/controls/CustomAlert";
+import CustomButton from "../../components/controls/CustomButton";
 
-const Tables = ({
+const TableLayout = ({
   table,
   isSearchField,
+  setKeyword,
   isFilterButton,
   FilterButtonComponent,
   isSortButton,
   SortButtonComponent,
   isExportButton,
+  ExportButtonComponent,
   isAddButton,
   addButtonText,
+  addButtonHandler,
   isLoading,
   isError,
   error,
 }) => {
+  // States
+  const [inputValue, setInputValue] = useState("");
+
+  // search functionality
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setKeyword(inputValue);
+  };
+
+  useEffect(() => {
+    if (!inputValue) {
+      setKeyword("");
+    }
+  }, [inputValue, setKeyword]);
   return (
-    <div className="table__section">
-      <div className="table__section-header">
+    <div className="tableLayout__section">
+      <div className="tableLayout__section-header">
         {isSearchField && (
-          <div className="table__search">
-            <SearchIcon />
+          <form className="tableLayout__search" onSubmit={handleSubmit}>
+            <span className="search__icon">
+              <SearchIcon fontSize="small" />
+            </span>
             <input
               className="search__control"
-              type="text"
+              type="search"
               placeholder="Search..."
+              autoComplete="false"
+              onChange={(e) => setInputValue(e.target.value)}
+              value={inputValue}
             />
-          </div>
+            <div className="search__button">
+              <Button type="submit" size="small">
+                Search
+              </Button>
+
+              <IconButton type="submit" size="small">
+                <SearchIcon fontSize="small" />
+              </IconButton>
+            </div>
+          </form>
         )}
 
-        <div className="table__button-group">
+        <div className="tableLayout__button-group">
           {/* Filter component include filter button */}
           {isFilterButton && <>{FilterButtonComponent}</>}
 
           {/*  Sort component include sort button */}
           {isSortButton && <>{SortButtonComponent}</>}
 
-          {isExportButton && (
-            <>
-              <CustomButton
-                className="table__button btn small__btn btn__white"
-                text="Export"
-                startIcon={<IosShareIcon />}
-                onClick={() => {}}
-              />
-
-              <div className="mobile__button btn__white">
-                <IconButton>
-                  <IosShareIcon fontSize="small" />
-                </IconButton>
-              </div>
-            </>
-          )}
+          {/*  Export component include export button */}
+          {isExportButton && <>{ExportButtonComponent}</>}
 
           {isAddButton && (
             <>
               <CustomButton
-                className="table__button btn small__btn btn__dark"
+                className="tableLayout__button btn small__btn btn__dark"
                 text={addButtonText}
                 startIcon={<AddIcon />}
-                onClick={() => {}}
+                onClick={addButtonHandler}
               />
 
               <div className="mobile__button btn__dark">
-                <IconButton>
+                <IconButton onClick={addButtonHandler}>
                   <AddIcon fontSize="small" />
                 </IconButton>
               </div>
@@ -78,9 +99,9 @@ const Tables = ({
         </div>
       </div>
 
-      <div className="table__container">
+      <div className="tableLayout__container">
         {isLoading ? (
-          <div className="table__loader">
+          <div className="tableLayout__loader">
             <CircularProgress color="inherit" size={28} thickness={3} />
           </div>
         ) : isError ? (
@@ -122,8 +143,8 @@ const Tables = ({
         )}
       </div>
 
-      <div className="table__section-footer">
-        <div className="table__pagination">
+      <div className="tableLayout__section-footer">
+        <div className="tableLayout__pagination">
           <Pagination
             count={table.getPageCount()}
             shape="rounded"
@@ -134,8 +155,8 @@ const Tables = ({
           />
         </div>
 
-        <div className="table__footer-right">
-          <div className="table__listing">
+        <div className="tableLayout__footer-right">
+          <div className="tableLayout__listing">
             <span className="listing__title">Listing per page</span>
             <select
               value={table.getState().pagination.pageSize}
@@ -149,7 +170,7 @@ const Tables = ({
             </select>
           </div>
 
-          <span className="table__showing">
+          <span className="tableLayout__showing">
             Showing{" "}
             <strong>{table.getState().pagination.pageIndex + 1} </strong>
             of <strong>{table.getPageCount()}</strong>
@@ -160,4 +181,4 @@ const Tables = ({
   );
 };
 
-export default Tables;
+export default TableLayout;

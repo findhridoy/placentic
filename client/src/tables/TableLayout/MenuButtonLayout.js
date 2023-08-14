@@ -3,7 +3,7 @@ import Menu from "@mui/material/Menu";
 import React, { useState } from "react";
 import CustomButton from "../../components/controls/CustomButton";
 
-const MenuButton = ({
+const MenuButtonLayout = ({
   buttonText,
   buttonIconComponent,
   resetHandler,
@@ -20,18 +20,16 @@ const MenuButton = ({
   };
 
   return (
-    <div className="productFilter">
-      <>
-        <CustomButton
-          className="table__button btn small__btn btn__white"
-          text={buttonText}
-          startIcon={buttonIconComponent}
-          onClick={handleClick}
-        />
-        <div className="mobile__button btn__white">
-          <IconButton onClick={handleClick}>{buttonIconComponent}</IconButton>
-        </div>
-      </>
+    <>
+      <CustomButton
+        className="tableLayout__button btn small__btn btn__white"
+        text={buttonText}
+        startIcon={buttonIconComponent}
+        onClick={handleClick}
+      />
+      <div className="mobile__button btn__white">
+        <IconButton onClick={handleClick}>{buttonIconComponent}</IconButton>
+      </div>
 
       <Menu
         anchorOrigin={{
@@ -68,8 +66,8 @@ const MenuButton = ({
           />
         </Box>
       </Menu>
-    </div>
+    </>
   );
 };
 
-export default MenuButton;
+export default MenuButtonLayout;

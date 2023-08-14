@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import ImageHandler from "../../Components/ImageHandler";
+import ImageHandler from "../../components/ImageHandler";
 
 const FormImageControl = ({ setImage, errors, user }) => {
   const [showImage, setShowImage] = useState(null);

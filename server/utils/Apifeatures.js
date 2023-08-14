@@ -5,6 +5,24 @@ class Apifeatures {
     this.countsQuery = countsQuery;
   }
 
+  // SEARCH LOGIG ~ search product by title, category...
+  search() {
+    if (this.queryStr.keyword) {
+      const keyword = this.queryStr.keyword;
+      const searchRegExp = new RegExp(".*" + keyword + ".*", "i");
+      const searchObj = {
+        $or: [
+          { title: { $regex: searchRegExp } },
+          { category: { $regex: searchRegExp } },
+        ],
+      };
+
+      this.countsQuery = this.countsQuery.countDocuments(searchObj);
+      this.query = this.query.find(searchObj);
+    }
+    return this;
+  }
+
   //** SORT LOGIC ~ sort by price, time, name...
   sort() {
     if (this.queryStr.sort) {

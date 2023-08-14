@@ -1,35 +1,29 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import CloseIcon from "@mui/icons-material/Close";
-import { Button, CircularProgress, IconButton } from "@mui/material";
+import { IconButton } from "@mui/material";
 import cogoToast from "cogo-toast";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useDispatch, useSelector } from "react-redux";
-import { categoryList } from "../../App/actions/categoryActions";
-import {
-  createProduct,
-  productCreateReset,
-} from "../../App/actions/productActions";
-import { addProductSchema } from "../../Helpers/Validation/ValidationSchema";
+import { useDispatch } from "react-redux";
+import { useCreateProductMutation } from "../../app/features/products/productApi";
+import CustomButton from "../../components/controls/CustomButton";
+import { addProductSchema } from "../../helpers/Validation/ValidationSchema";
 import FormImageControl from "./FormImageControl";
 
-const AddProductForm = ({ setOpen }) => {
+const AddProductForm = ({
+  setOpen,
+  categoryData,
+  categoryIsError,
+  categoryError,
+}) => {
   // States
   const [image, setImage] = useState(null);
   const [imageError, setImageError] = useState({});
 
   // Redux element
   const dispatch = useDispatch();
-  const { error: categoryError, categories } = useSelector(
-    (state) => state.categoryList
-  );
-  const { loading, error, product } = useSelector(
-    (state) => state.createProduct
-  );
-
-  useEffect(() => {
-    dispatch(categoryList("categories"));
-  }, [dispatch]);
+  const [createProduct, { isLoading, isError, error, data: product }] =
+    useCreateProductMutation();
 
   // React hook form own state
   const {
@@ -67,21 +61,17 @@ const AddProductForm = ({ setOpen }) => {
   };
 
   useEffect(() => {
-    if (error) {
-      cogoToast.error(error);
-      dispatch(productCreateReset());
+    if (isError) {
+      cogoToast.error(error?.data?.message);
     }
     if (product?.message) {
       cogoToast.error("Something was wrong!");
-      dispatch(productCreateReset());
     }
     if (product?.success) {
       cogoToast.success("Product has been created.");
-      dispatch(productCreateReset());
-
       setOpen(false);
     }
-  }, [error, dispatch, product, setOpen]);
+  }, [isError, error, product, setOpen]);
 
   return (
     <div className="addProducts">
@@ -105,18 +95,18 @@ const AddProductForm = ({ setOpen }) => {
             <label className="form__label">Category</label>
             <select className="form__select" {...register("category")}>
               <option className="form__option" value="">
-                {categoryError
-                  ? "Something was wrong!"
-                  : categories?.length === 0
+                {categoryIsError
+                  ? categoryIsError?.data?.message
+                  : categoryData?.categories?.length === 0
                   ? "Category not found!"
                   : "Select a category"}
               </option>
 
-              {categories?.map((category) => (
+              {categoryData?.categories?.map((category, index) => (
                 <option
                   className="form__option"
                   value={category?.title}
-                  key={category?._id}
+                  key={index}
                 >
                   {category?.title}
                 </option>
@@ -169,15 +159,12 @@ const AddProductForm = ({ setOpen }) => {
 
           <FormImageControl setImage={setImage} errors={imageError} />
 
-          <div className="addProducts__btn btn btn__dark">
-            <Button type="submit">
-              {loading ? (
-                <CircularProgress color="inherit" size={30} thickness={3} />
-              ) : (
-                "Add Product"
-              )}
-            </Button>
-          </div>
+          <CustomButton
+            className="addProducts__btn btn small__btn btn__dark"
+            text="Add Product"
+            loading={isLoading}
+            type="submit"
+          />
         </form>
         <div className="addProducts__close">
           <IconButton aria-label="close" onClick={() => setOpen(false)}>

@@ -5,7 +5,7 @@ import {
   RadioGroup,
 } from "@mui/material";
 import React from "react";
-import FilterLayout from "../../DashboardLayout/FilterLayout";
+import FilterLayout from "../../TableLayout/FilterLayout";
 
 const PriceFilter = ({ price, setPrice }) => {
   const handleChange = (event) => {

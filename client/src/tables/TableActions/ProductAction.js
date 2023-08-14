@@ -1,12 +1,13 @@
 import { Modal } from "@mui/material";
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import ActionButton from "../TableComponents/ActionButton";
+import ActionsButton from "../TableComponents/AdditionalComponents/ActionsButton";
+import DeleteDialog from "../TableComponents/AdditionalComponents/DeleteDialog";
 
 const ProductAction = ({ row }) => {
   // Modal state
   const [open, setOpen] = useState(false);
-  const [loader, setLoader] = useState(false);
+  const [dialog, setDialog] = useState(false);
 
   // Redux element
   const dispatch = useDispatch();
@@ -19,15 +20,9 @@ const ProductAction = ({ row }) => {
     setOpen(true);
   };
 
-  // Delete button ref
-  const btnRef = useRef();
-
   // Table item delete functionality
   const handleDelete = (id) => {
-    if (btnRef.current.click) {
-      setLoader(true);
-      // dispatch(deleteProduct(id));
-    }
+    setDialog(true);
   };
 
   // useEffect(() => {
@@ -46,18 +41,19 @@ const ProductAction = ({ row }) => {
   // }, [error, product, dispatch]);
   return (
     <>
-      <ActionButton
-        handleEditClick={handleEditClick}
+      <ActionsButton
+        handleEdit={handleEditClick}
         handleDelete={handleDelete}
         row={row}
-        loader={loader}
-        loading={false}
-        btnRef={btnRef}
       />
 
+      {/* Edit modal */}
       <Modal open={open} onClose={() => setOpen(false)}>
         <>{/* <EditProductForm setOpen={setOpen} row={row} /> */}</>
       </Modal>
+
+      {/* Delete dialog */}
+      <DeleteDialog open={dialog} setOpen={setDialog} row={row} />
     </>
   );
 };
