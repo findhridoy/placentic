@@ -1,105 +1,119 @@
-import AddIcon from "@mui/icons-material/Add";
-import { Button } from "@mui/material";
+import FilterListIcon from "@mui/icons-material/FilterList";
 import Modal from "@mui/material/Modal";
-import { useEffect, useMemo, useState } from "react";
+import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
+import moment from "moment";
+import { useMemo, useState } from "react";
 import "react-dropdown/style.css";
-import { useDispatch, useSelector } from "react-redux";
-import { useGlobalFilter, usePagination, useTable } from "react-table";
-import {
-  categoryList,
-  categoryListReset,
-} from "../../App/actions/categoryActions";
-import CustomAlert from "../../Components/CustomAlert";
-import CustomTable from "../../ReactTable/CustomTable";
-import { categoryColumn } from "../../ReactTable/TableColumns/CategoryColumn";
+import { useGetCategoriesQuery } from "../../app/features/categories/categoryApi";
+import CsvExport from "../../tables/TableComponents/ExportComponents/CsvExport";
+import SortFilter from "../../tables/TableComponents/FilterComponents/SortFilter";
+import MenuButtonLayout from "../../tables/TableLayout/MenuButtonLayout";
+import TableLayout from "../../tables/TableLayout/TableLayout";
 import AddCategoryForm from "../DashboardComponents/AddCategoryForm";
-import CustomTableLoader from "../DashboardComponents/CustomTableLoader";
 import DashboardLayout from "../DashboardLayout/DashboardLayout";
+import { categoryColumn } from "./../../tables/TableColumns/CategoryColumn";
 
 const DashboardCategories = () => {
-  // Modal state
+  // States
   const [open, setOpen] = useState(false);
+  const [sort, setSort] = useState("");
+  const [keyword, setKeyword] = useState("");
+  const [{ pageIndex, pageSize }, setPagination] = useState({
+    pageIndex: 0,
+    pageSize: 8,
+  });
 
   // Redux element
-  const dispatch = useDispatch();
-  const { loading, error, categories } = useSelector(
-    (state) => state.categoryList
+  const {
+    isLoading,
+    isError,
+    error,
+    isFetching,
+    data: categoryData,
+  } = useGetCategoriesQuery(
+    `category?page=${pageIndex}&size=${pageSize}&sort=${sort}&keyword=${keyword}`
   );
-  const { category } = useSelector((state) => state.createCategory);
-  const { category: updateCat } = useSelector((state) => state.updateCategory);
-  const { category: deleteCate } = useSelector((state) => state.deleteCategory);
 
-  useEffect(() => {
-    dispatch(categoryList("categories"));
-
-    return () => {
-      dispatch(categoryListReset());
-    };
-  }, [dispatch, category?.success, updateCat?.success, deleteCate?.success]);
+  // sort reset handler
+  const resetSortHandler = () => {
+    setSort("");
+  };
 
   // React table elements
-  const data = useMemo(() => (categories?.length ? categories : []), [
-    categories,
-  ]);
-  const columns = useMemo(() => (categories?.length ? categoryColumn : []), [
-    categories,
-  ]);
-
-  const tableInstance = useTable(
-    {
-      columns,
-      data,
-      initialState: { hiddenColumns: "image" },
-    },
-    useGlobalFilter,
-    usePagination
+  const data = useMemo(
+    () => (categoryData?.categories?.length ? categoryData?.categories : []),
+    [categoryData?.categories]
+  );
+  const columns = useMemo(() => categoryColumn, []);
+  const pagination = useMemo(
+    () => ({ pageIndex, pageSize }),
+    [pageIndex, pageSize]
   );
 
-  const { state, setGlobalFilter } = tableInstance;
-  const { globalFilter } = state;
+  // table instance
+  const table = useReactTable({
+    data,
+    columns,
+    pageCount: Math.ceil(categoryData?.counts / pageSize) || 0,
+    state: {
+      columnVisibility: { _id: false, image: false },
+      pagination,
+    },
+    onPaginationChange: setPagination,
+    manualPagination: true,
+    getCoreRowModel: getCoreRowModel(),
+  });
+
+  // export table data to csv file
+  const csvData = [
+    ["TITLE", "MESSAGE", "DATE", "IMAGE"],
+    ...data?.map((category) => [
+      category?.title,
+      category?.message,
+      moment(category?.createdAt).format("D-MM-YYYY"),
+      category?.image ? "Yes" : "No",
+    ]),
+  ];
+
+  // csv file name
+  const filename = `Categories - ${moment(new Date()).format("D-MM-YYYY")}`;
 
   return (
-    <DashboardLayout
-      title="Categories"
-      filter={globalFilter}
-      setFilter={setGlobalFilter}
-    >
-      <section className="dc__section">
-        <div className="dc__container">
-          {loading ? (
-            <CustomTableLoader />
-          ) : error ? (
-            <CustomAlert severity="error" message={error} />
-          ) : categories?.message ? (
-            <CustomAlert severity="error" message="Something was wrong!" />
-          ) : (
-            <>
-              <div className="dc__header">
-                <h4 className="header__title">Category list</h4>
+    <DashboardLayout title="Categories">
+      <TableLayout
+        table={table}
+        isSearchField={true}
+        setKeyword={setKeyword}
+        isSortButton={true}
+        SortButtonComponent={
+          <MenuButtonLayout
+            buttonText="Sort By"
+            buttonIconComponent={<FilterListIcon fontSize="small" />}
+            resetText="Reset"
+            resetHandler={resetSortHandler}
+          >
+            <SortFilter sort={sort} setSort={setSort} />
+          </MenuButtonLayout>
+        }
+        isExportButton={true}
+        ExportButtonComponent={
+          <CsvExport csvData={csvData} filename={filename} />
+        }
+        isAddButton={true}
+        addButtonHandler={() => setOpen(true)}
+        addButtonText="Add New"
+        isLoading={isLoading || isFetching}
+        isError={isError}
+        error={error}
+        data={categoryData?.categories}
+        errorTitle="Sorry! No category found :("
+      />
 
-                <div className="btn small__btn btn__dark">
-                  <Button type="button" onClick={() => setOpen(true)}>
-                    <span className="btn__text">Add Category</span>
-                    <AddIcon />
-                  </Button>
-                </div>
-              </div>
-
-              <div className="dc__categories">
-                <CustomTable tableInstance={tableInstance} />
-              </div>
-            </>
-          )}
-        </div>
-
-        <div className="dc__modal">
-          <Modal open={open} onClose={() => setOpen(false)}>
-            <>
-              <AddCategoryForm setOpen={setOpen} />
-            </>
-          </Modal>
-        </div>
-      </section>
+      <Modal open={open} onClose={() => setOpen(false)}>
+        <>
+          <AddCategoryForm setOpen={setOpen} />
+        </>
+      </Modal>
     </DashboardLayout>
   );
 };

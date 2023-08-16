@@ -1,16 +1,13 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import CloseIcon from "@mui/icons-material/Close";
-import { Button, CircularProgress, IconButton } from "@mui/material";
+import { IconButton } from "@mui/material";
 import cogoToast from "cogo-toast";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useDispatch, useSelector } from "react-redux";
-import { categoryList } from "../../App/actions/categoryActions";
-import {
-  productUpdateReset,
-  updateProduct,
-} from "../../App/actions/productActions";
-import { addProductSchema } from "../../Helpers/Validation/ValidationSchema";
+import { useSelector } from "react-redux";
+import { useUpdateProductMutation } from "../../app/features/products/productApi";
+import CustomButton from "../../components/controls/CustomButton";
+import { addProductSchema } from "../../helpers/Validation/ValidationSchema";
 import FormImageControl from "./FormImageControl";
 
 const EditProductForm = ({ setOpen, row }) => {
@@ -18,17 +15,9 @@ const EditProductForm = ({ setOpen, row }) => {
   const [image, setImage] = useState(null);
 
   // Redux element
-  const dispatch = useDispatch();
-  const { error: categoryError, categories } = useSelector(
-    (state) => state.categoryList
-  );
-  const { loading, error, product } = useSelector(
-    (state) => state.updateProduct
-  );
-
-  useEffect(() => {
-    dispatch(categoryList("categories"));
-  }, [dispatch]);
+  const { categories } = useSelector((state) => state.category);
+  const [updateProduct, { isLoading, isError, error, data: product }] =
+    useUpdateProductMutation();
 
   // React hook form own state
   const {
@@ -51,27 +40,28 @@ const EditProductForm = ({ setOpen, row }) => {
       formData.append("price", data.price);
       formData.append("countInStock", data.stock);
 
+      const updateData = {
+        prodId: row?.original._id,
+        data: formData,
+      };
+
       // send data to backend
-      dispatch(updateProduct(row.values._id, formData));
+      updateProduct(updateData);
     }
   };
 
   useEffect(() => {
-    if (error) {
-      cogoToast.error(error);
-      dispatch(productUpdateReset());
+    if (isError) {
+      cogoToast.error(error?.data?.message);
     }
     if (product?.message) {
       cogoToast.error("Something was wrong!");
-      dispatch(productUpdateReset());
     }
     if (product?.success) {
       cogoToast.success("Product has been updated.");
-      dispatch(productUpdateReset());
-
       setOpen(false);
     }
-  }, [error, dispatch, product, setOpen]);
+  }, [isError, error, product, setOpen]);
 
   return (
     <div className="addProducts">
@@ -85,7 +75,7 @@ const EditProductForm = ({ setOpen, row }) => {
               type="text"
               placeholder="Enter product title"
               {...register("title")}
-              defaultValue={row ? row?.values.title : ""}
+              defaultValue={row ? row?.original.title : ""}
             />
             {errors?.title && (
               <span className="form__error">{errors?.title.message}</span>
@@ -97,14 +87,12 @@ const EditProductForm = ({ setOpen, row }) => {
             <select className="form__select" {...register("category")}>
               <option
                 className="form__option"
-                value={row ? row.values.category : ""}
+                value={row ? row?.original.category : ""}
               >
-                {categoryError
-                  ? "Something was wrong!"
-                  : categories?.length === 0
+                {categories?.length === 0
                   ? "Category not found!"
                   : row
-                  ? row.values.category
+                  ? row?.original.category
                   : "Select a category"}
               </option>
 
@@ -129,7 +117,7 @@ const EditProductForm = ({ setOpen, row }) => {
               className="form__textarea"
               placeholder="Enter product description"
               {...register("description")}
-              defaultValue={row ? row?.values.description : ""}
+              defaultValue={row ? row?.original.description : ""}
             ></textarea>
             {errors?.description && (
               <span className="form__error">{errors?.description.message}</span>
@@ -144,7 +132,7 @@ const EditProductForm = ({ setOpen, row }) => {
                 type="text"
                 placeholder="Enter product price"
                 {...register("price")}
-                defaultValue={row ? row?.values.price : ""}
+                defaultValue={row ? row?.original.price : ""}
               />
               {errors?.price && (
                 <span className="form__error">{errors?.price.message}</span>
@@ -158,7 +146,7 @@ const EditProductForm = ({ setOpen, row }) => {
                 type="text"
                 placeholder="Enter product stock"
                 {...register("stock")}
-                defaultValue={row ? row?.values.countInStock : ""}
+                defaultValue={row ? row?.original.countInStock : ""}
               />
               {errors?.stock && (
                 <span className="form__error">{errors?.stock.message}</span>
@@ -168,15 +156,12 @@ const EditProductForm = ({ setOpen, row }) => {
 
           <FormImageControl setImage={setImage} />
 
-          <div className="addProducts__btn btn btn__dark">
-            <Button type="submit">
-              {loading ? (
-                <CircularProgress color="inherit" size={30} thickness={3} />
-              ) : (
-                "Update"
-              )}
-            </Button>
-          </div>
+          <CustomButton
+            className="addProducts__btn btn small__btn btn__dark"
+            text="Update"
+            loading={isLoading}
+            type="submit"
+          />
         </form>
         <div className="addProducts__close">
           <IconButton aria-label="close" onClick={() => setOpen(false)}>

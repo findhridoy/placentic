@@ -42,10 +42,10 @@ const DashboardMenu = () => (
           className={({ isActive }) =>
             isActive ? "menu__link active__link" : "menu__link"
           }
-          to="/dashboard/products"
+          to="/dashboard/categories"
         >
-          <AddBoxIcon />
-          <span className="menu__text">Products</span>
+          <CategoryIcon />
+          <span className="menu__text">Categories</span>
         </NavLink>
       </li>
       <li className="menu__item">
@@ -53,10 +53,10 @@ const DashboardMenu = () => (
           className={({ isActive }) =>
             isActive ? "menu__link active__link" : "menu__link"
           }
-          to="/dashboard/categories"
+          to="/dashboard/products"
         >
-          <CategoryIcon />
-          <span className="menu__text">Categories</span>
+          <AddBoxIcon />
+          <span className="menu__text">Products</span>
         </NavLink>
       </li>
       <li className="menu__item">

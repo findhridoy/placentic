@@ -6,6 +6,7 @@ const bcrypt = require("bcryptjs");
 const User = require("../models/userModel");
 const { generateToken } = require("../utils/generateToken");
 const { cloudinary } = require("../config/cloudinary");
+const Apifeatures = require("../utils/ApiFeatures");
 
 /**
  * @route   Post /api/user/register
@@ -205,10 +206,20 @@ const deleteUser = asyncHandler(async (req, res) => {
  * @access  Private/Admin
  */
 const getUsers = asyncHandler(async (req, res) => {
-  // find all user as an admin
-  const users = await User.find({}).select("-password");
+  // using reuseable class for filter, sort, paginate and search
+  const features = new Apifeatures(
+    User.find({}).select("-password"),
+    req.query,
+    User.countDocuments()
+  )
+    .search()
+    .sort()
+    .paginate();
+
+  const counts = await features.countsQuery;
+  const users = await features.query;
   if (users) {
-    res.status(200).json(users);
+    res.status(200).json({ counts, users });
   } else {
     res.status(404);
     throw new Error("Users not found");
@@ -222,7 +233,7 @@ const getUsers = asyncHandler(async (req, res) => {
  */
 const updateToAdmin = asyncHandler(async (req, res) => {
   // find user by id
-  const user = await User.findById(req.params.id).select("-password");
+  const user = await User.findById(req.params.userId).select("-password");
 
   // check user and update to admin
   if (user) {

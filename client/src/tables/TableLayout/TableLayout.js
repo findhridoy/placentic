@@ -1,15 +1,11 @@
 import AddIcon from "@mui/icons-material/Add";
 import SearchIcon from "@mui/icons-material/Search";
-import {
-  Button,
-  CircularProgress,
-  IconButton,
-  Pagination,
-} from "@mui/material";
+import { Button, IconButton, Pagination } from "@mui/material";
 import { flexRender } from "@tanstack/react-table";
 import React, { useEffect, useState } from "react";
-import CustomAlert from "../../components/controls/CustomAlert";
 import CustomButton from "../../components/controls/CustomButton";
+import TableError from "../TableComponents/CustomComponenets/TableError";
+import TableLoader from "../TableComponents/CustomComponenets/TableLoader";
 
 const TableLayout = ({
   table,
@@ -27,6 +23,8 @@ const TableLayout = ({
   isLoading,
   isError,
   error,
+  data,
+  errorTitle,
 }) => {
   // States
   const [inputValue, setInputValue] = useState("");
@@ -100,12 +98,13 @@ const TableLayout = ({
       </div>
 
       <div className="tableLayout__container">
-        {isLoading ? (
-          <div className="tableLayout__loader">
-            <CircularProgress color="inherit" size={28} thickness={3} />
-          </div>
-        ) : isError ? (
-          <CustomAlert severity="info" message={error?.message} />
+        {isError ? (
+          <TableError errorTitle={errorTitle} subtitle={error?.message} />
+        ) : data?.length === 0 ? (
+          <TableError
+            errorTitle={errorTitle}
+            subtitle="We're sorry what you were looking for."
+          />
         ) : (
           <table>
             <thead>
@@ -125,58 +124,64 @@ const TableLayout = ({
               ))}
             </thead>
 
-            <tbody>
-              {table.getRowModel()?.rows.map((row) => (
-                <tr key={row.id}>
-                  {row.getVisibleCells()?.map((cell) => (
-                    <td key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </td>
-                  ))}
-                </tr>
-              ))}
-            </tbody>
+            {isLoading ? (
+              <TableLoader table={table} />
+            ) : (
+              <tbody>
+                {table.getRowModel()?.rows.map((row) => (
+                  <tr key={row.id}>
+                    {row.getVisibleCells()?.map((cell) => (
+                      <td key={cell.id}>
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            )}
           </table>
         )}
       </div>
 
-      <div className="tableLayout__section-footer">
-        <div className="tableLayout__pagination">
-          <Pagination
-            count={table.getPageCount()}
-            shape="rounded"
-            size="small"
-            onChange={(event, value) => {
-              table.setPageIndex(value - 1);
-            }}
-          />
-        </div>
-
-        <div className="tableLayout__footer-right">
-          <div className="tableLayout__listing">
-            <span className="listing__title">Listing per page</span>
-            <select
-              value={table.getState().pagination.pageSize}
-              onChange={(e) => table.setPageSize(Number(e.target.value))}
-            >
-              {[10, 20, 30, 40, 50, 60, 70, 80, 90, 100].map((pageSize) => (
-                <option key={pageSize} value={pageSize}>
-                  {pageSize}
-                </option>
-              ))}
-            </select>
+      {!isLoading && !isError && data?.length !== 0 && (
+        <div className="tableLayout__section-footer">
+          <div className="tableLayout__pagination">
+            <Pagination
+              count={table.getPageCount()}
+              shape="rounded"
+              size="small"
+              onChange={(event, value) => {
+                table.setPageIndex(value - 1);
+              }}
+            />
           </div>
 
-          <span className="tableLayout__showing">
-            Showing{" "}
-            <strong>{table.getState().pagination.pageIndex + 1} </strong>
-            of <strong>{table.getPageCount()}</strong>
-          </span>
+          <div className="tableLayout__footer-right">
+            <div className="tableLayout__listing">
+              <span className="listing__title">Listing per page</span>
+              <select
+                value={table.getState().pagination.pageSize}
+                onChange={(e) => table.setPageSize(Number(e.target.value))}
+              >
+                {[10, 20, 30, 40, 50, 60, 70, 80, 90, 100].map((pageSize) => (
+                  <option key={pageSize} value={pageSize}>
+                    {pageSize}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <span className="tableLayout__showing">
+              Showing{" "}
+              <strong>{table.getState().pagination.pageIndex + 1} </strong>
+              of <strong>{table.getPageCount()}</strong>
+            </span>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };

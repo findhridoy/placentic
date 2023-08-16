@@ -15,9 +15,9 @@ const CategoryFilter = ({ categories, setCategories, categoryData }) => {
   return (
     <FilterLayout title="Category">
       <FormGroup>
-        {categoryData?.categories?.map((category) => (
+        {categoryData?.map((category) => (
           <FormControlLabel
-            key={category?.title}
+            key={category?._id}
             control={
               <Checkbox
                 size="small"

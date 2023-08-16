@@ -1,26 +1,21 @@
 import CloseIcon from "@mui/icons-material/Close";
-import { Button, CircularProgress, IconButton } from "@mui/material";
+import { IconButton } from "@mui/material";
 import cogoToast from "cogo-toast";
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  categoryUpdateErrorReset,
-  updateCategory,
-} from "../../App/actions/categoryActions";
+import { useUpdateCategoryMutation } from "../../app/features/categories/categoryApi";
+import CustomButton from "../../components/controls/CustomButton";
 import FormImageControl from "./FormImageControl";
 
 const EditCategoryForm = ({ setOpen, row }) => {
   // States
-  const [title, setTitle] = useState(row.values.title);
-  const [message, setMessage] = useState(row.values.message);
+  const [title, setTitle] = useState(row?.original?.title);
+  const [message, setMessage] = useState(row?.original?.message);
   const [image, setImage] = useState(null);
   const [formErrors, setFromErrors] = useState({});
 
   // Redux element
-  const dispatch = useDispatch();
-  const { loading, error, category } = useSelector(
-    (state) => state.updateCategory
-  );
+  const [updateCategory, { isLoading, isError, error, data: category }] =
+    useUpdateCategoryMutation();
 
   // Form data submit
   const handleSubmit = (e) => {
@@ -45,34 +40,34 @@ const EditCategoryForm = ({ setOpen, row }) => {
       formData.append("message", message);
       formData.append("image", image);
 
+      const updateData = {
+        catId: row?.original._id,
+        data: formData,
+      };
+
       // send data to backend
-      dispatch(updateCategory(row.values._id, formData));
+      updateCategory(updateData);
     }
   };
 
   useEffect(() => {
-    if (error) {
-      cogoToast.error(error);
-      dispatch(categoryUpdateErrorReset());
+    if (isError) {
+      cogoToast.error(error?.data?.message);
     }
     if (category?.error_code === 11000 && category?.error_pattern.title) {
       cogoToast.error("Category title is already exist.");
-      dispatch(categoryUpdateErrorReset());
     }
     if (category?.error_code === 11000 && category?.error_pattern.message) {
       cogoToast.error("Category message is already exist.");
-      dispatch(categoryUpdateErrorReset());
     }
     if (category?.message && !category?.error_code) {
       cogoToast.error("Something was wrong!");
-      dispatch(categoryUpdateErrorReset());
     }
     if (category?.success) {
       cogoToast.success("Updated successfully.");
       setOpen(false);
-      dispatch(categoryUpdateErrorReset());
     }
-  }, [error, category, dispatch, setOpen]);
+  }, [isError, error, category, setOpen]);
 
   return (
     <div className="addProducts">
@@ -109,15 +104,12 @@ const EditCategoryForm = ({ setOpen, row }) => {
 
           <FormImageControl setImage={setImage} />
 
-          <div className="addProducts__btn btn btn__dark">
-            <Button type="submit">
-              {loading ? (
-                <CircularProgress color="inherit" size={30} thickness={3} />
-              ) : (
-                "Update"
-              )}
-            </Button>
-          </div>
+          <CustomButton
+            className="addProducts__btn btn small__btn btn__dark"
+            text="Update"
+            loading={isLoading}
+            type="submit"
+          />
         </form>
         <div className="addProducts__close">
           <IconButton aria-label="close" onClick={() => setOpen(false)}>

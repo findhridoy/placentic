@@ -4,7 +4,6 @@ import { IconButton } from "@mui/material";
 import cogoToast from "cogo-toast";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useDispatch } from "react-redux";
 import { useCreateProductMutation } from "../../app/features/products/productApi";
 import CustomButton from "../../components/controls/CustomButton";
 import { addProductSchema } from "../../helpers/Validation/ValidationSchema";
@@ -21,7 +20,6 @@ const AddProductForm = ({
   const [imageError, setImageError] = useState({});
 
   // Redux element
-  const dispatch = useDispatch();
   const [createProduct, { isLoading, isError, error, data: product }] =
     useCreateProductMutation();
 
@@ -56,7 +54,7 @@ const AddProductForm = ({
       formData.append("countInStock", data.stock);
 
       // send data to backend
-      dispatch(createProduct(formData));
+      await createProduct(formData);
     }
   };
 
@@ -102,11 +100,11 @@ const AddProductForm = ({
                   : "Select a category"}
               </option>
 
-              {categoryData?.categories?.map((category, index) => (
+              {categoryData?.categories?.map((category) => (
                 <option
                   className="form__option"
                   value={category?.title}
-                  key={index}
+                  key={category?._id}
                 >
                   {category?.title}
                 </option>

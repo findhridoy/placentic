@@ -6,7 +6,7 @@ export const authApi = apiSlice.injectEndpoints({
     // user register a new account and login
     signup: builder.mutation({
       query: (user) => ({
-        url: "/user/register",
+        url: "user/register",
         method: "POST",
         body: user,
       }),
@@ -26,7 +26,7 @@ export const authApi = apiSlice.injectEndpoints({
     // user login
     login: builder.mutation({
       query: (user) => ({
-        url: "/user/login",
+        url: "user/login",
         method: "POST",
         body: user,
       }),
@@ -46,7 +46,7 @@ export const authApi = apiSlice.injectEndpoints({
     // user profile
     getProfile: builder.query({
       query: () => ({
-        url: "/user/profile",
+        url: "user/profile",
         method: "GET",
       }),
       providesTags: ["Users"],
@@ -55,7 +55,7 @@ export const authApi = apiSlice.injectEndpoints({
     // update user profile
     updateProfile: builder.mutation({
       query: (data) => ({
-        url: "/user/update",
+        url: "user",
         method: "PUT",
         body: data,
       }),

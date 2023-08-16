@@ -1,24 +1,59 @@
 import { apiSlice } from "../api/apiSlice";
+import { getCategories } from "./categorySlice";
 
 export const categoryApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     // get categories
     getCategories: builder.query({
-      query: (size, sort) => ({
-        url: `category?size=${size}&sort=${sort}`,
-        // url: `category`,
+      query: (url) => ({
+        url: url,
         method: "GET",
       }),
+
+      // store categories after query fulfilled
+      async onQueryStarted(arg, { queryFulfilled, dispatch }) {
+        try {
+          const { data } = await queryFulfilled;
+          dispatch(getCategories(data?.categories));
+        } catch (error) {}
+      },
+      providesTags: ["Categories"],
     }),
 
-    // get product by id
-    // getProduct: builder.query({
-    //   query: (prodId) => ({
-    //     url: `product/${prodId}`,
-    //     method: "GET",
-    //   }),
-    // }),
+    // create a new category
+    createCategory: builder.mutation({
+      query: (data) => ({
+        url: "category",
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: ["Categories"],
+    }),
+
+    // update category
+    updateCategory: builder.mutation({
+      query: ({ catId, data }) => ({
+        url: `category/${catId}`,
+        method: "PUT",
+        body: data,
+      }),
+      invalidatesTags: ["Categories"],
+    }),
+
+    // delete category
+    deleteCategory: builder.mutation({
+      query: (catId) => ({
+        url: `category/${catId}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["Categories"],
+    }),
   }),
 });
 
-export const { useGetCategoriesQuery } = categoryApi;
+export const {
+  useGetCategoriesQuery,
+  useCreateCategoryMutation,
+  useUpdateCategoryMutation,
+  useDeleteCategoryMutation,
+} = categoryApi;

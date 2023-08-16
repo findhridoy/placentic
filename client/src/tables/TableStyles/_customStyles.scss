@@ -1,0 +1,29 @@
+// Table error style
+.tableError {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  justify-content: center;
+  height: 100%;
+
+  .tableError__image {
+    max-width: 300px;
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+  .tableError__title {
+    font-weight: $semi-bold;
+    @include h4-font;
+    color: $dark-alt;
+  }
+  .tableError__subtitle {
+    font-weight: $medium;
+    @include small-font;
+    color: $dark-alt;
+  }
+}

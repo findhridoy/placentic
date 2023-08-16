@@ -6,10 +6,8 @@ import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
 import moment from "moment";
 import { useMemo, useState } from "react";
 import "react-dropdown/style.css";
-import {
-  useGetCategoriesByProductQuery,
-  useGetProductsQuery,
-} from "../../app/features/products/productApi";
+import { useGetCategoriesQuery } from "../../app/features/categories/categoryApi";
+import { useGetProductsQuery } from "../../app/features/products/productApi";
 import { productColumn } from "../../tables/TableColumns/ProductColumn";
 import CsvExport from "../../tables/TableComponents/ExportComponents/CsvExport";
 import CategoryFilter from "../../tables/TableComponents/FilterComponents/CategoryFilter";
@@ -37,12 +35,12 @@ const DashboardProducts = () => {
     pageSize: 8,
   });
 
-  // Redux element
+  // Redux toolkit element
   const {
-    categoryIsError,
-    categoryError,
+    isError: categoryIsError,
+    error: categoryError,
     data: categoryData,
-  } = useGetCategoriesByProductQuery(`product/categories`);
+  } = useGetCategoriesQuery("category");
 
   const {
     isLoading,
@@ -157,6 +155,8 @@ const DashboardProducts = () => {
         isLoading={isLoading || isFetching}
         isError={isError}
         error={error}
+        data={productData?.products}
+        errorTitle="Sorry! No product found :("
       />
 
       <Modal open={open} onClose={() => setOpen(false)}>

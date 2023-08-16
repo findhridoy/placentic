@@ -2,6 +2,7 @@ import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { apiSlice } from "./features/api/apiSlice";
 import authSlice, { userLoggedOut } from "./features/auth/authSlice";
 import cartSlice from "./features/cart/cartSlice";
+import categorySlice from "./features/categories/categorySlice";
 import wishlistSlice from "./features/wishlist/wishlistSlice";
 
 // reducers
@@ -10,6 +11,7 @@ const reducers = combineReducers({
   auth: authSlice,
   cart: cartSlice,
   wishlist: wishlistSlice,
+  category: categorySlice,
 });
 
 // store congure

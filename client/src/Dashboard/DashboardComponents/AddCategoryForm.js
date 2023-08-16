@@ -1,12 +1,9 @@
 import CloseIcon from "@mui/icons-material/Close";
-import { Button, CircularProgress, IconButton } from "@mui/material";
+import { IconButton } from "@mui/material";
 import cogoToast from "cogo-toast";
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  categoryCreateReset,
-  createCategory,
-} from "../../App/actions/categoryActions";
+import { useCreateCategoryMutation } from "../../app/features/categories/categoryApi";
+import CustomButton from "../../components/controls/CustomButton";
 import FormImageControl from "./FormImageControl";
 
 const AddCategoryForm = ({ setOpen }) => {
@@ -17,13 +14,11 @@ const AddCategoryForm = ({ setOpen }) => {
   const [formErrors, setFromErrors] = useState({});
 
   // Redux element
-  const dispatch = useDispatch();
-  const { loading, error, category } = useSelector(
-    (state) => state.createCategory
-  );
+  const [createCategory, { isLoading, isError, error, data: category }] =
+    useCreateCategoryMutation();
 
   // Form data submit
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     const validate = (title, message, image) => {
@@ -49,25 +44,22 @@ const AddCategoryForm = ({ setOpen }) => {
       formData.append("image", image);
 
       // send data to backend
-      dispatch(createCategory(formData));
+      await createCategory(formData);
     }
   };
 
   useEffect(() => {
-    if (error) {
-      cogoToast.error(error);
-      dispatch(categoryCreateReset());
+    if (isError) {
+      cogoToast.error(error?.data?.message);
     }
     if (category?.message) {
       cogoToast.error("Something was wrong!");
-      dispatch(categoryCreateReset());
     }
     if (category?.success) {
       cogoToast.success("Category has been created.");
-      dispatch(categoryCreateReset());
       setOpen(false);
     }
-  }, [error, category, dispatch, setOpen]);
+  }, [isError, error, category, setOpen]);
 
   return (
     <div className="addProducts">
@@ -102,15 +94,12 @@ const AddCategoryForm = ({ setOpen }) => {
 
           <FormImageControl setImage={setImage} errors={formErrors} />
 
-          <div className="addProducts__btn btn btn__dark">
-            <Button type="submit">
-              {loading ? (
-                <CircularProgress color="inherit" size={30} thickness={3} />
-              ) : (
-                "Add Category"
-              )}
-            </Button>
-          </div>
+          <CustomButton
+            className="addProducts__btn btn small__btn btn__dark"
+            text="Add Category"
+            loading={isLoading}
+            type="submit"
+          />
         </form>
         <div className="addProducts__close">
           <IconButton aria-label="close" onClick={() => setOpen(false)}>

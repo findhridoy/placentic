@@ -1,94 +1,108 @@
-import DeleteIcon from "@mui/icons-material/Delete";
-import { Button, Skeleton } from "@mui/material";
-import cogoToast from "cogo-toast";
-import { useEffect, useMemo } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useGlobalFilter, usePagination, useTable } from "react-table";
-import { getUseryList, userListReset } from "../../App/actions/userActions";
-import CustomAlert from "../../Components/CustomAlert";
-import CustomTable from "../../ReactTable/CustomTable";
-import { userColumn } from "../../ReactTable/TableColumns/UserColumn";
+import FilterListIcon from "@mui/icons-material/FilterList";
+import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
+import moment from "moment";
+import { useMemo, useState } from "react";
+import { useGetUsersQuery } from "../../app/features/users/userApi";
+import { userColumn } from "../../tables/TableColumns/UserColumn";
+import CsvExport from "../../tables/TableComponents/ExportComponents/CsvExport";
+import SortFilter from "../../tables/TableComponents/FilterComponents/SortFilter";
+import MenuButtonLayout from "../../tables/TableLayout/MenuButtonLayout";
+import TableLayout from "../../tables/TableLayout/TableLayout";
 import DashboardLayout from "../DashboardLayout/DashboardLayout";
 
 const DashboardUsers = () => {
-  // Redux element
-  const dispatch = useDispatch();
-  const { loading, error, users } = useSelector((state) => state.userList);
-  const { user } = useSelector((state) => state.deleteUser);
-  const { user: updatedUser } = useSelector((state) => state.updateUser);
+  // States
+  const [sort, setSort] = useState("");
+  const [keyword, setKeyword] = useState("");
+  const [{ pageIndex, pageSize }, setPagination] = useState({
+    pageIndex: 0,
+    pageSize: 8,
+  });
 
-  useEffect(() => {
-    dispatch(getUseryList("users"));
-
-    return () => {
-      dispatch(userListReset());
-    };
-  }, [dispatch, user?.success, updatedUser?.email]);
-
-  useEffect(() => {
-    if (error) {
-      cogoToast.error(error);
-      dispatch(userListReset());
-      // navigate("/");
-    }
-    if (users?.message) {
-      cogoToast.error("Something was wrong!");
-      dispatch(userListReset());
-      // navigate("/");
-    }
-  }, [error, users, dispatch]);
-
-  // React table elements
-  const data = useMemo(() => users, [users]);
-  const columns = useMemo(() => userColumn, []);
-
-  const tableInstance = useTable(
-    {
-      columns,
-      data,
-      initialState: { hiddenColumns: ["avatar", "_id"] },
-    },
-    useGlobalFilter,
-    usePagination
+  // Redux toolkit element
+  const {
+    isLoading,
+    isError,
+    error,
+    isFetching,
+    data: userData,
+  } = useGetUsersQuery(
+    `user?page=${pageIndex}&size=${pageSize}&sort=${sort}&keyword=${keyword}`
   );
 
-  const { state, setGlobalFilter } = tableInstance;
-  const { globalFilter } = state;
+  // sort reset handler
+  const resetSortHandler = () => {
+    setSort("");
+  };
+
+  // React table elements
+  const data = useMemo(
+    () => (userData?.users?.length ? userData?.users : []),
+    [userData?.users]
+  );
+  const columns = useMemo(() => userColumn, []);
+  const pagination = useMemo(
+    () => ({ pageIndex, pageSize }),
+    [pageIndex, pageSize]
+  );
+
+  // table instance
+  const table = useReactTable({
+    data,
+    columns,
+    pageCount: Math.ceil(userData?.counts / pageSize) || 0,
+    state: {
+      columnVisibility: { _id: false, avatar: false },
+      pagination,
+    },
+    onPaginationChange: setPagination,
+    manualPagination: true,
+    getCoreRowModel: getCoreRowModel(),
+  });
+
+  // export table data to csv file
+  const csvData = [
+    ["TITLE", "CATEGORY", "PRICE", "REVIEWS", "STOCK", "DATE", "IMAGE"],
+    ...data?.map((product) => [
+      product?.title,
+      product?.category,
+      product?.price,
+      product?.countReviews,
+      product?.countInStock,
+      moment(product?.createdAt).format("D-MM-YYYY"),
+      product?.image ? "Yes" : "No",
+    ]),
+  ];
+
+  // csv file name
+  const filename = `Users - ${moment(new Date()).format("D-MM-YYYY")}`;
   return (
-    <DashboardLayout
-      title="Users"
-      filter={globalFilter}
-      setFilter={setGlobalFilter}
-    >
-      <section className="user__section">
-        <div className="user__container">
-          <div className="user__header">
-            {loading ? (
-              <Skeleton width={100} animation="wave" height={35} />
-            ) : (
-              <h4 className="header__title">User list</h4>
-            )}
-
-            {false &&
-              (<Skeleton variant="rectangular" width={130} height={35} />)(
-                <div className="btn small__btn btn__dark">
-                  <Button type="button">
-                    <span className="btn__text">Delete</span>
-                    <DeleteIcon />
-                  </Button>
-                </div>
-              )}
-          </div>
-
-          {!loading && users?.length === 0 ? (
-            <CustomAlert severity="info" message="No users found!" />
-          ) : (
-            <div className="user__users">
-              <CustomTable tableInstance={tableInstance} loading={loading} />
-            </div>
-          )}
-        </div>
-      </section>
+    <DashboardLayout title="Users">
+      <TableLayout
+        table={table}
+        isSearchField={true}
+        setKeyword={setKeyword}
+        isSortButton={true}
+        SortButtonComponent={
+          <MenuButtonLayout
+            buttonText="Sort By"
+            buttonIconComponent={<FilterListIcon fontSize="small" />}
+            resetText="Reset"
+            resetHandler={resetSortHandler}
+          >
+            <SortFilter sort={sort} setSort={setSort} />
+          </MenuButtonLayout>
+        }
+        isExportButton={true}
+        ExportButtonComponent={
+          <CsvExport csvData={csvData} filename={filename} />
+        }
+        isLoading={isLoading || isFetching}
+        isError={isError}
+        error={error}
+        data={userData?.users}
+        errorTitle="Sorry! No user found :("
+      />
     </DashboardLayout>
   );
 };

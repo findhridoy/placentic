@@ -19,14 +19,16 @@ const CategoryItem = ({ category }) => {
 };
 
 const Category = () => {
+  const page = 0;
   const size = 4;
-  const sort = -1;
 
   // Redux toolkit element
-  const { isLoading, isError, error, data: categories } = useGetCategoriesQuery(
-    size,
-    sort
-  );
+  const {
+    isLoading,
+    isError,
+    error,
+    data: categoryData,
+  } = useGetCategoriesQuery(`category?page=${page}&size=${size}`);
 
   return (
     <section className="category__section section">
@@ -40,10 +42,10 @@ const Category = () => {
               ))
             ) : isError ? (
               <CustomAlert severity="error" message={error?.data?.message} />
-            ) : categories?.length < 1 ? (
+            ) : categoryData?.categories?.length < 1 ? (
               <CustomAlert severity="info" message="No categories are found!" />
             ) : (
-              categories?.map((category) => (
+              categoryData?.categories?.map((category) => (
                 <CategoryItem category={category} key={category?._id} />
               ))
             )}

@@ -53,7 +53,7 @@ const addProduct = asyncHandler(async (req, res) => {
  */
 const updateProduct = asyncHandler(async (req, res) => {
   // find the exect product
-  const product = await Product.findById(req.params.id);
+  const product = await Product.findById(req.params.prodId);
 
   // with image changes
   if (product && req.file) {
@@ -113,7 +113,8 @@ const updateProduct = asyncHandler(async (req, res) => {
  */
 const deleteProduct = asyncHandler(async (req, res) => {
   // find product by id
-  const product = await Product.findById(req.params.id);
+  const product = await Product.findById(req.params.prodId);
+
   if (product) {
     // remove image from cloudinary
     await cloudinary.uploader.destroy(product.image_id);
@@ -127,32 +128,6 @@ const deleteProduct = asyncHandler(async (req, res) => {
   } else {
     res.status(404);
     throw new Error("Product not found");
-  }
-});
-
-/**
- * @route   Get /api/product/products?keyword=afgad
- * @desc    Get all products
- * @access  Private/Admin/Public
- */
-const getAllProducts = asyncHandler(async (req, res) => {
-  // search products by keyword or get all products
-  const keyword = req.query.keyword
-    ? {
-        title: {
-          $regex: req.query.keyword,
-          $options: "i",
-        },
-      }
-    : {};
-
-  // find all products
-  const product = await Product.find({ ...keyword });
-  if (product) {
-    res.status(200).json(product);
-  } else {
-    res.status(404);
-    throw new Error("Products not found");
   }
 });
 
@@ -186,7 +161,7 @@ const getCategoriesByProduct = asyncHandler(async (req, res) => {
  * @access  Public
  */
 const getProducts = asyncHandler(async (req, res) => {
-  // using reuseable class for filter, sort, paginate
+  // using reuseable class for filter, sort, paginate and search
   const features = new Apifeatures(
     Product.find(),
     req.query,
@@ -410,7 +385,6 @@ module.exports = {
   addProduct,
   updateProduct,
   deleteProduct,
-  getAllProducts,
   getProducts,
   getCategoriesByProduct,
   getProduct,

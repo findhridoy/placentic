@@ -5,7 +5,7 @@ class Apifeatures {
     this.countsQuery = countsQuery;
   }
 
-  // SEARCH LOGIG ~ search product by title, category...
+  // SEARCH LOGIG ~ search by title, category...
   search() {
     if (this.queryStr.keyword) {
       const keyword = this.queryStr.keyword;

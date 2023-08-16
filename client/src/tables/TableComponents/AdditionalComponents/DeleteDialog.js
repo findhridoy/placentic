@@ -4,7 +4,7 @@ import { Dialog, DialogActions, DialogContent } from "@mui/material";
 import React from "react";
 import CustomButton from "../../../components/controls/CustomButton";
 
-const DeleteDialog = ({ open, setOpen, onClick, isLoading }) => {
+const DeleteDialog = ({ open, setOpen, onClick, isLoading, row }) => {
   return (
     <Dialog open={open} onClose={() => setOpen(false)} maxWidth="xs">
       <div className="deleteDialog__error--icon">
@@ -29,8 +29,8 @@ const DeleteDialog = ({ open, setOpen, onClick, isLoading }) => {
             className="btn small__btn"
             text="Yes"
             defaultColor="error"
-            onClick={onClick}
-            isLoading={isLoading}
+            onClick={() => onClick(row?.original?._id)}
+            loading={isLoading}
           />
         </div>
       </DialogActions>
