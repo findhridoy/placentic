@@ -1,10 +1,12 @@
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import { Button } from "@mui/material";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import { IconButton } from "@mui/material";
 import MuiAccordion from "@mui/material/Accordion";
 import MuiAccordionDetails from "@mui/material/AccordionDetails";
 import MuiAccordionSummary from "@mui/material/AccordionSummary";
 import { styled } from "@mui/material/styles";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { useSelector } from "react-redux";
 import { useGetProfileQuery } from "../app/features/auth/authApi";
 import { paymentOption } from "../assets/json/radioData";
 import ShippingForm from "./ShippingForm";
@@ -28,22 +30,14 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
 
 const CustomizeAccordion = () => {
   // *Redux element
+  const { userInfo } = useSelector((state) => state.auth);
   const { data: user } = useGetProfileQuery();
 
-  console.log(user);
-
   // States
-  const [isAddress, setIsAddress] = useState(false);
-  const [expanded, setExpanded] = useState("panel2");
+  const [expanded, setExpanded] = useState(
+    userInfo?.isAddress ? "panel3" : "panel2"
+  );
   const [radioMode, setRadioMode] = useState("now");
-
-  useEffect(() => {
-    if (user?.address && user.zip_code) {
-      setIsAddress(true);
-    }
-  }, [user]);
-
-  console.log(isAddress);
 
   // Mui element
   const handleChange = (panel) => (event, newExpanded) => {
@@ -68,21 +62,23 @@ const CustomizeAccordion = () => {
             <div>
               <div className="accordion__title">
                 <span className="title__text">Login</span>
-                {user?.email && <CheckCircleIcon color="success" />}
+                {userInfo?.email && <CheckCircleIcon color="success" />}
               </div>
-              <span className="user__name">{user?.name}</span>
-              <br />
-              <span className="user__email">{user?.email}</span>
+              {userInfo?.email && (
+                <>
+                  <span className="user__name">{user?.name}</span>
+                  <br />
+                  <span className="user__email">{user?.email}</span>
+                </>
+              )}
             </div>
           </div>
         </MuiAccordionSummary>
       </Accordion>
 
       <Accordion
-        expanded={!isAddress && expanded === "panel2"}
+        expanded={expanded === "panel2"}
         onChange={handleChange("panel2")}
-
-        // disabled={user?.address ? true : false}
       >
         <MuiAccordionSummary
           expandIcon={
@@ -95,21 +91,24 @@ const CustomizeAccordion = () => {
             <div>
               <div className="accordion__title">
                 <span className="title__text">Shipping Address</span>
-                {user?.address && <CheckCircleIcon color="success" />}
+                {userInfo?.isAddress && <CheckCircleIcon color="success" />}
               </div>
 
-              {user?.address && (
+              {userInfo?.isAddress && (
                 <span className="user__name">
-                  {user?.phone ? "+880" + user?.phone : ""}, {user?.address}{" "}
-                  <br /> {user?.city}-{user?.zip_code}, {user?.country}
+                  {user?.phone ? "+88" + user?.phone : ""}
+                  <br />
+                  {user?.address},
+                  <br />
+                  {user?.city}-{user?.zip_code}, {user?.country}
                 </span>
               )}
             </div>
 
-            <div className="accordion__btn btn">
-              <Button onClick={() => setIsAddress(false)}>
-                <span className="btn__text">Change</span>
-              </Button>
+            <div className={expanded === "panel2" ? "expanded__icon" : ""}>
+              <IconButton>
+                <ExpandMoreIcon />
+              </IconButton>
             </div>
           </div>
         </MuiAccordionSummary>
@@ -133,6 +132,12 @@ const CustomizeAccordion = () => {
             <div className="accordion__title">
               <span className="title__text">Payment Method</span>
               <CheckCircleIcon color="success" />
+            </div>
+
+            <div className={expanded === "panel3" ? "expanded__icon" : ""}>
+              <IconButton>
+                <ExpandMoreIcon />
+              </IconButton>
             </div>
           </div>
         </MuiAccordionSummary>

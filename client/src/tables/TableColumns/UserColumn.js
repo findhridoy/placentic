@@ -31,6 +31,24 @@ export const userColumn = [
     header: "Email",
   },
   {
+    accessorKey: "phone",
+    header: "Phone",
+    cell: ({ row }) => (
+      <span>
+        {row?.original?.phone ? `+88${row?.original?.phone}` : "Not set yet"}
+      </span>
+    ),
+  },
+  {
+    accessorKey: "country",
+    header: "Country",
+    cell: ({ row }) => (
+      <span>
+        {row?.original?.country ? row?.original?.country : "Not set yet"}
+      </span>
+    ),
+  },
+  {
     accessorKey: "_id",
     header: "Id",
   },

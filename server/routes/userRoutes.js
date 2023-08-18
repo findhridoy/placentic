@@ -19,9 +19,9 @@ router.post("/register", userRegister);
 router.post("/login", userLogin);
 router.get("/profile", protect, getUserProfile);
 router.put("/", protect, upload.single("avatar"), updateUserProfile);
-router.delete("/userId", protect, admin, deleteUser);
 router.get("/", protect, admin, getUsers);
 router.put("/:userId", protect, admin, updateToAdmin);
+router.delete("/:userId", protect, admin, deleteUser);
 
 // Export router
 module.exports = router;

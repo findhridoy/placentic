@@ -6,7 +6,6 @@
 
   .MuiAccordion-root.Mui-disabled {
     background: $white;
-    // @include box-shadow;
   }
 
   .MuiAccordionSummary-root {
@@ -39,7 +38,16 @@
     }
 
     & .MuiAccordionSummary-content {
-      margin-left: $x-2;
+      margin-left: $x-0-75;
+      @include breakpoint(sm) {
+        margin-left: $x-1;
+      }
+      @include breakpoint(md) {
+        margin-left: $x-1-75;
+      }
+      @include breakpoint(lg) {
+        margin-left: $x-2;
+      }
     }
 
     .accordion__summery {
@@ -72,28 +80,11 @@
         color: $dark;
         margin-right: $x-1-25;
       }
-      // .user__phone {
-      //   @extend .user__name;
-      // }
 
-      .accordion__btn {
-        .MuiButton-root {
-          height: 2.3rem;
-          width: 7.8rem;
-          display: flex;
-          align-items: center;
-          font-family: $poppins;
-          font-weight: $semi-bold;
-          letter-spacing: 0;
-          background-color: $dark-300;
-          color: $dark;
-          @include smaller-font;
-          @include breakpoint(md) {
-            @include smallest-font;
-          }
-          .MuiSvgIcon-root {
-            @include h3-font;
-          }
+      .expanded__icon {
+        .MuiSvgIcon-root {
+          transform: rotate(180deg);
+          @include transition(400ms);
         }
       }
     }

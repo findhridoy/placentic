@@ -152,7 +152,8 @@ const DashboardProducts = () => {
         isAddButton={true}
         addButtonHandler={() => setOpen(true)}
         addButtonText="Add New"
-        isLoading={isLoading || isFetching}
+        isLoading={isLoading}
+        isFetching={isFetching}
         isError={isError}
         error={error}
         data={productData?.products}

@@ -21,6 +21,7 @@ const TableLayout = ({
   addButtonText,
   addButtonHandler,
   isLoading,
+  isFetching,
   isError,
   error,
   data,
@@ -124,7 +125,7 @@ const TableLayout = ({
               ))}
             </thead>
 
-            {isLoading ? (
+            {isLoading || isFetching ? (
               <TableLoader table={table} />
             ) : (
               <tbody>
@@ -158,6 +159,8 @@ const TableLayout = ({
               }}
             />
           </div>
+
+          {/* {console.log(table.getPageCount())} */}
 
           <div className="tableLayout__footer-right">
             <div className="tableLayout__listing">

@@ -1,31 +1,28 @@
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
-import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { useSelector } from "react-redux";
+import { useOrderPaymentMutation } from "../app/features/orders/orderApi";
 import PaymentForm from "./PaymentForm";
+import CustomAlert from "./controls/CustomAlert";
 
-const stripePromise = loadStripe(
-  "pk_test_51LGMCHGPdR4pQodpRcoBnmBuC8tZgoHE3RpntydsjAYjwawGiy26b3aqrNx5gugQC64zGj7aI5J6SgAHcIA8teQn00FoWs2R4t"
-);
+const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLIC_KEY);
 
 const StripePayment = () => {
-  const [clientSecret, setClientSecret] = useState("");
+  // Redux element
+  const { cartAmounts } = useSelector((state) => state.cart);
+  const [orderPayment, { isLoading, isError, error, data }] =
+    useOrderPaymentMutation();
+
+  console.log(cartAmounts);
 
   useEffect(() => {
-    // Create PaymentIntent as soon as the page loads
-    const fetcher = async () => {
-      const { data } = await axios.post(
-        "http://localhost:5000/api/v1/create-payment-intent",
-        {
-          items: [{ id: "xl-tshirt" }],
-        }
-      );
-
-      setClientSecret(data?.clientSecret);
+    const fetchRequest = async () => {
+      await orderPayment(cartAmounts);
     };
 
-    fetcher();
-  }, []);
+    fetchRequest();
+  }, [orderPayment, cartAmounts]);
 
   const appearance = {
     theme: "stripe",
@@ -64,13 +61,17 @@ const StripePayment = () => {
   };
 
   const options = {
-    clientSecret,
+    clientSecret: data?.clientSecret,
     appearance,
   };
 
   return (
     <div className="stripePayment">
-      {clientSecret && (
+      {isError && (
+        <CustomAlert severity="error" message={error?.data?.message} close />
+      )}
+
+      {!isLoading && data?.clientSecret && (
         <Elements options={options} stripe={stripePromise}>
           <PaymentForm />
         </Elements>

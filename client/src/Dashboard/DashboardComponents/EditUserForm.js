@@ -31,7 +31,7 @@ const EditUserForm = ({ setOpen, row }) => {
     };
 
     // send data to backend
-    updateUser(updateData);
+    await updateUser(updateData);
   };
 
   useEffect(() => {
@@ -64,6 +64,7 @@ const EditUserForm = ({ setOpen, row }) => {
               type="text"
               defaultValue={row?.original?.name}
               placeholder="Type your fullname"
+              readOnly
               {...register("name")}
             />
             {errors?.name && (
@@ -78,6 +79,7 @@ const EditUserForm = ({ setOpen, row }) => {
               type="text"
               defaultValue={row?.original?.username}
               placeholder="Type your username"
+              readOnly
               {...register("username")}
             />
             {errors?.username && (
@@ -92,6 +94,7 @@ const EditUserForm = ({ setOpen, row }) => {
               type="email"
               defaultValue={row?.original?.email}
               placeholder="Type your email"
+              readOnly
               {...register("email")}
             />
             {errors?.email && (

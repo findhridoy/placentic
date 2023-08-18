@@ -11,9 +11,19 @@ class Apifeatures {
       const keyword = this.queryStr.keyword;
       const searchRegExp = new RegExp(".*" + keyword + ".*", "i");
       const searchObj = {
-        $or: [
-          { title: { $regex: searchRegExp } },
-          { category: { $regex: searchRegExp } },
+        $and: [
+          {
+            $or: [
+              { name: { $regex: searchRegExp } },
+              { username: { $regex: searchRegExp } },
+              { email: { $regex: searchRegExp } },
+            ],
+            $or: [
+              { title: { $regex: searchRegExp } },
+              { category: { $regex: searchRegExp } },
+            ],
+            $or: [{ title: { $regex: searchRegExp } }],
+          },
         ],
       };
 

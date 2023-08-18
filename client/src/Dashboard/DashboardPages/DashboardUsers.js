@@ -62,15 +62,16 @@ const DashboardUsers = () => {
 
   // export table data to csv file
   const csvData = [
-    ["TITLE", "CATEGORY", "PRICE", "REVIEWS", "STOCK", "DATE", "IMAGE"],
-    ...data?.map((product) => [
-      product?.title,
-      product?.category,
-      product?.price,
-      product?.countReviews,
-      product?.countInStock,
-      moment(product?.createdAt).format("D-MM-YYYY"),
-      product?.image ? "Yes" : "No",
+    ["NAME", "USERNAME", "EMAIL", "PHONE", "COUNTRY", "ADMIN", "DATE", "IMAGE"],
+    ...data?.map((user) => [
+      user?.name,
+      user?.username,
+      user?.email,
+      user?.phone ? `+88${user?.phone}` : "Not set yet",
+      user?.country ? user?.country : "Not set yet",
+      user?.isAdmin ? "Yes" : "No",
+      moment(user?.createdAt).format("D-MM-YYYY"),
+      user?.avatar ? "Yes" : "No",
     ]),
   ];
 
@@ -97,7 +98,8 @@ const DashboardUsers = () => {
         ExportButtonComponent={
           <CsvExport csvData={csvData} filename={filename} />
         }
-        isLoading={isLoading || isFetching}
+        isLoading={isLoading}
+        isFetching={isFetching}
         isError={isError}
         error={error}
         data={userData?.users}

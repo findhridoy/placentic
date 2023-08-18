@@ -3,7 +3,7 @@ import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import { IconButton } from "@mui/material";
 import React from "react";
 
-const ActionsButton = ({ handleEditIcon, handleDeleteIcon, row }) => {
+const ActionsButton = ({ handleEditIcon, handleDeleteIcon }) => {
   return (
     <div className="actionsButton">
       <IconButton size="small" onClick={handleEditIcon}>

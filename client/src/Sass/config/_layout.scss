@@ -375,6 +375,14 @@
   }
 }
 
+// Stripe auto link
+
+.p-LinkAutofillPrompt {
+  .p-AnimateSinglePresence {
+    display: none !important;
+  }
+}
+
 // Badge Icon
 .MuiBadge-badge {
   // background-color: $cyan !important;

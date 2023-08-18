@@ -37,7 +37,6 @@ const UserAction = ({ row }) => {
       <ActionsButton
         handleEditIcon={() => setOpen(true)}
         handleDeleteIcon={() => setDialog(true)}
-        row={row}
       />
 
       {/* Edit modal */}
