@@ -4,7 +4,7 @@ const { Schema, model } = require("mongoose");
 // User Schema
 const OrderSchema = new Schema(
   {
-    user: {
+    userID: {
       type: Schema.Types.ObjectId,
       required: true,
       ref: "User",
@@ -13,9 +13,9 @@ const OrderSchema = new Schema(
       {
         title: { type: String, required: true },
         price: { type: Number, required: true },
-        qty: { type: Number, required: true },
+        quantity: { type: Number, required: true },
         image: { type: Object, required: true },
-        product: {
+        _id: {
           type: Schema.Types.ObjectId,
           ref: "Product",
           required: true,
@@ -38,12 +38,12 @@ const OrderSchema = new Schema(
       default: 0,
     },
     shippingAddress: {
-      country: { type: String, required: true },
       name: { type: String, required: true },
       phone_number: { type: Number, required: true },
       address: { type: String, required: true },
       city: { type: String, required: true },
       zip_code: { type: Number, required: true },
+      country: { type: String, required: true },
     },
     isDelevered: {
       type: Boolean,

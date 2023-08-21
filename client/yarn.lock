@@ -1857,17 +1857,17 @@
   dependencies:
     "@sinonjs/commons" "^1.7.0"
 
-"@stripe/react-stripe-js@^1.9.0":
-  version "1.9.0"
-  resolved "https://registry.yarnpkg.com/@stripe/react-stripe-js/-/react-stripe-js-1.9.0.tgz#74809a274d7db110c3daf6f68ca4d62c6e6559c7"
-  integrity sha512-Fn49X+Gu5fOTxhPOita1cPMi0jw+0v4xfJ3FCXbbvmfuuDl3M7ZvpRkoijBjql11NXsaXO3TMm3rkN3mEolJzw==
+"@stripe/react-stripe-js@^2.1.2":
+  version "2.1.2"
+  resolved "https://registry.yarnpkg.com/@stripe/react-stripe-js/-/react-stripe-js-2.1.2.tgz#981b4557f82455170ce88b7c2319e52a4e4c4429"
+  integrity sha512-2JcKRvOdMD698uGrY0cINLHb6XHnY24L+wlWlw2+TbI2aXlQZ9t8Mc+KssFES+EuNgISbrp7fJR3w/13epfiOw==
   dependencies:
     prop-types "^15.7.2"
 
-"@stripe/stripe-js@^1.32.0":
-  version "1.32.0"
-  resolved "https://registry.yarnpkg.com/@stripe/stripe-js/-/stripe-js-1.32.0.tgz#4ecdd298db61ad9b240622eafed58da974bd210e"
-  integrity sha512-7EvBnbBfS1aynfLRmBFcuumHNGjKxnNkO47rorFBktqDYHwo7Yw6pfDW2iqq0R8r7i7XiJEdWPvvEgQAiDrx3A==
+"@stripe/stripe-js@^2.1.0":
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/@stripe/stripe-js/-/stripe-js-2.1.0.tgz#80228f5329b6e3e8fb8be9144d2dfb1c5c0e558c"
+  integrity sha512-AdMHWqIq/s3TLmoyuzdb6l21STKDKNm82cjce1VelyQGinVNjVgSEPH5UDtxENEP7OzgMZH8RTphFMi0fMJGLQ==
 
 "@surma/rollup-plugin-off-main-thread@^2.2.3":
   version "2.2.3"

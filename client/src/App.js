@@ -2,6 +2,7 @@ import { Route, Routes } from "react-router-dom";
 import CustomLoader from "./components/controls/CustomLoader";
 import Dashboard from "./dashboard/DashboardPages/Dashboard";
 import DashboardCategories from "./dashboard/DashboardPages/DashboardCategories";
+import DashboardOrders from "./dashboard/DashboardPages/DashboardOrders";
 import DashboardProducts from "./dashboard/DashboardPages/DashboardProducts";
 import DashboardUsers from "./dashboard/DashboardPages/DashboardUsers";
 import AdminRoutes from "./helpers/Private/AdminRoutes";
@@ -50,7 +51,7 @@ const App = () => {
         <Route path="categories" element={<DashboardCategories />} />
         <Route path="products" element={<DashboardProducts />} />
         <Route path="users" element={<DashboardUsers />} />
-        {/* <Route path="orders" element={<DashboardOrders />} />*/}
+        <Route path="orders" element={<DashboardOrders />} />
       </Route>
       {/* <Kursor /> */}
     </Routes>

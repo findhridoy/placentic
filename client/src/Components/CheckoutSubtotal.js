@@ -1,6 +1,6 @@
-import { Button } from "@mui/material";
+import { Button, CircularProgress } from "@mui/material";
 
-const CheckoutSubtotal = ({ cartAmounts, handleCheckout }) => {
+const CheckoutSubtotal = ({ cartAmounts, handleCheckout, isLoading }) => {
   return (
     <div className="cartSubtotal">
       <h3 className="cartSubtotal__title">Order Summery</h3>
@@ -23,9 +23,15 @@ const CheckoutSubtotal = ({ cartAmounts, handleCheckout }) => {
       </div>
 
       <div className="cartSubtotal__btn btn small__btn btn__dark">
-        <Button onClick={handleCheckout}>
-          <span className="btn__text">Place order</span>
-          <span className="btn__digit">${cartAmounts?.total}</span>
+        <Button onClick={handleCheckout} disabled={isLoading}>
+          {isLoading ? (
+            <CircularProgress color="inherit" size={20} thickness={4} />
+          ) : (
+            <>
+              <span className="btn__text">Place order</span>
+              <span className="btn__digit">${cartAmounts?.total}</span>
+            </>
+          )}
         </Button>
       </div>
     </div>

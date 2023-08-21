@@ -6,12 +6,12 @@ import MuiAccordionDetails from "@mui/material/AccordionDetails";
 import MuiAccordionSummary from "@mui/material/AccordionSummary";
 import { styled } from "@mui/material/styles";
 import { useState } from "react";
-import { useSelector } from "react-redux";
-import { useGetProfileQuery } from "../app/features/auth/authApi";
-import { paymentOption } from "../assets/json/radioData";
+// import { paymentOption } from "../assets/json/radioData";
 import ShippingForm from "./ShippingForm";
 import StripePayment from "./StripePayment";
-import CustomRadioGroup from "./controls/CustomRadioGroup";
+import CustomAlert from "./controls/CustomAlert";
+// import CustomRadioGroup from "./controls/CustomRadioGroup";
+import UserInfoSkeleton from "./skeletons/UserInfoSkeleton";
 
 // Mui element
 const Accordion = styled((props) => (
@@ -28,11 +28,7 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
   borderTop: "1px solid rgba(0, 0, 0, .125)",
 }));
 
-const CustomizeAccordion = () => {
-  // *Redux element
-  const { userInfo } = useSelector((state) => state.auth);
-  const { data: user } = useGetProfileQuery();
-
+const CustomizeAccordion = ({ isLoading, isError, user, userInfo }) => {
   // States
   const [expanded, setExpanded] = useState(
     userInfo?.isAddress ? "panel3" : "panel2"
@@ -59,12 +55,19 @@ const CustomizeAccordion = () => {
           }
         >
           <div className="accordion__summery">
-            <div>
+            <div className="accordion__content">
               <div className="accordion__title">
                 <span className="title__text">Login</span>
-                {userInfo?.email && <CheckCircleIcon color="success" />}
+                {!isError && userInfo?.email && (
+                  <CheckCircleIcon color="success" />
+                )}
               </div>
-              {userInfo?.email && (
+
+              {isLoading ? (
+                <UserInfoSkeleton size={2} />
+              ) : isError ? (
+                <CustomAlert severity="warning" message="Somthing was wrong!" />
+              ) : (
                 <>
                   <span className="user__name">{user?.name}</span>
                   <br />
@@ -79,6 +82,7 @@ const CustomizeAccordion = () => {
       <Accordion
         expanded={expanded === "panel2"}
         onChange={handleChange("panel2")}
+        disabled={isError}
       >
         <MuiAccordionSummary
           expandIcon={
@@ -88,13 +92,19 @@ const CustomizeAccordion = () => {
           }
         >
           <div className="accordion__summery">
-            <div>
+            <div className="accordion__content">
               <div className="accordion__title">
                 <span className="title__text">Shipping Address</span>
-                {userInfo?.isAddress && <CheckCircleIcon color="success" />}
+                {!isError && userInfo?.isAddress && (
+                  <CheckCircleIcon color="success" />
+                )}
               </div>
 
-              {userInfo?.isAddress && (
+              {isLoading ? (
+                <UserInfoSkeleton size={4} />
+              ) : isError ? (
+                <CustomAlert severity="warning" message="Somthing was wrong!" />
+              ) : (
                 <span className="user__name">
                   {user?.phone ? "+88" + user?.phone : ""}
                   <br />
@@ -105,11 +115,13 @@ const CustomizeAccordion = () => {
               )}
             </div>
 
-            <div className={expanded === "panel2" ? "expanded__icon" : ""}>
-              <IconButton>
-                <ExpandMoreIcon />
-              </IconButton>
-            </div>
+            {!isError && (
+              <div className={expanded === "panel2" ? "expanded__icon" : ""}>
+                <IconButton>
+                  <ExpandMoreIcon />
+                </IconButton>
+              </div>
+            )}
           </div>
         </MuiAccordionSummary>
         <AccordionDetails>
@@ -120,6 +132,7 @@ const CustomizeAccordion = () => {
       <Accordion
         expanded={expanded === "panel3"}
         onChange={handleChange("panel3")}
+        disabled={isError}
       >
         <MuiAccordionSummary
           expandIcon={
@@ -129,28 +142,32 @@ const CustomizeAccordion = () => {
           }
         >
           <div className="accordion__summery">
-            <div className="accordion__title">
-              <span className="title__text">Payment Method</span>
-              <CheckCircleIcon color="success" />
+            <div className="accordion__content">
+              <div className="accordion__title">
+                <span className="title__text">Payment Method</span>
+                {/* <CheckCircleIcon color="success" /> */}
+              </div>
             </div>
-
-            <div className={expanded === "panel3" ? "expanded__icon" : ""}>
-              <IconButton>
-                <ExpandMoreIcon />
-              </IconButton>
-            </div>
+            {!isError && (
+              <div className={expanded === "panel3" ? "expanded__icon" : ""}>
+                <IconButton>
+                  <ExpandMoreIcon />
+                </IconButton>
+              </div>
+            )}
           </div>
         </MuiAccordionSummary>
         <AccordionDetails>
-          <div className="accordion__radio">
+          {/* <div className="accordion__radio">
             <CustomRadioGroup
               radioMode={radioMode}
               setRadioMode={setRadioMode}
               radioData={paymentOption}
             />
-          </div>
+          </div> */}
 
-          {radioMode === "now" && <StripePayment />}
+          {/* {radioMode === "now" && <StripePayment />} */}
+          <StripePayment />
         </AccordionDetails>
       </Accordion>
     </div>

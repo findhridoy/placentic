@@ -55,32 +55,36 @@
       align-items: center;
       justify-content: space-between;
       width: 100%;
-      .accordion__title {
-        display: flex;
-        color: $dark;
-        gap: 0.5rem;
 
-        .MuiSvgIcon-root {
-          @include h4-font;
+      .accordion__content {
+        width: 100%;
+
+        .accordion__title {
+          display: flex;
+          color: $dark;
+          gap: 0.5rem;
+
+          .MuiSvgIcon-root {
+            @include h4-font;
+          }
+          .title__text {
+            @include small-font;
+            font-family: $montserrat;
+            font-weight: $semi-bold;
+            text-transform: uppercase;
+            color: $dark-alt;
+            opacity: 0.9;
+          }
         }
-        .title__text {
+
+        .user__name,
+        .user__email {
           @include small-font;
-          font-family: $montserrat;
           font-weight: $semi-bold;
-          text-transform: uppercase;
-          color: $dark-alt;
-          opacity: 0.9;
+          color: $dark;
+          margin-right: $x-1-25;
         }
       }
-
-      .user__name,
-      .user__email {
-        @include small-font;
-        font-weight: $semi-bold;
-        color: $dark;
-        margin-right: $x-1-25;
-      }
-
       .expanded__icon {
         .MuiSvgIcon-root {
           transform: rotate(180deg);

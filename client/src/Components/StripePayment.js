@@ -14,8 +14,6 @@ const StripePayment = () => {
   const [orderPayment, { isLoading, isError, error, data }] =
     useOrderPaymentMutation();
 
-  console.log(cartAmounts);
-
   useEffect(() => {
     const fetchRequest = async () => {
       await orderPayment(cartAmounts);

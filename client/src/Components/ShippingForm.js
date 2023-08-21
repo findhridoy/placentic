@@ -21,12 +21,10 @@ const ShippingForm = ({ user, setExpanded }) => {
   //   (state) => state.updateUserProfile
   // );
 
-  const [
-    updateProfile,
-    { isLoading, isError, error, data: updateUser },
-  ] = useUpdateProfileMutation();
+  const [updateProfile, { isLoading, isError, error, data: updateUser }] =
+    useUpdateProfileMutation();
 
-  console.log(updateUser);
+  // console.log(updateUser);
 
   // React hook form own state
   const {
