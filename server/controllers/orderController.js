@@ -1,5 +1,6 @@
 // External Imports
 const asyncHandler = require("express-async-handler");
+const generateUniqueId = require("generate-unique-id");
 
 // Internal Imports
 const Order = require("../models/orderModel");
@@ -40,6 +41,7 @@ const orderPayment = asyncHandler(async (req, res) => {
  */
 const createOrder = asyncHandler(async (req, res) => {
   const {
+    customer,
     orderItems,
     shippingAddress,
     shippingPrice,
@@ -47,13 +49,17 @@ const createOrder = asyncHandler(async (req, res) => {
     totalPrice,
     paymentMethod,
     paymentResult,
-    isPaid,
+    paymentStatus,
     paidAt,
   } = req.body;
 
   // create a new category
   const order = await Order.create({
-    userID: req.user._id,
+    orderID: generateUniqueId({
+      length: 6,
+      useLetters: false,
+    }),
+    customer,
     orderItems,
     shippingAddress,
     shippingPrice,
@@ -61,7 +67,7 @@ const createOrder = asyncHandler(async (req, res) => {
     totalPrice,
     paymentMethod,
     paymentResult,
-    isPaid,
+    paymentStatus,
     paidAt,
   });
 

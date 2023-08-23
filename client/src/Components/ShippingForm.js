@@ -3,28 +3,14 @@ import { Button, CircularProgress } from "@mui/material";
 import cogoToast from "cogo-toast";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { useDispatch } from "react-redux";
-// import {
-//   updateUserProfile,
-//   userUpdateErrorReset,
-// } from "../App/actions/userActions";
 import { useUpdateProfileMutation } from "../app/features/auth/authApi";
 import { countryData } from "../assets/json/countryData";
 import { shippingSchema } from "../helpers/Validation/ValidationSchema";
 
 const ShippingForm = ({ user, setExpanded }) => {
-  // States
-
   // Redux element
-  const dispatch = useDispatch();
-  // const { loading, error, user: updateUser } = useSelector(
-  //   (state) => state.updateUserProfile
-  // );
-
   const [updateProfile, { isLoading, isError, error, data: updateUser }] =
     useUpdateProfileMutation();
-
-  // console.log(updateUser);
 
   // React hook form own state
   const {
@@ -37,6 +23,8 @@ const ShippingForm = ({ user, setExpanded }) => {
 
   // React hook form data submit
   const onSubmit = async (data) => {
+    console.log(data);
+
     if (data) {
       let formData = new FormData();
       formData.append("city", data.city);
@@ -46,27 +34,22 @@ const ShippingForm = ({ user, setExpanded }) => {
       formData.append("country", data.country);
 
       // send data to backend
-      // dispatch(updateUserProfile(formData));
+      await updateProfile(formData);
     }
   };
 
   useEffect(() => {
-    if (error) {
-      cogoToast.error(error);
-      // dispatch(userUpdateErrorReset());
+    if (isError) {
+      cogoToast.error(error?.data?.message);
     }
-
     if (updateUser?.message) {
       cogoToast.success("Something was wrong! try again.");
-      // dispatch(userUpdateErrorReset());
-      return;
     }
-    if (updateUser) {
+    if (updateUser?.email) {
       cogoToast.success("Shipping address was saved.");
-      // dispatch(userUpdateErrorReset());
       setExpanded("panel3");
     }
-  }, [error, updateUser, dispatch, setExpanded]);
+  }, [isError, error, updateUser, setExpanded]);
 
   return (
     <div className="shippingForm">
@@ -103,10 +86,10 @@ const ShippingForm = ({ user, setExpanded }) => {
             type="text"
             defaultValue={user?.phone}
             placeholder="Enter your phone number"
-            {...register("phone_number")}
+            {...register("phone")}
           />
-          {errors?.phone_number && (
-            <span className="form__error">{errors?.phone_number.message}</span>
+          {errors?.phone && (
+            <span className="form__error">{errors?.phone.message}</span>
           )}
         </span>
 

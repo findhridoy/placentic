@@ -105,13 +105,15 @@ const CustomizeAccordion = ({ isLoading, isError, user, userInfo }) => {
               ) : isError ? (
                 <CustomAlert severity="warning" message="Somthing was wrong!" />
               ) : (
-                <span className="user__name">
-                  {user?.phone ? "+88" + user?.phone : ""}
-                  <br />
-                  {user?.address},
-                  <br />
-                  {user?.city}-{user?.zip_code}, {user?.country}
-                </span>
+                userInfo?.isAddress && (
+                  <span className="user__name">
+                    {user?.phone ? "+88" + user?.phone : ""}
+                    <br />
+                    {user?.address},
+                    <br />
+                    {user?.city}-{user?.zip_code}, {user?.country}
+                  </span>
+                )
               )}
             </div>
 

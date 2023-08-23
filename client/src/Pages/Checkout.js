@@ -22,11 +22,16 @@ const Checkout = () => {
     { isLoading: orderIsLoading, isError: orderIsError, error, data },
   ] = useOrderCreateMutation();
 
+  console.log(data);
+
   const handleCheckout = async () => {
     const orderData = {
+      customer: {
+        name: user?.name,
+        image: user?.avatar,
+      },
       orderItems: cartItems,
       shippingAddress: {
-        name: user?.name,
         phone_number: user?.phone,
         address: user?.address,
         city: user?.city,
@@ -43,7 +48,7 @@ const Checkout = () => {
         payment_id: "id_asdagafasd",
         email_address: "test@mail.com",
       },
-      isPaid: true,
+      paymentStatus: "paid",
       paidAt: Date.now(),
     };
 

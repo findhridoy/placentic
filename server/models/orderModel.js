@@ -4,17 +4,20 @@ const { Schema, model } = require("mongoose");
 // User Schema
 const OrderSchema = new Schema(
   {
-    userID: {
-      type: Schema.Types.ObjectId,
+    orderID: {
+      type: String,
       required: true,
-      ref: "User",
+    },
+    customer: {
+      name: { type: String, required: true },
+      image: { type: String, required: true },
     },
     orderItems: [
       {
         title: { type: String, required: true },
         price: { type: Number, required: true },
         quantity: { type: Number, required: true },
-        image: { type: Object, required: true },
+        image: { type: String, required: true },
         _id: {
           type: Schema.Types.ObjectId,
           ref: "Product",
@@ -38,17 +41,17 @@ const OrderSchema = new Schema(
       default: 0,
     },
     shippingAddress: {
-      name: { type: String, required: true },
       phone_number: { type: Number, required: true },
       address: { type: String, required: true },
       city: { type: String, required: true },
       zip_code: { type: Number, required: true },
       country: { type: String, required: true },
     },
-    isDelevered: {
-      type: Boolean,
+    deliveryStatus: {
+      type: String,
       required: true,
-      default: false,
+      enum: ["prepared", "deliverd", "completed", "canceled"],
+      default: "prepared",
     },
     deleveredAt: {
       type: Date,
@@ -63,10 +66,10 @@ const OrderSchema = new Schema(
       payment_id: { type: String },
       email_address: { type: String },
     },
-    isPaid: {
-      type: Boolean,
+    paymentStatus: {
+      type: String,
       required: true,
-      default: false,
+      enum: ["authorized", "paid"],
     },
     paidAt: {
       type: Date,

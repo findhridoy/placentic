@@ -1,13 +1,18 @@
 import DeleteIcon from "@mui/icons-material/Delete";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
+import VisibilityIcon from "@mui/icons-material/Visibility";
 import { IconButton } from "@mui/material";
 import React from "react";
 
-const ActionsButton = ({ handleEditIcon, handleDeleteIcon }) => {
+const ActionsButton = ({ handleEditIcon, handleDeleteIcon, visibleIcon }) => {
   return (
     <div className="actionsButton">
       <IconButton size="small" onClick={handleEditIcon}>
-        <ModeEditIcon fontSize="small" />
+        {visibleIcon ? (
+          <VisibilityIcon fontSize="small" />
+        ) : (
+          <ModeEditIcon fontSize="small" />
+        )}
       </IconButton>
 
       <IconButton size="small" onClick={handleDeleteIcon}>

@@ -2,11 +2,11 @@ import { Modal } from "@mui/material";
 import cogoToast from "cogo-toast";
 import React, { useEffect, useState } from "react";
 import { useDeleteCategoryMutation } from "../../app/features/categories/categoryApi";
-import EditCategoryForm from "../../dashboard/DashboardComponents/EditCategoryForm";
+import OrderInvoice from "../../dashboard/DashboardComponents/OrderInvoice";
 import ActionsButton from "../TableComponents/AdditionalComponents/ActionsButton";
 import DeleteDialog from "../TableComponents/AdditionalComponents/DeleteDialog";
 
-const CategoryAction = ({ row }) => {
+const OrderAction = ({ row }) => {
   // Modal state
   const [open, setOpen] = useState(false);
   const [dialog, setDialog] = useState(false);
@@ -38,12 +38,13 @@ const CategoryAction = ({ row }) => {
         handleEditIcon={() => setOpen(true)}
         handleDeleteIcon={() => setDialog(true)}
         row={row}
+        visibleIcon={true}
       />
 
       {/* Edit modal */}
       <Modal open={open} onClose={() => setOpen(false)}>
         <>
-          <EditCategoryForm setOpen={setOpen} row={row} />
+          <OrderInvoice setOpen={setOpen} row={row} />
         </>
       </Modal>
 
@@ -59,4 +60,4 @@ const CategoryAction = ({ row }) => {
   );
 };
 
-export default CategoryAction;
+export default OrderAction;

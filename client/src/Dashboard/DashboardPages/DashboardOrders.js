@@ -32,8 +32,6 @@ const DashboardOrders = () => {
     `order?page=${pageIndex}&size=${pageSize}&sort=${sort}&keyword=${keyword}`
   );
 
-  console.log(orderData);
-
   // filter reset handler
   // const resetHandler = () => {
   //   setRating(0);

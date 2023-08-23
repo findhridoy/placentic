@@ -1,77 +1,97 @@
-// import CloseIcon from "@mui/icons-material/Close";
-// import React from "react";
+import { Avatar, Stack } from "@mui/material";
 import Moment from "react-moment";
-import ProductAction from "../TableActions/ProductAction";
+import OrderAction from "../TableActions/OrderAction";
+import OrderPaymentAciton from "../TableActions/OrderPaymentAciton";
+import OrderShippingAction from "../TableActions/OrderShippingAction";
 
 // Order column
 export const orderColumn = [
   {
-    accessorKey: "_id",
-    header: "Order Id",
+    accessorKey: "orderID",
+    header: "Order #",
+    cell: ({ row }) => (
+      <span style={{ textTransform: "uppercase" }}>
+        #{row?.original?.orderID}
+      </span>
+    ),
   },
-  //   {
-  //     accessorKey: "title",
-  //     header: "Title",
-  //     cell: ({ row }) => (
-  //       <Stack direction="row" spacing={1} alignItems="center">
-  //         <Avatar
-  //           alt="product image"
-  //           src={row?.original?.image}
-  //           sx={{ width: 35, height: 35 }}
-  //         />
-  //         <span>{row?.original?.title}</span>
-  //       </Stack>
-  //     ),
-  //   },
+  {
+    accessorKey: "customer",
+    header: "Customer",
+    cell: ({ row }) => (
+      <Stack direction="row" spacing={1} alignItems="center">
+        <Avatar
+          alt="user image"
+          src={row?.original?.customer?.image}
+          sx={{ width: 28, height: 28 }}
+        />
+        <span>{row?.original?.customer?.name}</span>
+      </Stack>
+    ),
+  },
+  {
+    accessorKey: "shippingAddress",
+    header: "Address",
+    cell: ({ row }) => (
+      <>
+        <div>{row?.original?.shippingAddress?.city}</div>
+        <div>{row?.original?.shippingAddress?.address?.slice(0, 16)}...</div>
+      </>
+    ),
+  },
+  {
+    accessorKey: "deliveryStatus",
+    header: "Delivery Status",
+    cell: ({ row }) => <OrderShippingAction row={row} />,
+  },
   {
     accessorKey: "orderItems",
     header: "Items",
     cell: ({ row }) => row?.original?.orderItems?.length,
   },
-  {
-    accessorKey: "shippingPrice",
-    header: "Shipping",
-  },
-  {
-    accessorKey: "texPrice",
-    header: "Tax",
-  },
+  // {
+  //   accessorKey: "shippingPrice",
+  //   header: "Shipping",
+  // },
+  // {
+  //   accessorKey: "texPrice",
+  //   header: "Tax",
+  // },
   {
     accessorKey: "totalPrice",
     header: "Total",
+    cell: ({ row }) => <>${row?.original?.totalPrice}</>,
   },
   {
-    accessorKey: "isPaid",
+    accessorKey: "paymentStatus",
     header: "Payment Status",
+    cell: ({ row }) => <OrderPaymentAciton row={row} />,
   },
-  {
-    accessorKey: "paidAt",
-    header: "Payment Date",
-    cell: ({ row }) => (
-      <Moment format="D MMM YYYY" withTitle>
-        {row?.original?.paidAt}
-      </Moment>
-    ),
-  },
-  {
-    accessorKey: "isDelivery",
-    header: "Delivery Status",
-  },
-  {
-    accessorKey: "deliveryAt",
-    header: "Delivery Date",
-    cell: ({ row }) => (
-      <Moment format="D MMM YYYY" withTitle>
-        {row?.original?.deliveryAt}
-      </Moment>
-    ),
-  },
+  // {
+  //   accessorKey: "paidAt",
+  //   header: "Payment Date",
+  //   cell: ({ row }) => (
+  //     <Moment format="D MMM YYYY" withTitle>
+  //       {row?.original?.paidAt}
+  //     </Moment>
+  //   ),
+  // },
+
+  // {
+  //   accessorKey: "deliveryAt",
+  //   header: "Delivery Date",
+  //   cell: ({ row }) => (
+  //     <Moment format="D MMM YYYY" withTitle>
+  //       {row?.original?.deliveryAt}
+  //     </Moment>
+  //   ),
+  // },
 
   {
     accessorKey: "createdAt",
-    header: "Issue Date",
+    header: "Create Date",
     cell: ({ row }) => (
-      <Moment format="D MMM YYYY" withTitle>
+      <Moment format="MMM D, YYYY" withTitle>
         {row?.original?.createdAt}
       </Moment>
     ),
@@ -79,6 +99,6 @@ export const orderColumn = [
   {
     accessorKey: "action",
     header: "Action",
-    cell: ({ row }) => <ProductAction row={row} />,
+    cell: ({ row }) => <OrderAction row={row} />,
   },
 ];
