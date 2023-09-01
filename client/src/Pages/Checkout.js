@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useGetProfileQuery } from "../app/features/auth/authApi";
@@ -8,11 +9,14 @@ import CustomizeAccordion from "../components/CustomizeAccordion";
 import CustomBreadcrumbs from "../components/controls/CustomBreadcrumbs";
 
 const Checkout = () => {
+  // States
+  const [paymentMethod, setPaymentMethod] = useState("card");
+
   // react router
   const navigate = useNavigate();
 
   // Redux element
-  const { cartItems, cartAmounts, payments } = useSelector(
+  const { cartItems, cartAmounts, paymentInfo } = useSelector(
     (state) => state.cart
   );
   const { userInfo } = useSelector((state) => state.auth);
@@ -22,7 +26,7 @@ const Checkout = () => {
     { isLoading: orderIsLoading, isError: orderIsError, error, data },
   ] = useOrderCreateMutation();
 
-  console.log(data);
+  // console.log(data);
 
   const handleCheckout = async () => {
     const orderData = {
@@ -39,17 +43,11 @@ const Checkout = () => {
         country: user?.country,
       },
       shippingPrice: cartAmounts?.shipping,
-      taxPrice: 0,
+      taxPrice: cartAmounts?.tax,
       totalPrice: cartAmounts?.total,
-      paymentMethod: "card",
-      paymentResult: {
-        id: "test_asdaflgkad",
-        status: "paid",
-        payment_id: "id_asdagafasd",
-        email_address: "test@mail.com",
-      },
+      paymentMethod: paymentMethod,
+      paymentResult: paymentInfo,
       paymentStatus: "paid",
-      paidAt: Date.now(),
     };
 
     await orderCreate(orderData);
@@ -66,6 +64,9 @@ const Checkout = () => {
               isError={isError}
               user={user}
               userInfo={userInfo}
+              cartAmounts={cartAmounts}
+              paymentMethod={paymentMethod}
+              setPaymentMethod={setPaymentMethod}
             />
           </div>
 
@@ -74,6 +75,7 @@ const Checkout = () => {
               cartAmounts={cartAmounts}
               handleCheckout={handleCheckout}
               isLoading={orderIsLoading}
+              paymentMethod={paymentMethod}
             />
           </div>
         </div>

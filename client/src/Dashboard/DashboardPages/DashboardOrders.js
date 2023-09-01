@@ -74,15 +74,35 @@ const DashboardOrders = () => {
 
   // export table data to csv file
   const csvData = [
-    ["TITLE", "CATEGORY", "PRICE", "REVIEWS", "STOCK", "DATE", "IMAGE"],
-    ...data?.map((product) => [
-      product?.title,
-      product?.category,
-      product?.price,
-      product?.countReviews,
-      product?.countInStock,
-      moment(product?.createdAt).format("D-MM-YYYY"),
-      product?.image ? "Yes" : "No",
+    [
+      "ORDER #",
+      "CUSTOMER",
+      "ADDRESS",
+      "ITEMS",
+      "TAX",
+      "SHIPPING PRICE",
+      "TOTAL PRICE",
+      "DELIVERY STATUS",
+      "DELIVERY DATE",
+      "PAYMENT STATUS",
+      "PAYMENT DATE",
+      "PAYMENT METHOD",
+      "CREATE DATE",
+    ],
+    ...data?.map((order) => [
+      order?.orderID,
+      order?.customer?.name,
+      `${order?.shippingAddress?.address}, ${order?.shippingAddress?.city}`,
+      order?.orderItems?.length,
+      order?.taxPrice,
+      order?.shippingPrice,
+      order?.totalPrice,
+      order?.deliveryStatus,
+      moment(order?.deliveredAt).format("D-MM-YYYY"),
+      order?.paymentStatus,
+      moment(order?.paidAt).format("D-MM-YYYY"),
+      order?.paymentMethod,
+      moment(order?.createdAt).format("D-MM-YYYY"),
     ]),
   ];
 

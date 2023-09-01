@@ -12,12 +12,12 @@ const CategoryAction = ({ row }) => {
   const [dialog, setDialog] = useState(false);
 
   // Redux element
-  const [deleteProduct, { isLoading, isError, error, data }] =
+  const [deleteCategory, { isLoading, isError, error, data }] =
     useDeleteCategoryMutation();
 
   // Table item delete functionality
   const handleDelete = async (catId) => {
-    await deleteProduct(catId);
+    await deleteCategory(catId);
   };
 
   useEffect(() => {

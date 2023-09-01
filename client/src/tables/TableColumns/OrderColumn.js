@@ -1,8 +1,8 @@
 import { Avatar, Stack } from "@mui/material";
 import Moment from "react-moment";
 import OrderAction from "../TableActions/OrderAction";
+import OrderDeliveryAction from "../TableActions/OrderDeliveryAction";
 import OrderPaymentAciton from "../TableActions/OrderPaymentAciton";
-import OrderShippingAction from "../TableActions/OrderShippingAction";
 
 // Order column
 export const orderColumn = [
@@ -42,7 +42,7 @@ export const orderColumn = [
   {
     accessorKey: "deliveryStatus",
     header: "Delivery Status",
-    cell: ({ row }) => <OrderShippingAction row={row} />,
+    cell: ({ row }) => <OrderDeliveryAction row={row} />,
   },
   {
     accessorKey: "orderItems",

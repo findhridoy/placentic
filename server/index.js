@@ -10,6 +10,7 @@ const userRouter = require("./routes/userRoutes");
 const categoryRouter = require("./routes/categoryRoutes");
 const productRouter = require("./routes/productRoutes");
 const orderRouter = require("./routes/orderRoutes");
+const stripeRouter = require("./routes/stripeRoutes");
 const { notFound, errorHandler } = require("./middleware/errorMiddileware");
 
 // Initialize the Application
@@ -30,6 +31,7 @@ app.use("/api/v1/user", userRouter);
 app.use("/api/v1/category", categoryRouter);
 app.use("/api/v1/product", productRouter);
 app.use("/api/v1/order", orderRouter);
+app.use("/api/v1/stripe", stripeRouter);
 
 // Default Error Handler
 app.use(notFound);

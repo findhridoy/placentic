@@ -12,6 +12,8 @@ const UpdateOrderForm = ({
   data,
   errors,
   setOpen,
+  isLoading,
+  defaultSelect,
 }) => {
   return (
     <div className="addProducts">
@@ -21,8 +23,8 @@ const UpdateOrderForm = ({
           <span className="form__group">
             <label className="form__label">{label}</label>
             <select className="form__select" {...register(`${inputName}`)}>
-              <option className="form__option" value="">
-                Select
+              <option className="form__option" value={defaultSelect}>
+                {defaultSelect}
               </option>
 
               {data?.map((option, index) => (
@@ -31,15 +33,22 @@ const UpdateOrderForm = ({
                 </option>
               ))}
             </select>
-            {errors?.inputName && (
-              <span className="form__error">{errors?.inputName?.message}</span>
+            {errors?.deliveryStatus && (
+              <span className="form__error">
+                {errors?.deliveryStatus?.message}
+              </span>
+            )}
+            {errors?.paymentStatus && (
+              <span className="form__error">
+                {errors?.paymentStatus?.message}
+              </span>
             )}
           </span>
 
           <CustomButton
             className="addProducts__btn btn small__btn btn__dark"
             text="Update"
-            loading={false}
+            loading={isLoading}
             type="submit"
           />
         </form>

@@ -1,14 +1,23 @@
+import { yupResolver } from "@hookform/resolvers/yup";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { Button, Modal } from "@mui/material";
-import React, { useState } from "react";
+import cogoToast from "cogo-toast";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import { useUpdateOrderMutation } from "../../app/features/orders/orderApi";
 import UpdateOrderForm from "../../dashboard/DashboardComponents/UpdateOrderForm";
+import { deliveryStatusSchema } from "../../helpers/Validation/ValidationSchema";
 
-const OrderShippingAction = ({ row }) => {
+const OrderDeliveryAction = ({ row }) => {
   // Modal state
   const [open, setOpen] = useState(false);
 
-  const shippingOption = ["prepared", "completed", "deliverd", "canceled"];
+  // Redux element
+  const [updateOrder, { isLoading, isError, error, data }] =
+    useUpdateOrderMutation();
+
+  // delivey options
+  const deliveryOption = ["prepared", "completed", "deliverd", "canceled"];
 
   // React hook form own state
   const {
@@ -16,13 +25,31 @@ const OrderShippingAction = ({ row }) => {
     register,
     formState: { errors },
   } = useForm({
-    // resolver: yupResolver(addProductSchema),
+    resolver: yupResolver(deliveryStatusSchema),
   });
 
   // React hook form data submit
   const onSubmit = async (data) => {
-    // console.log(data);
+    const updateData = {
+      orderId: row?.original?._id,
+      data,
+    };
+    await updateOrder(updateData);
   };
+
+  useEffect(() => {
+    if (isError) {
+      cogoToast.error(error?.data?.message);
+    }
+    if (data?.message) {
+      cogoToast.error("Something was wrong!");
+    }
+    if (data?.success) {
+      cogoToast.success("Product has been updated.");
+      setOpen(false);
+    }
+  }, [isError, error, data, setOpen]);
+
   return (
     <>
       <div className="custom__chip">
@@ -53,14 +80,16 @@ const OrderShippingAction = ({ row }) => {
       <Modal open={open} onClose={() => setOpen(false)}>
         <>
           <UpdateOrderForm
-            title="Update Shipping Status"
+            title="Update Delivery Status"
             handleSubmit={handleSubmit(onSubmit)}
             register={register}
-            inputName="shippingStatus"
+            inputName="deliveryStatus"
             errors={errors}
-            label="Shipping status"
-            data={shippingOption}
+            label="Delivery status"
+            data={deliveryOption}
             setOpen={setOpen}
+            isLoading={isLoading}
+            defaultSelect={row?.original?.deliveryStatus}
           />
         </>
       </Modal>
@@ -68,4 +97,4 @@ const OrderShippingAction = ({ row }) => {
   );
 };
 
-export default OrderShippingAction;
+export default OrderDeliveryAction;

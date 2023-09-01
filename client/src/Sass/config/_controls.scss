@@ -1,4 +1,22 @@
 // **Button
+.btn-root {
+  .MuiButton-root {
+    text-transform: capitalize;
+    border-radius: 0;
+    letter-spacing: 0.8px;
+    font-family: $poppins;
+    @include smaller-font;
+    box-shadow: none;
+    cursor: pointer;
+    @include breakpoint(md) {
+      @include small-font;
+    }
+    &:hover {
+      @include shadow-btn;
+    }
+  }
+}
+
 .btn {
   .MuiButton-root {
     height: 2.8rem;

@@ -53,7 +53,7 @@ const OrderSchema = new Schema(
       enum: ["prepared", "deliverd", "completed", "canceled"],
       default: "prepared",
     },
-    deleveredAt: {
+    deliveredAt: {
       type: Date,
     },
     paymentMethod: {
@@ -61,18 +61,15 @@ const OrderSchema = new Schema(
       required: true,
     },
     paymentResult: {
-      id: { type: String },
       status: { type: String },
       payment_id: { type: String },
       email_address: { type: String },
+      paidAt: { type: Date },
     },
     paymentStatus: {
       type: String,
       required: true,
       enum: ["authorized", "paid"],
-    },
-    paidAt: {
-      type: Date,
     },
   },
   { timestamps: true }

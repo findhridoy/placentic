@@ -1,6 +1,11 @@
-import { Button, CircularProgress } from "@mui/material";
+import CustomButton from "./controls/CustomButton";
 
-const CheckoutSubtotal = ({ cartAmounts, handleCheckout, isLoading }) => {
+const CheckoutSubtotal = ({
+  cartAmounts,
+  handleCheckout,
+  isLoading,
+  paymentMethod,
+}) => {
   return (
     <div className="cartSubtotal">
       <h3 className="cartSubtotal__title">Order Summery</h3>
@@ -9,6 +14,11 @@ const CheckoutSubtotal = ({ cartAmounts, handleCheckout, isLoading }) => {
           Subtotal ( {cartAmounts?.items} • items )
         </span>
         <span className="subtotal__digit">${cartAmounts?.subtotal}</span>
+      </div>
+
+      <div className="cartSubtotal__subtotal">
+        <span className="subtotal__text">TAX</span>
+        <span className="subtotal__digit">${cartAmounts?.tax}</span>
       </div>
 
       <div className="cartSubtotal__shipping">
@@ -22,18 +32,13 @@ const CheckoutSubtotal = ({ cartAmounts, handleCheckout, isLoading }) => {
         <span className="subtotal__digit">${cartAmounts?.total}</span>
       </div>
 
-      <div className="cartSubtotal__btn btn small__btn btn__dark">
-        <Button onClick={handleCheckout} disabled={isLoading}>
-          {isLoading ? (
-            <CircularProgress color="inherit" size={20} thickness={4} />
-          ) : (
-            <>
-              <span className="btn__text">Place order</span>
-              <span className="btn__digit">${cartAmounts?.total}</span>
-            </>
-          )}
-        </Button>
-      </div>
+      <CustomButton
+        className="checkoutSubtotal__btn btn btn__dark"
+        text="Place order"
+        loading={isLoading}
+        onClick={handleCheckout}
+        disabled={paymentMethod === "card"}
+      />
     </div>
   );
 };

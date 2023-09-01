@@ -21,8 +21,13 @@ const CartSubtotal = ({ shippingMode, cartItems }) => {
   const amount = {
     items: cartItems?.length,
     subtotal: Number(subtotal)?.toFixed(2),
+    tax: Number((subtotal * 5) / 100)?.toFixed(2),
     shipping: Number(shipping)?.toFixed(2),
-    total: (Number(subtotal) + Number(shipping))?.toFixed(2),
+    shippingMethod: shippingMode,
+    total:
+      Number(subtotal) +
+      Number(shipping) +
+      Number((subtotal * 5) / 100)?.toFixed(2),
   };
 
   // Store amount and change route
@@ -39,6 +44,11 @@ const CartSubtotal = ({ shippingMode, cartItems }) => {
           Subtotal ( {amount?.items} • items )
         </span>
         <span className="subtotal__digit">${amount?.subtotal}</span>
+      </div>
+
+      <div className="cartSubtotal__subtotal">
+        <span className="subtotal__text">TAX</span>
+        <span className="subtotal__digit">${amount?.tax}</span>
       </div>
 
       <div className="cartSubtotal__shipping">

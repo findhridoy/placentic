@@ -1,0 +1,145 @@
+/* invoice */
+.orderInvoice__invoice {
+  margin-top: 0.5rem; /* $x-0-5 */
+  display: grid;
+  grid-template-rows: max-content auto max-content max-content max-content;
+  gap: 0.8rem;
+  height: 842px;
+}
+
+.invoice__header .logo {
+  width: 130px;
+}
+
+.invoice__address {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 0.5rem; /* $x-0-5 */
+}
+
+.address__from,
+.address__to,
+.invoice__issue {
+  display: flex;
+  flex-direction: column;
+}
+
+.from__title,
+.to__title {
+  font-weight: 600; /* semi-bold */
+  font-size: 0.75rem; /* smallest-font */
+  color: hsl(228, 4%, 25%); /* dark-alt */
+}
+
+.from__company,
+.to__customer,
+.invoice__title {
+  font-weight: 700; /* bold */
+  font-size: 1rem; /* normal-font */
+  color: hsl(228, 4%, 25%); /* dark-alt */
+}
+
+.from__address,
+.to__address,
+.invoice__id,
+.invoice__date {
+  font-weight: 500; /* medium */
+  font-size: 0.875rem; /* small-font */
+  color: hsl(228, 4%, 25%); /* dark-alt */
+}
+
+/* .invoice__id {
+  font-weight: 600; /* semi-bold */
+/* font-size: 0.875rem; small-font  */
+/* }*/
+
+.invoice__content {
+  height: 100%;
+}
+.invoice__content table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.invoice__content table thead tr th {
+  white-space: nowrap;
+  text-align: left;
+  border: 1px solid hsl(228, 4%, 25%); /* dark-alt */
+  padding: 0.25rem 0.5rem; /* $x-0-25 $x-0-5 */
+  font-size: 0.875rem; /* small-font */
+  color: hsl(228, 4%, 25%); /* dark-alt */
+  text-transform: uppercase;
+}
+
+.invoice__content table tbody tr td {
+  text-align: left;
+  border: 1px solid hsl(228, 4%, 25%); /* dark-alt */
+  padding: 0.25rem 0.5rem; /* $x-0-25 $x-0-5 */
+  font-size: 0.813rem; /* smaller-font */
+  font-weight: 600; /* semi-bold */
+  color: hsl(228, 4%, 25%); /* dark-alt */
+  opacity: 0.9;
+  white-space: nowrap;
+}
+
+.invoice__content table tfoot tr td {
+  padding: 0.25rem 0.5rem; /* $x-0-25 $x-0-5 */
+  font-size: 0.813rem; /* smaller-font */
+  font-weight: 600; /* semi-bold */
+  color: hsl(228, 4%, 25%); /* dark-alt */
+  opacity: 0.9;
+  white-space: nowrap;
+}
+
+.invoice__content table tfoot tr td:first-child {
+  text-align: right;
+}
+
+.invoice__content table tfoot tr td:last-child {
+  border: 1px solid hsl(228, 4%, 25%); /* dark-alt */
+}
+
+.invoice__content table tfoot tr:last-child td {
+  font-size: 1.125rem; /* --> 18px --> h4-font */
+  font-weight: 700; /* bold */
+}
+
+.invoice__term .term {
+  display: block;
+  font-size: 0.813rem; /* smaller-font */
+  font-weight: 600; /* semi-bold */
+  color: hsl(228, 4%, 25%); /* dark-alt */
+}
+
+.invoice__footer {
+  text-align: center;
+}
+.footer__text {
+  font-weight: 700; /* bold */
+  font-size: 0.875rem; /* small-font */
+  color: hsl(228, 4%, 25%); /* dark-alt */
+  text-transform: uppercase;
+  font-family: "Nunito Sans", sans-serif; /* nunito */
+}
+
+.footer__contact {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 0.5rem; /*  $x-0-75 */
+}
+
+.contact__website,
+.contact__phone,
+.contact__email {
+  display: flex;
+  align-items: center;
+  font-size: 0.813rem; /* smaller-font */
+  font-weight: 600; /* semi-bold */
+  color: hsl(228, 4%, 25%); /* dark-alt */
+  gap: 0.2rem;
+}
+
+.footer__contact .MuiSvgIcon-root {
+  font-size: 1.125rem;
+}

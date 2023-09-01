@@ -4,35 +4,7 @@ const generateUniqueId = require("generate-unique-id");
 
 // Internal Imports
 const Order = require("../models/orderModel");
-const { STRIPE_SECRET } = require("../config");
-const stripe = require("stripe")(STRIPE_SECRET);
 const Apifeatures = require("../utils/Apifeatures");
-
-/**
- * @route   Post /api/v1/payment
- * @desc    Payment using stripe
- * @access  Private
- */
-
-const price = () => {
-  return 20;
-};
-
-const orderPayment = asyncHandler(async (req, res) => {
-  // Create a PaymentIntent with the order amount and currency
-  const paymentIntent = await stripe.paymentIntents.create({
-    amount: price(),
-    currency: "usd",
-    automatic_payment_methods: {
-      enabled: true,
-    },
-  });
-
-  res.send({
-    clientSecret: paymentIntent.client_secret,
-    paymentIntent,
-  });
-});
 
 /**
  * @route   Post /api/v1/order
@@ -50,7 +22,6 @@ const createOrder = asyncHandler(async (req, res) => {
     paymentMethod,
     paymentResult,
     paymentStatus,
-    paidAt,
   } = req.body;
 
   // create a new category
@@ -68,7 +39,6 @@ const createOrder = asyncHandler(async (req, res) => {
     paymentMethod,
     paymentResult,
     paymentStatus,
-    paidAt,
   });
 
   if (order) {
@@ -109,9 +79,55 @@ const getOrders = asyncHandler(async (req, res) => {
   }
 });
 
+/**
+ * @route   Post /api/v1/order/:orderId
+ * @desc    Update order (payment status, shipping status)
+ * @access  Private/Admin
+ */
+const updateOrder = asyncHandler(async (req, res) => {
+  const order = await Order.findById(req.params.orderId);
+
+  if (order) {
+    order.deliveryStatus = req.body.deliveryStatus || order.deliveryStatus;
+    order.paymentStatus = req.body.paymentStatus || order.paymentStatus;
+  }
+
+  // update order
+  const updateOrder = await order.save();
+
+  if (updateOrder) {
+    res.status(201).json({
+      success: true,
+    });
+  } else {
+    res.status(400);
+    throw new Error("Something was wrong!");
+  }
+});
+
+/**
+ * @route   Delete /api/v1/order/:orderId
+ * @desc    Delete order
+ * @access  Private/Admin
+ */
+
+const deleteOrder = asyncHandler(async (req, res) => {
+  const order = await Order.findById(req.params.orderId);
+  if (order) {
+    await order.remove();
+    res.status(200).json({
+      success: true,
+    });
+  } else {
+    res.status(400);
+    throw new Error("Order is not found");
+  }
+});
+
 // Export all controller function
 module.exports = {
-  orderPayment,
   createOrder,
   getOrders,
+  updateOrder,
+  deleteOrder,
 };

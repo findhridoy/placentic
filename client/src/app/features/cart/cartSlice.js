@@ -11,10 +11,15 @@ const cartAmounts = JSON.parse(localStorage.getItem("amount"))
   ? JSON.parse(localStorage.getItem("amount"))
   : {};
 
+// payment from storage
+const paymentInfo = JSON.parse(localStorage.getItem("paymentInfo"))
+  ? JSON.parse(localStorage.getItem("paymentInfo"))
+  : {};
+
 // cart slice
 const cartSlice = createSlice({
   name: "cart",
-  initialState: { cartItems, cartAmounts },
+  initialState: { cartItems, cartAmounts, paymentInfo },
   reducers: {
     addToCart: (state, action) => {
       const existCartItem = state.cartItems?.find(
@@ -63,9 +68,18 @@ const cartSlice = createSlice({
       state.cartAmounts = action.payload;
       localStorage.setItem("amount", JSON.stringify(state.cartAmounts));
     },
+    setPaymentInfo: (state, action) => {
+      state.paymentInfo = action.payload;
+      localStorage.setItem("paymentInfo", JSON.stringify(state.paymentInfo));
+    },
   },
 });
 
-export const { addToCart, updateCartItem, removeFromCart, setCartAmount } =
-  cartSlice.actions;
+export const {
+  addToCart,
+  updateCartItem,
+  removeFromCart,
+  setCartAmount,
+  setPaymentInfo,
+} = cartSlice.actions;
 export default cartSlice.reducer;

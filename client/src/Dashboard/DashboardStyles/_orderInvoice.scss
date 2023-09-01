@@ -3,12 +3,13 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0 $x-0-75;
+  padding: 0 $x-2-5;
   .orderInvoice__container {
-    max-width: 780px;
+    max-width: 600px;
     width: 100%;
     background-color: $white-alt;
     padding: $x-1;
+    position: relative;
 
     .orderInvoice__header {
       display: flex;
@@ -18,150 +19,14 @@
       .orderInvoice__title {
         font-weight: $semi-bold;
         @include h3-font;
-        // margin-bottom: $x-0-75;
       }
 
-      //.orderInvoice__close {
-      //   }
-    }
-
-    // invoice
-    .orderInvoice__invoice {
-      margin-top: $x-0-5;
-      .invoice__header {
-        .logo {
-          width: 130px;
-          @include breakpoint(md) {
-            width: 135px;
-          }
-          @include breakpoint(lg) {
-            width: 140px;
-          }
-        }
-      }
-
-      .invoice__address {
-        display: flex;
-        justify-content: space-between;
-        margin-top: $x-0-5;
-
-        .address__from,
-        .address__to,
-        .invoice__issue {
-          display: flex;
-          flex-direction: column;
-
-          .from__title,
-          .to__title {
-            font-weight: $semi-bold;
-            @include smallest-font;
-            color: $dark-alt;
-          }
-
-          .from__company,
-          .to__customer,
-          .invoice__title {
-            font-weight: $bold;
-            @include normal-font;
-            color: $dark-alt;
-          }
-
-          .from__address,
-          .to__address,
-          .invoice__id,
-          .invoice__date {
-            font-weight: $medium;
-            @include small-font;
-            color: $dark-alt;
-          }
-
-          .invoice__id {
-            font-weight: $semi-bold;
-            @include small-font;
-          }
-        }
-      }
-
-      .invoice__content {
-        margin-top: $x-0-75;
-        table {
-          border-collapse: collapse;
-          width: 100%;
-        }
-
-        thead {
-          tr {
-            th {
-              white-space: nowrap;
-              text-align: left;
-              border: 1px solid $dark-alt;
-              padding: $x-0-25 $x-0-5;
-              color: $dark-alt;
-              @include small-font;
-              text-transform: uppercase;
-            }
-          }
-        }
-        tbody {
-          tr {
-            td {
-              text-align: left;
-              border: 1px solid $dark-alt;
-              padding: $x-0-25 $x-0-5;
-              font-weight: $semi-bold;
-              color: $dark-alt;
-              opacity: 0.9;
-              @include smaller-font;
-              white-space: nowrap;
-              @include transition(100ms);
-            }
-          }
-        }
-
-        tfoot {
-          tr {
-            td {
-              padding: $x-0-25 $x-0-5;
-              font-weight: $semi-bold;
-              color: $dark-alt;
-              opacity: 0.9;
-              @include smaller-font;
-              white-space: nowrap;
-              @include transition(100ms);
-              &:first-child {
-                // border-radius: 8px 0 0 8px;
-                text-align: right;
-              }
-              &:last-child {
-                border: 1px solid $dark-alt;
-                // border-radius: 0 8px 8px 0;
-              }
-            }
-          }
-        }
-      }
-
-      .invoice__term {
-        margin-top: $x-1-5;
-        padding-bottom: $x-0-75;
-        .term {
-          display: block;
-          font-weight: $semi-bold;
-          @include smaller-font;
-          color: $dark-alt;
-        }
-      }
-
-      .invoice__footer {
-        padding-top: $x-0-5;
-        text-align: center;
-        .footer__text {
-          font-weight: $bold;
-          @include small-font;
-          color: $dark-alt;
-          text-transform: uppercase;
-          font-family: $nunito;
-        }
+      .orderInvoice__close {
+        position: absolute;
+        right: -25px;
+        top: -25px;
+        background-color: $white-alt;
+        border-radius: 50%;
       }
     }
   }

@@ -1,13 +1,22 @@
+import { yupResolver } from "@hookform/resolvers/yup";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { Button, Modal } from "@mui/material";
-import React, { useState } from "react";
+import cogoToast from "cogo-toast";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import { useUpdateOrderMutation } from "../../app/features/orders/orderApi";
 import UpdateOrderForm from "../../dashboard/DashboardComponents/UpdateOrderForm";
+import { paymentStatusSchema } from "../../helpers/Validation/ValidationSchema";
 
 const OrderPaymentAciton = ({ row }) => {
   // Modal state
   const [open, setOpen] = useState(false);
 
+  // Redux element
+  const [updateOrder, { isLoading, isError, error, data }] =
+    useUpdateOrderMutation();
+
+  // payment options
   const paymentOption = ["authorized", "paid"];
 
   // React hook form own state
@@ -16,13 +25,30 @@ const OrderPaymentAciton = ({ row }) => {
     register,
     formState: { errors },
   } = useForm({
-    // resolver: yupResolver(addProductSchema),
+    resolver: yupResolver(paymentStatusSchema),
   });
 
   // React hook form data submit
   const onSubmit = async (data) => {
-    // console.log(data);
+    const updateData = {
+      orderId: row?.original?._id,
+      data,
+    };
+    await updateOrder(updateData);
   };
+
+  useEffect(() => {
+    if (isError) {
+      cogoToast.error(error?.data?.message);
+    }
+    if (data?.message) {
+      cogoToast.error("Something was wrong!");
+    }
+    if (data?.success) {
+      cogoToast.success("Payment status has been updated.");
+      setOpen(false);
+    }
+  }, [isError, error, data, setOpen]);
   return (
     <>
       <div className="custom__chip">
@@ -57,6 +83,8 @@ const OrderPaymentAciton = ({ row }) => {
             label="Payment status"
             data={paymentOption}
             setOpen={setOpen}
+            isLoading={isLoading}
+            defaultSelect={row?.original?.paymentStatus}
           />
         </>
       </Modal>

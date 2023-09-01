@@ -1,7 +1,7 @@
 import { Modal } from "@mui/material";
 import cogoToast from "cogo-toast";
 import React, { useEffect, useState } from "react";
-import { useDeleteCategoryMutation } from "../../app/features/categories/categoryApi";
+import { useDeleteOrderMutation } from "../../app/features/orders/orderApi";
 import OrderInvoice from "../../dashboard/DashboardComponents/OrderInvoice";
 import ActionsButton from "../TableComponents/AdditionalComponents/ActionsButton";
 import DeleteDialog from "../TableComponents/AdditionalComponents/DeleteDialog";
@@ -12,12 +12,12 @@ const OrderAction = ({ row }) => {
   const [dialog, setDialog] = useState(false);
 
   // Redux element
-  const [deleteProduct, { isLoading, isError, error, data }] =
-    useDeleteCategoryMutation();
+  const [deleteOrder, { isLoading, isError, error, data }] =
+    useDeleteOrderMutation();
 
   // Table item delete functionality
-  const handleDelete = async (catId) => {
-    await deleteProduct(catId);
+  const handleDelete = async (orderId) => {
+    await deleteOrder(orderId);
   };
 
   useEffect(() => {
@@ -28,7 +28,7 @@ const OrderAction = ({ row }) => {
       cogoToast.error("Something was wrong!");
     }
     if (data?.success) {
-      cogoToast.success("Category is deleted.");
+      cogoToast.success("Order is deleted.");
       setDialog(false);
     }
   }, [isError, error, data, setDialog]);

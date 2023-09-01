@@ -1,119 +1,119 @@
 import { Button } from "@mui/material";
 import {
-  LinkAuthenticationElement,
-  PaymentElement,
+  CardCvcElement,
+  CardExpiryElement,
+  CardNumberElement,
   useElements,
   useStripe,
 } from "@stripe/react-stripe-js";
-import { useEffect, useState } from "react";
-import CustomAlert from "./controls/CustomAlert";
+import cogoToast from "cogo-toast";
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { setPaymentInfo } from "../app/features/cart/cartSlice";
 
-const PaymentForm = () => {
+const PaymentForm = ({ clientSecret }) => {
+  // State
+  const [isProcessing, setProcessingTo] = useState(false);
+
   const stripe = useStripe();
   const elements = useElements();
 
-  const [email, setEmail] = useState("");
-  const [message, setMessage] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
+  // Redux element
+  const dispatch = useDispatch();
+  const { userInfo } = useSelector((state) => state.auth);
 
-  useEffect(() => {
-    if (!stripe) {
-      return;
-    }
-
-    const clientSecret = new URLSearchParams(window.location.search).get(
-      "payment_intent_client_secret"
-    );
-
-    if (!clientSecret) {
-      return;
-    }
-
-    stripe.retrievePaymentIntent(clientSecret).then(({ paymentIntent }) => {
-      switch (paymentIntent.status) {
-        case "succeeded":
-          setMessage("Payment succeeded!");
-          break;
-        case "processing":
-          setMessage("Your payment is processing.");
-          break;
-        case "requires_payment_method":
-          setMessage("Your payment was not successful, please try again.");
-          break;
-        default:
-          setMessage("Something went wrong.");
-          break;
-      }
-    });
-  }, [stripe]);
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    if (!stripe || !elements) {
-      return;
-    }
-
-    setIsLoading(true);
-
-    const { error } = await stripe.confirmPayment({
-      elements,
-      confirmParams: {
-        // Make sure to change this to your payment completion page
-        return_url: "http://localhost:3000/checkout",
-      },
-    });
-
-    if (error.type === "card_error" || error.type === "validation_error") {
-      setMessage(error.message);
-    } else {
-      setMessage("An unexpected error occurred.");
-    }
-
-    setIsLoading(false);
+  const handleCardDetailsChange = (event) => {
+    event.error && cogoToast.error(event.error.message);
   };
 
-  const paymentElementOptions = {
-    layout: "tabs",
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    // our payment process starts here
+    if (clientSecret) {
+      const billingDetails = {
+        email: userInfo?.email,
+      };
+
+      setProcessingTo(true);
+
+      const cardElement = elements.getElement(CardNumberElement);
+
+      try {
+        const paymentMethodReq = await stripe.createPaymentMethod({
+          type: "card",
+          card: cardElement,
+          billing_details: billingDetails,
+        });
+
+        if (paymentMethodReq.error) {
+          cogoToast.error(paymentMethodReq.error.message);
+          setProcessingTo(false);
+          return;
+        }
+
+        const confirmedCardPayment = await stripe.confirmCardPayment(
+          clientSecret,
+          {
+            payment_method: paymentMethodReq.paymentMethod.id,
+          }
+        );
+
+        if (confirmedCardPayment.error) {
+          cogoToast.error(confirmedCardPayment.error);
+          setProcessingTo(false);
+          return;
+        }
+
+        dispatch(
+          setPaymentInfo({
+            paidAt: confirmedCardPayment?.paymentIntent?.created,
+            payment_id: confirmedCardPayment?.paymentIntent?.id,
+            status: confirmedCardPayment?.paymentIntent?.status,
+            email_address: userInfo?.email,
+          })
+        );
+        cogoToast.success("Payment successful");
+        setProcessingTo(false);
+      } catch (err) {
+        cogoToast.error(err.message);
+      }
+    } else {
+      cogoToast.error("Error: Server could not initiate the payment process.");
+    }
   };
 
   return (
-    <>
-      <form id="payment-form" onSubmit={handleSubmit}>
-        {message && <CustomAlert severity="error" message={message} close />}
+    <div className="paymentForm">
+      <form onSubmit={handleSubmit}>
+        <span className="form__group">
+          <label className="form__label">Card number</label>
+          <CardNumberElement onChange={handleCardDetailsChange} />
+        </span>
 
-        <PaymentElement id="payment-element" />
+        <div className="form__grid">
+          <span className="form__group">
+            <label className="form__label">Expiration date</label>
+            <CardExpiryElement onChange={handleCardDetailsChange} />
+          </span>
+
+          <span className="form__group">
+            <label className="form__label">CVC</label>
+            <CardCvcElement onChange={handleCardDetailsChange} />
+          </span>
+        </div>
+
         <div className="btn small__btn btn__dark">
           <Button
-            disabled={isLoading || !stripe || !elements}
+            disabled={isProcessing || !stripe || !elements}
             type="submit"
-            id="submit"
             style={{ width: "100%", marginTop: "1.2rem" }}
           >
-            {isLoading ? "Proccesing" : "Pay now"}
+            {isProcessing ? "Proccesing" : "Pay now"}
           </Button>
         </div>
       </form>
-
-      <form id="payment-form" onSubmit={handleSubmit}>
-        <LinkAuthenticationElement
-          id="link-authentication-element"
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <PaymentElement id="payment-element" options={paymentElementOptions} />
-        <button disabled={isLoading || !stripe || !elements} id="submit">
-          <span id="button-text">
-            {isLoading ? (
-              <div className="spinner" id="spinner"></div>
-            ) : (
-              "Pay now"
-            )}
-          </span>
-        </button>
-        {/* Show any error or success messages */}
-        {message && <div id="payment-message">{message}</div>}
-      </form>
-    </>
+    </div>
   );
 };
 

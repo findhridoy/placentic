@@ -83,10 +83,22 @@ const shippingSchema = Yup.object({
   zip_code: Yup.string().required("ZIP code field can not be empty."),
 });
 
+// Delivery Status Schema
+const deliveryStatusSchema = Yup.object({
+  deliveryStatus: Yup.string().required("Select an option."),
+});
+
+// Payment Status Schema
+const paymentStatusSchema = Yup.object({
+  paymentStatus: Yup.string().required("Select an option."),
+});
+
 export {
   addProductSchema,
   categorySchema,
+  deliveryStatusSchema,
   loginSchema,
+  paymentStatusSchema,
   shippingSchema,
   signUpSchema,
   userUpdateSchema,
