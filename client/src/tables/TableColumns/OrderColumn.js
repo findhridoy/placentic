@@ -63,7 +63,7 @@ export const orderColumn = [
     cell: ({ row }) => <>${row?.original?.totalPrice}</>,
   },
   {
-    accessorKey: "paymentStatus",
+    accessorKey: "paymentResult",
     header: "Payment Status",
     cell: ({ row }) => <OrderPaymentAciton row={row} />,
   },

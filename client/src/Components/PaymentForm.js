@@ -65,12 +65,15 @@ const PaymentForm = ({ clientSecret }) => {
           return;
         }
 
+        // save data in storage
         dispatch(
           setPaymentInfo({
-            paidAt: confirmedCardPayment?.paymentIntent?.created,
+            paid_at: confirmedCardPayment?.paymentIntent?.created,
             payment_id: confirmedCardPayment?.paymentIntent?.id,
             status: confirmedCardPayment?.paymentIntent?.status,
+            payment_method: "card",
             email_address: userInfo?.email,
+            is_paid: true,
           })
         );
         cogoToast.success("Payment successful");

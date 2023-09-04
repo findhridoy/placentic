@@ -19,9 +19,7 @@ const createOrder = asyncHandler(async (req, res) => {
     shippingPrice,
     taxPrice,
     totalPrice,
-    paymentMethod,
     paymentResult,
-    paymentStatus,
   } = req.body;
 
   // create a new category
@@ -36,9 +34,7 @@ const createOrder = asyncHandler(async (req, res) => {
     shippingPrice,
     taxPrice,
     totalPrice,
-    paymentMethod,
     paymentResult,
-    paymentStatus,
   });
 
   if (order) {
@@ -89,7 +85,6 @@ const updateOrder = asyncHandler(async (req, res) => {
 
   if (order) {
     order.deliveryStatus = req.body.deliveryStatus || order.deliveryStatus;
-    order.paymentStatus = req.body.paymentStatus || order.paymentStatus;
   }
 
   // update order

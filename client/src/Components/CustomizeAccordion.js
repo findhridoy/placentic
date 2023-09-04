@@ -6,12 +6,9 @@ import MuiAccordionDetails from "@mui/material/AccordionDetails";
 import MuiAccordionSummary from "@mui/material/AccordionSummary";
 import { styled } from "@mui/material/styles";
 import { useState } from "react";
-// import { paymentOption } from "../assets/json/radioData";
 import ShippingForm from "./ShippingForm";
-import CustomAlert from "./controls/CustomAlert";
-// import CustomRadioGroup from "./controls/CustomRadioGroup";
 import StripePayment from "./StripePayment";
-import CustomRadioGroup from "./controls/CustomRadioGroup";
+import CustomAlert from "./controls/CustomAlert";
 import UserInfoSkeleton from "./skeletons/UserInfoSkeleton";
 
 // Mui element
@@ -35,24 +32,14 @@ const CustomizeAccordion = ({
   user,
   userInfo,
   cartAmounts,
-  paymentMethod,
-  setPaymentMethod,
+  paymentInfo,
 }) => {
   // States
   const [expanded, setExpanded] = useState(
-    userInfo?.isAddress ? "panel3" : "panel2"
+    userInfo?.isAddress || cartAmounts?.shippingMethod === "free"
+      ? "panel3"
+      : "panel2"
   );
-
-  const paymentOption = [
-    {
-      label: "Card",
-      value: "card",
-    },
-    {
-      label: "Cash",
-      value: "cash",
-    },
-  ];
 
   // Mui element
   const handleChange = (panel) => (event, newExpanded) => {
@@ -155,15 +142,17 @@ const CustomizeAccordion = ({
             )}
           </div>
         </MuiAccordionSummary>
-        <AccordionDetails>
-          <ShippingForm user={user} setExpanded={setExpanded} />
-        </AccordionDetails>
+        {cartAmounts?.shippingMethod === "costly" && (
+          <AccordionDetails>
+            <ShippingForm user={user} setExpanded={setExpanded} />
+          </AccordionDetails>
+        )}
       </Accordion>
 
       <Accordion
         expanded={expanded === "panel3"}
         onChange={handleChange("panel3")}
-        disabled={isError}
+        disabled={isError || paymentInfo?.is_paid}
       >
         <MuiAccordionSummary
           expandIcon={
@@ -176,10 +165,14 @@ const CustomizeAccordion = ({
             <div className="accordion__content">
               <div className="accordion__title">
                 <span className="title__text">Payment Method</span>
-                {/* <CheckCircleIcon color="success" /> */}
+                {paymentInfo?.is_paid && <CheckCircleIcon color="success" />}
               </div>
+
+              {paymentInfo?.is_paid && (
+                <span className="user__name">Payment completed.</span>
+              )}
             </div>
-            {!isError && (
+            {!isError && !paymentInfo?.is_paid && (
               <div className={expanded === "panel3" ? "expanded__icon" : ""}>
                 <IconButton>
                   <ExpandMoreIcon />
@@ -188,17 +181,11 @@ const CustomizeAccordion = ({
             )}
           </div>
         </MuiAccordionSummary>
-        <AccordionDetails>
-          <div className="accordion__radio">
-            <CustomRadioGroup
-              radioMode={paymentMethod}
-              setRadioMode={setPaymentMethod}
-              radioData={paymentOption}
-            />
-          </div>
-
-          {paymentMethod === "card" && <StripePayment />}
-        </AccordionDetails>
+        {!paymentInfo?.is_paid && (
+          <AccordionDetails>
+            <StripePayment />
+          </AccordionDetails>
+        )}
       </Accordion>
     </div>
   );

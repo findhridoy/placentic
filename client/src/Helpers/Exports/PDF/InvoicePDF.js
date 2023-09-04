@@ -26,19 +26,26 @@ const InvoicePDF = (row) => {
             <span className="to__customer">
               {row?.original?.customer?.name}
             </span>
-            <span className="to__address">
-              {row?.original?.shippingAddress?.address}
-            </span>
-            <span className="to__address">
-              {row?.original?.shippingAddress?.city} -{" "}
-              {row?.original?.shippingAddress?.zip_code}
-            </span>
-            <span className="to__address">
-              {row?.original?.shippingAddress?.country}
-            </span>
-            <span className="to__address">
-              {row?.original?.shippingAddress?.phone_number}
-            </span>
+
+            {row?.original?.deliveryStatus === "free" ? (
+              <span className="to__address">__Store Pickup</span>
+            ) : (
+              <>
+                <span className="to__address">
+                  {row?.original?.shippingAddress?.address}
+                </span>
+                <span className="to__address">
+                  {row?.original?.shippingAddress?.city} -{" "}
+                  {row?.original?.shippingAddress?.zip_code}
+                </span>
+                <span className="to__address">
+                  {row?.original?.shippingAddress?.country}
+                </span>
+                <span className="to__address">
+                  {row?.original?.shippingAddress?.phone_number}
+                </span>
+              </>
+            )}
           </div>
           <div className="invoice__issue">
             <span className="invoice__title">Invoice</span>
@@ -50,6 +57,14 @@ const InvoicePDF = (row) => {
               <Moment format="MMM D, YYYY" withTitle>
                 {row?.original?.createdAt}
               </Moment>
+            </span>
+            <span className="invoice__id">
+              Status:{" "}
+              {row?.original?.paymentResult?.status === "succeeded" ? (
+                <strong>Paid</strong>
+              ) : (
+                <strong>Athorized</strong>
+              )}
             </span>
           </div>
         </div>
@@ -78,21 +93,25 @@ const InvoicePDF = (row) => {
             ))}
           </tbody>
           <tfoot>
-            {/* <tr>
-              <td colSpan="4">Subtotal</td>
-              <td>{row?.original?.totalPrice}</td>
-            </tr> */}
+            <td colSpan="4">Subtotal</td>
+            <td>
+              {(
+                row?.original?.totalPrice -
+                row?.original?.shippingPrice -
+                row?.original?.taxPrice
+              ).toFixed(2)}
+            </td>
             <tr>
               <td colSpan="4">Shipping</td>
-              <td>{row?.original?.shippingPrice}</td>
+              <td>{(row?.original?.shippingPrice).toFixed(2)}</td>
             </tr>
             <tr>
               <td colSpan="4">Tax</td>
-              <td>{row?.original?.taxPrice}</td>
+              <td>{(row?.original?.taxPrice).toFixed(2)}</td>
             </tr>
             <tr>
               <td colSpan="4">Invoice Total</td>
-              <td>{row?.original?.totalPrice}</td>
+              <td>{(row?.original?.totalPrice).toFixed(2)}</td>
             </tr>
           </tfoot>
         </table>

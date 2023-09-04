@@ -24,10 +24,11 @@ const CartSubtotal = ({ shippingMode, cartItems }) => {
     tax: Number((subtotal * 5) / 100)?.toFixed(2),
     shipping: Number(shipping)?.toFixed(2),
     shippingMethod: shippingMode,
-    total:
+    total: (
       Number(subtotal) +
       Number(shipping) +
-      Number((subtotal * 5) / 100)?.toFixed(2),
+      Number((subtotal * 5) / 100)
+    ).toFixed(2),
   };
 
   // Store amount and change route

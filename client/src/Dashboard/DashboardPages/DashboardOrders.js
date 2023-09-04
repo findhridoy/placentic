@@ -99,9 +99,9 @@ const DashboardOrders = () => {
       order?.totalPrice,
       order?.deliveryStatus,
       moment(order?.deliveredAt).format("D-MM-YYYY"),
-      order?.paymentStatus,
-      moment(order?.paidAt).format("D-MM-YYYY"),
-      order?.paymentMethod,
+      order?.paymentResult?.status,
+      moment(order?.paymentResult?.paid_at).format("D-MM-YYYY"),
+      order?.paymentResult?.payment_method,
       moment(order?.createdAt).format("D-MM-YYYY"),
     ]),
   ];

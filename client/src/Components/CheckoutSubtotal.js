@@ -4,7 +4,7 @@ const CheckoutSubtotal = ({
   cartAmounts,
   handleCheckout,
   isLoading,
-  paymentMethod,
+  paymentInfo,
 }) => {
   return (
     <div className="cartSubtotal">
@@ -37,7 +37,7 @@ const CheckoutSubtotal = ({
         text="Place order"
         loading={isLoading}
         onClick={handleCheckout}
-        disabled={paymentMethod === "card"}
+        disabled={!paymentInfo?.is_paid}
       />
     </div>
   );

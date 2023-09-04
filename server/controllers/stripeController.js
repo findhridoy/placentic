@@ -13,7 +13,7 @@ const stripe = require("stripe")(STRIPE_SECRET_KEY);
 
 const createPaymentIntent = asyncHandler(async (req, res) => {
   const paymentIntent = await stripe.paymentIntents.create({
-    amount: Number(req.body.amount),
+    amount: Math.round(Number(req.body.amount) * 100),
     currency: "usd",
     automatic_payment_methods: {
       enabled: true,

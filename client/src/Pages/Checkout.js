@@ -1,7 +1,9 @@
-import { useState } from "react";
-import { useSelector } from "react-redux";
+import cogoToast from "cogo-toast";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useGetProfileQuery } from "../app/features/auth/authApi";
+import { resetCart } from "../app/features/cart/cartSlice";
 import { useOrderCreateMutation } from "../app/features/orders/orderApi";
 import checkoutImage from "../assets/banners/checkout4.jpg";
 import CheckoutSubtotal from "../components/CheckoutSubtotal";
@@ -9,24 +11,21 @@ import CustomizeAccordion from "../components/CustomizeAccordion";
 import CustomBreadcrumbs from "../components/controls/CustomBreadcrumbs";
 
 const Checkout = () => {
-  // States
-  const [paymentMethod, setPaymentMethod] = useState("card");
-
   // react router
   const navigate = useNavigate();
 
   // Redux element
+  const dispatch = useDispatch();
+  const { userInfo } = useSelector((state) => state.auth);
   const { cartItems, cartAmounts, paymentInfo } = useSelector(
     (state) => state.cart
   );
-  const { userInfo } = useSelector((state) => state.auth);
+
   const { isLoading, isError, data: user } = useGetProfileQuery();
   const [
     orderCreate,
     { isLoading: orderIsLoading, isError: orderIsError, error, data },
   ] = useOrderCreateMutation();
-
-  // console.log(data);
 
   const handleCheckout = async () => {
     const orderData = {
@@ -42,17 +41,37 @@ const Checkout = () => {
         zip_code: user?.zip_code,
         country: user?.country,
       },
+      deliveryStatus:
+        cartAmounts?.shippingMethod === "free" ? "free" : "prepared",
       shippingPrice: cartAmounts?.shipping,
       taxPrice: cartAmounts?.tax,
       totalPrice: cartAmounts?.total,
-      paymentMethod: paymentMethod,
       paymentResult: paymentInfo,
-      paymentStatus: "paid",
     };
 
     await orderCreate(orderData);
-    navigate("/checkout");
   };
+
+  useEffect(() => {
+    if (orderIsError) {
+      cogoToast.error(error?.data?.message);
+    }
+    if (data?.message) {
+      cogoToast.error("Something was wrong!");
+    }
+    if (data?.success) {
+      cogoToast.success("Product has been created.");
+      dispatch(resetCart());
+      navigate("/profile");
+    }
+  }, [orderIsError, error, data, dispatch, navigate]);
+
+  useEffect(() => {
+    if (!cartItems?.length && !Object.keys(cartAmounts)?.length) {
+      navigate("/");
+    }
+  }, [cartItems, cartAmounts, navigate]);
+
   return (
     <section className="checkout__section">
       <CustomBreadcrumbs title="Checkout" image={checkoutImage} />
@@ -65,8 +84,7 @@ const Checkout = () => {
               user={user}
               userInfo={userInfo}
               cartAmounts={cartAmounts}
-              paymentMethod={paymentMethod}
-              setPaymentMethod={setPaymentMethod}
+              paymentInfo={paymentInfo}
             />
           </div>
 
@@ -75,7 +93,7 @@ const Checkout = () => {
               cartAmounts={cartAmounts}
               handleCheckout={handleCheckout}
               isLoading={orderIsLoading}
-              paymentMethod={paymentMethod}
+              paymentInfo={paymentInfo}
             />
           </div>
         </div>

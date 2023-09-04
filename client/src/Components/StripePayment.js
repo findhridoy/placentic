@@ -27,6 +27,8 @@ const StripePayment = () => {
         <StripePaymentSkeleton />
       ) : isError ? (
         <CustomAlert severity="error" message={error?.data?.message} close />
+      ) : data?.message ? (
+        <CustomAlert severity="warning" message={data?.message} close />
       ) : (
         data?.clientSecret &&
         data?.publicSecret && (

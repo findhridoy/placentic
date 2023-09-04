@@ -1,5 +1,5 @@
 import { yupResolver } from "@hookform/resolvers/yup";
-import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+// import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { Button, Modal } from "@mui/material";
 import cogoToast from "cogo-toast";
 import React, { useEffect, useState } from "react";
@@ -54,19 +54,19 @@ const OrderPaymentAciton = ({ row }) => {
       <div className="custom__chip">
         <div
           className={
-            row?.original?.paymentStatus === "authorized"
-              ? "warning"
-              : row?.original?.paymentStatus === "paid"
+            // row?.original?.paymentStatus === "authorized"
+            //   ? "warning" :
+            row?.original?.paymentResult?.status === "succeeded"
               ? "success"
-              : ""
+              : "info"
           }
         >
           <Button
-            endIcon={<KeyboardArrowDownIcon />}
+            // endIcon={<KeyboardArrowDownIcon />}
             size="small"
-            onClick={() => setOpen(true)}
+            // onClick={() => setOpen(true)}
           >
-            ● {row?.original?.paymentStatus}
+            ● {row?.original?.paymentResult?.status}
           </Button>
         </div>
       </div>

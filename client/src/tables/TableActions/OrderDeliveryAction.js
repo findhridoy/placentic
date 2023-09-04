@@ -63,16 +63,20 @@ const OrderDeliveryAction = ({ row }) => {
               ? "info"
               : row?.original?.deliveryStatus === "canceled"
               ? "error"
-              : ""
+              : "secondary"
           }
         >
-          <Button
-            endIcon={<KeyboardArrowDownIcon />}
-            size="small"
-            onClick={() => setOpen(true)}
-          >
-            ● {row?.original?.deliveryStatus}
-          </Button>
+          {row?.original?.deliveryStatus === "free" ? (
+            <Button size="small">● Store Pickup</Button>
+          ) : (
+            <Button
+              endIcon={<KeyboardArrowDownIcon />}
+              size="small"
+              onClick={() => setOpen(true)}
+            >
+              ● {row?.original?.deliveryStatus}
+            </Button>
+          )}
         </div>
       </div>
 
