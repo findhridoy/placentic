@@ -1,6 +1,6 @@
 .imageHandler__container {
   height: 100vh;
-  background-color: $white-alt;
+  background-color: $white;
   position: fixed;
   width: 100%;
   left: 0;
@@ -9,8 +9,8 @@
   z-index: 1599;
   display: flex;
   flex-direction: column;
-  gap: 2rem;
-  padding: 2rem;
+  gap: 3rem;
+  padding: 1rem;
 
   .reactEasyCrop_Container {
     position: relative;
@@ -23,11 +23,57 @@
     color: $dark-alt;
   }
   .imageHandler__btnContainer {
+    // background: gray;
     max-width: 480px;
     width: 100%;
     margin: 0 auto;
     .MuiButton-root {
       width: 100%;
+    }
+
+    .imageHandler__select {
+      position: absolute;
+      top: 1.5rem;
+      right: 1.5rem;
+
+      .select__title {
+        @include smaller-font;
+        font-family: $poppins;
+        color: $white;
+      }
+
+      // .MuiList-root {
+      //   .MuiMenuItem-root {
+      //     position: relative;
+      //     color: $dark;
+      //     font-weight: $medium;
+      //     font-family: $poppins;
+      //     @include smaller-font;
+      //   }
+      //   .Mui-selected {
+      //     color: $cyan;
+      //   }
+      // }
+
+      .MuiOutlinedInput-root {
+        border: 0;
+        height: 30px;
+        width: 100px;
+        border-radius: 0;
+        @include smaller-font;
+        font-family: $poppins;
+        color: $white;
+        outline: 0 !important;
+        border: $border-white;
+
+        .MuiOutlinedInput-notchedOutline {
+          border: none !important;
+        }
+
+        .MuiSvgIcon-root {
+          color: $white;
+        }
+      }
     }
   }
 }

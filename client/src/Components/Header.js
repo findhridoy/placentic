@@ -82,7 +82,7 @@ const Header = () => {
                   </NavLink>
                 </li>
                 <li className="nav__item">
-                  <NavLink className="nav__link" to="/catalog">
+                  <NavLink className="nav__link" to="/shop/category">
                     <CategoryIcon />
                     <span className="nav__text">Category</span>
                   </NavLink>

@@ -1,6 +1,6 @@
 import CloseIcon from "@mui/icons-material/Close";
 import CropIcon from "@mui/icons-material/Crop";
-import { Slider } from "@mui/material";
+import { MenuItem, Select, Slider } from "@mui/material";
 import React, { useState } from "react";
 import Cropper from "react-easy-crop";
 import { dataURLtoFile } from "../helpers/ImageHandler/ConvertDataURL";
@@ -21,6 +21,14 @@ const ImageHandler = ({
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
   const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
+
+  const [aspectRatio, setAspectRatio] = useState(1);
+
+  console.log(aspectRatio);
+
+  const handleChange = (event) => {
+    setAspectRatio(event.target.value);
+  };
 
   // Crop result
   const onCropComplete = (croppedArea, croppedAreaPixels) => {
@@ -57,7 +65,7 @@ const ImageHandler = ({
             image={showImage}
             crop={crop}
             zoom={zoom}
-            aspect={1}
+            aspect={aspectRatio}
             onCropChange={setCrop}
             onCropComplete={onCropComplete}
             onZoomChange={setZoom}
@@ -88,6 +96,16 @@ const ImageHandler = ({
                 startIcon={<CloseIcon />}
                 onClick={cancelCropArea}
               />
+            </div>
+
+            <div className="imageHandler__select">
+              <span className="select__title">Aspect Ratio </span>
+              <Select value={aspectRatio} onChange={handleChange}>
+                <MenuItem value={1}>Default</MenuItem>
+                <MenuItem value={3 / 2}>3 : 2</MenuItem>
+                <MenuItem value={4 / 3}>4 : 3</MenuItem>
+                <MenuItem value={16 / 9}>16 : 9</MenuItem>
+              </Select>
             </div>
           </div>
         </div>

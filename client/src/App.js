@@ -10,6 +10,7 @@ import PrivateRoutes from "./helpers/Private/PrivateRoutes";
 import PublicRoutes from "./helpers/Private/PublicRoutes";
 import useAuthCheck from "./hooks/useAuthCheck";
 import Cart from "./pages/Cart";
+import Categories from "./pages/Categories";
 import Checkout from "./pages/Checkout";
 import Collection from "./pages/Collection";
 import Home from "./pages/Home";
@@ -31,6 +32,7 @@ const App = () => {
       <Route path="/product/:prodId" element={<Product />} />
       <Route path="/shop/cart" element={<Cart />} />
       <Route path="/shop/collection" element={<Collection />} />
+      <Route path="/shop/category" element={<Categories />} />
 
       {/* Public Routes */}
       <Route path="/*" element={<PublicRoutes />}>
