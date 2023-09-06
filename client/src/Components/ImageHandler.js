@@ -1,6 +1,7 @@
 import CloseIcon from "@mui/icons-material/Close";
 import CropIcon from "@mui/icons-material/Crop";
-import { MenuItem, Select, Slider } from "@mui/material";
+import FlipIcon from "@mui/icons-material/Flip";
+import { MenuItem, Select, Slider, ToggleButton } from "@mui/material";
 import React, { useState } from "react";
 import Cropper from "react-easy-crop";
 import { dataURLtoFile } from "../helpers/ImageHandler/ConvertDataURL";
@@ -20,11 +21,12 @@ const ImageHandler = ({
   const [loading, setLoading] = useState();
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
+  const [rotation, setRotation] = useState(0);
+  const [scaleX, setScaleX] = useState(1);
+  const [selected, setSelected] = useState(false);
   const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
 
   const [aspectRatio, setAspectRatio] = useState(1);
-
-  console.log(aspectRatio);
 
   const handleChange = (event) => {
     setAspectRatio(event.target.value);
@@ -56,12 +58,35 @@ const ImageHandler = ({
   const cancelCropArea = () => {
     setShowImage(null);
   };
+
+  // Flip image
+  // useEffect(() => {
+  //   if (selected) {
+  //     setRotation(180);
+  //     setScaleX(-1);
+  //   }
+  //   if (!selected) {
+  //     setRotation(0);
+  //     setScaleX(1);
+  //   }
+  // }, [selected]);
+
+  const handleFlipImage = () => {
+    if (!selected) {
+      setScaleX(-1);
+    }
+    if (selected) {
+      setScaleX(1);
+    }
+  };
+
   return (
     <>
       {showImage && (
         <div className="imageHandler__container">
           <Cropper
             mediaClassName="cropImage__container"
+            // transform={selected ? `scalex(${scaleX})` : ""}
             image={showImage}
             crop={crop}
             zoom={zoom}
@@ -71,13 +96,28 @@ const ImageHandler = ({
             onZoomChange={setZoom}
           />
 
-          <Slider
-            min={1}
-            step={0.1}
-            value={zoom}
-            onChange={(e, zoom) => setZoom(zoom)}
-            valueLabelDisplay="auto"
-          />
+          <div className="imageHandler__slider">
+            <Slider
+              disabled={selected}
+              min={1}
+              max={3}
+              step={0.1}
+              value={zoom}
+              onChange={(e, zoom) => setZoom(zoom)}
+              valueLabelDisplay="auto"
+            />
+            <ToggleButton
+              value="check"
+              size="small"
+              selected={selected}
+              onChange={() => {
+                setSelected(!selected);
+              }}
+              onClick={handleFlipImage}
+            >
+              <FlipIcon />
+            </ToggleButton>
+          </div>
 
           <div className="imageHandler__btnContainer">
             <div className="button__group">

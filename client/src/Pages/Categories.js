@@ -1,5 +1,6 @@
 import { Skeleton } from "@mui/material";
 import React from "react";
+import { Link } from "react-router-dom";
 import { useGetCategoriesQuery } from "../app/features/categories/categoryApi";
 import collectionImage from "../assets/banners/collection11.jpg";
 import CustomBreadcrumbs from "../components/controls/CustomBreadcrumbs";
@@ -13,17 +14,20 @@ const CategoryItem = ({ category }) => {
         <img src={category?.image} alt="Category Img" />
       </div>
 
-      {/* <CustomButton
-        className="categories__btn btn small__btn btn__white"
-        text={category?.message}
-      /> */}
+      <div className="categories__box">
+        <span className="box__subtitle">Collection</span>
+        <h4 className="box__title">{category?.message}</h4>
+        <Link className="box__link" to="/shop/category">
+          See all collection
+        </Link>
+      </div>
     </div>
   );
 };
 
 const Categories = () => {
   const page = 0;
-  const size = 6;
+  const size = 10;
 
   // Redux toolkit element
   const {
@@ -39,7 +43,7 @@ const Categories = () => {
       <CustomBreadcrumbs title="Category" image={collectionImage} />
 
       <section className="categories__section">
-        <div className="container">
+        <div className="categories__container">
           <div className="categories__content">
             {isLoading ? (
               [...Array(4).keys()].map((index) => (
