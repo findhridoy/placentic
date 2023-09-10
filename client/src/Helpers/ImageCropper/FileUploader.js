@@ -2,7 +2,7 @@ import { Button, Input, Modal } from "@mui/material";
 import React, { useState } from "react";
 import ImageCropper from "./ImageCropper";
 
-const FileUploader = ({ image, setImage, errors }) => {
+const FileUploader = ({ image, setImage, filename, errors }) => {
   const [open, setOpen] = useState(false);
 
   const onChange = (e) => {
@@ -46,7 +46,12 @@ const FileUploader = ({ image, setImage, errors }) => {
       <Modal open={open}>
         <div className="fileUoloader__popup">
           <div className="popup">
-            <ImageCropper image={image} setImage={setImage} setOpen={setOpen} />
+            <ImageCropper
+              image={image}
+              setImage={setImage}
+              filename={filename}
+              setOpen={setOpen}
+            />
           </div>
         </div>
       </Modal>

@@ -5,6 +5,8 @@ import React, { useEffect, useState } from "react";
 import { useCreateCategoryMutation } from "../../app/features/categories/categoryApi";
 import CustomButton from "../../components/controls/CustomButton";
 import FileUploader from "../../helpers/ImageCropper/FileUploader";
+import FileUploaders from "../../helpers/Uploads/FileUploaders";
+import FormImageControl from "./FormImageControl";
 
 const AddCategoryForm = ({ setOpen }) => {
   // States
@@ -12,8 +14,6 @@ const AddCategoryForm = ({ setOpen }) => {
   const [message, setMessage] = useState("");
   const [image, setImage] = useState(null);
   const [formErrors, setFromErrors] = useState({});
-
-  console.log(image);
 
   // Redux element
   const [createCategory, { isLoading, isError, error, data: category }] =
@@ -94,8 +94,14 @@ const AddCategoryForm = ({ setOpen }) => {
             )}
           </span>
 
-          {/* <FormImageControl setImage={setImage} errors={formErrors} /> */}
-          <FileUploader image={image} setImage={setImage} errors={formErrors} />
+          <FormImageControl setImage={setImage} errors={formErrors} />
+          <FileUploader
+            image={image}
+            setImage={setImage}
+            filename="category -"
+            errors={formErrors}
+          />
+          <FileUploaders />
 
           <CustomButton
             className="addProducts__btn btn small__btn btn__dark"

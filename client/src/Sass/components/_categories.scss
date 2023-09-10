@@ -48,12 +48,13 @@
           }
 
           .categories__img {
-            // width: 100%;
+            width: 100%;
             img {
-              // vertical-align: middle;
-              // object-fit: cover;
+              vertical-align: middle;
+              object-fit: cover;
               width: 100%;
-              // aspect-ratio: 4/3;
+              height: auto;
+              aspect-ratio: 16/9;
             }
           }
 
@@ -107,8 +108,8 @@
             }
           }
 
-          &:nth-child(n) {
-            grid-column: 1/-1;
+          &:nth-child(odd) {
+            grid-column: 1/8;
             background: white;
             @include breakpoint(sm) {
               grid-column: 1/8;
@@ -122,8 +123,8 @@
               }
             }
           }
-          &:nth-child(2n) {
-            grid-column: 1/-1;
+          &:nth-child(even) {
+            grid-column: 8/-1;
             background: white;
             @include breakpoint(sm) {
               grid-column: 8/-1;
@@ -137,46 +138,100 @@
               }
             }
           }
-          &:nth-child(3n) {
-            grid-column: 1/-1;
-            background: white;
-            @include breakpoint(sm) {
-              grid-column: 1/5;
-            }
-          }
-          &:nth-child(4n) {
-            grid-column: 1/-1;
-            background: white;
-            @include breakpoint(sm) {
-              grid-column: 5/-1;
-            }
-          }
+          // &:nth-child(3n) {
+          //   grid-column: 1/-1;
+          //   background: white;
+          //   @include breakpoint(sm) {
+          //     grid-column: 1/5;
+          //   }
+          // }
+          // &:nth-child(4n) {
+          //   grid-column: 1/-1;
+          //   background: white;
+          //   @include breakpoint(sm) {
+          //     grid-column: 5/-1;
+          //   }
+          // }
 
-          &:nth-child(5n) {
-            grid-column: 1/-1;
-            background: white;
-            @include breakpoint(sm) {
-              grid-column: 1/5;
-            }
-          }
+          // &:nth-child(5n) {
+          //   grid-column: 1/-1;
+          //   background: white;
+          //   @include breakpoint(sm) {
+          //     grid-column: 1/5;
+          //   }
+          // }
 
-          &:nth-child(6n) {
-            grid-column: 1/-1;
-            background: white;
-            @include breakpoint(sm) {
-              grid-column: 5/9;
-            }
-          }
+          // &:nth-child(6n) {
+          //   grid-column: 1/-1;
+          //   background: white;
+          //   @include breakpoint(sm) {
+          //     grid-column: 5/9;
+          //   }
+          // }
 
-          &:nth-child(7n) {
-            grid-column: 1/-1;
-            background: white;
-            @include breakpoint(sm) {
-              grid-column: 9/-1;
-            }
-          }
+          // &:nth-child(7n) {
+          //   grid-column: 1/-1;
+          //   background: white;
+          //   @include breakpoint(sm) {
+          //     grid-column: 9/-1;
+          //   }
+          // }
         }
       }
     }
   }
 }
+
+// &:nth-child(2n) {
+//   grid-column: 1/-1;
+//   background: white;
+//   @include breakpoint(sm) {
+//     grid-column: 8/-1;
+//   }
+
+//   .categories__box {
+//     left: 8px;
+//     text-align: left;
+//     @include breakpoint(sm) {
+//       left: 20px;
+//     }
+//   }
+// }
+// &:nth-child(3n) {
+//   grid-column: 1/-1;
+//   background: white;
+//   @include breakpoint(sm) {
+//     grid-column: 1/5;
+//   }
+// }
+// &:nth-child(4n) {
+//   grid-column: 1/-1;
+//   background: white;
+//   @include breakpoint(sm) {
+//     grid-column: 5/-1;
+//   }
+// }
+
+// &:nth-child(5n) {
+//   grid-column: 1/-1;
+//   background: white;
+//   @include breakpoint(sm) {
+//     grid-column: 1/5;
+//   }
+// }
+
+// &:nth-child(6n) {
+//   grid-column: 1/-1;
+//   background: white;
+//   @include breakpoint(sm) {
+//     grid-column: 5/9;
+//   }
+// }
+
+// &:nth-child(7n) {
+//   grid-column: 1/-1;
+//   background: white;
+//   @include breakpoint(sm) {
+//     grid-column: 9/-1;
+//   }
+// }

@@ -43,7 +43,7 @@ const Categories = () => {
       <CustomBreadcrumbs title="Category" image={collectionImage} />
 
       <section className="categories__section">
-        <div className="categories__container">
+        <div className="categories__container container">
           <div className="categories__content">
             {isLoading ? (
               [...Array(4).keys()].map((index) => (

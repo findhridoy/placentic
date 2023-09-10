@@ -8,8 +8,9 @@ import Cropper from "react-cropper";
 
 import "cropperjs/dist/cropper.css";
 import CustomButton from "../../components/controls/CustomButton";
+import { dataURLtoFile } from "../ImageHandler/ConvertDataURL";
 
-const ImageCropper = ({ image, setImage, setOpen }) => {
+const ImageCropper = ({ image, setImage, filename, setOpen }) => {
   const cropperRef = useRef(null);
   const [loading, setLoading] = useState(true);
   const [scaleX, setScaleX] = useState(1);
@@ -23,8 +24,10 @@ const ImageCropper = ({ image, setImage, setOpen }) => {
   const handleClick = () => {
     const imageElement = cropperRef?.current;
     const cropper = imageElement?.cropper;
-    const img = cropper.getCroppedCanvas().toDataURL();
-    setImage(img);
+    const imgBase64 = cropper.getCroppedCanvas().toDataURL();
+    const canvasURLToFile = dataURLtoFile(imgBase64, filename);
+
+    setImage(canvasURLToFile);
     setOpen(false);
   };
   const rotate = () => {
