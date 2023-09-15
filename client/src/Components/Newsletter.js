@@ -1,7 +1,12 @@
+import EastIcon from "@mui/icons-material/East";
+import { IconButton } from "@mui/material";
 import React from "react";
-import CustomButton from "./controls/CustomButton";
 
 const Newsletter = () => {
+  // email submit functionality
+  const handleSubmit = (e) => {
+    e.preventDefault();
+  };
   return (
     <section className="newsletter__section">
       <div className="container">
@@ -9,15 +14,16 @@ const Newsletter = () => {
           <div className="newsletter__data">
             <h2 className="newsletter__title">Join Our Newsletter</h2>
             <p className="newsletter__description">
-              Subscribe today for free and save 10% on your first purchase.
+              Enjoy out newsletter to stay updated with the latest news!
             </p>
-          </div>
-          <div className="newsletter__input">
-            <input type="text" placeholder="Your email" />
-            <CustomButton
-              className="newsletter__btn btn btn__dark"
-              text="Subscribe"
-            />
+            <form onSubmit={handleSubmit}>
+              <div className="newsletter__form">
+                <input type="text" placeholder="Your email" />
+                <IconButton type="submit">
+                  <EastIcon />
+                </IconButton>
+              </div>
+            </form>
           </div>
         </div>
       </div>

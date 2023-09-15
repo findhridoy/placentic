@@ -1,69 +1,59 @@
 import { Modal } from "@mui/material";
 import cogoToast from "cogo-toast";
-import React, { useEffect, useRef, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  deleteUser,
-  userDeleteErrorReset,
-} from "../../App/actions/userActions";
-import EditUserForm from "../../Dashboard/DashboardComponents/EditUserForm";
-import ActionButton from "../TableComponents/ActionButton";
+import React, { useEffect, useState } from "react";
+import { useDeleteUserMutation } from "../../app/features/users/userApi";
+import EditUserForm from "../../dashboard/DashboardComponents/EditUserForm";
+import ActionsButton from "../TableComponents/AdditionalComponents/ActionsButton";
+import DeleteDialog from "../TableComponents/AdditionalComponents/DeleteDialog";
 
 const UserAction = ({ row }) => {
   // Modal state
   const [open, setOpen] = useState(false);
-  const [loader, setLoader] = useState(false);
+  const [dialog, setDialog] = useState(false);
 
   // Redux element
-  const dispatch = useDispatch();
-  const { loading, error, user } = useSelector((state) => state.deleteUser);
-
-  // Table item edit functionality
-  const handleEditClick = (x) => {
-    setOpen(true);
-  };
-
-  // Delete button ref
-  const btnRef = useRef();
+  const [deleteUser, { isLoading, isError, error, data }] =
+    useDeleteUserMutation();
 
   // Table item delete functionality
-  const handleDelete = (id) => {
-    if (btnRef.current.click) {
-      setLoader(true);
-      dispatch(deleteUser(id));
-    }
+  const handleDelete = async (userId) => {
+    await deleteUser(userId);
   };
 
   useEffect(() => {
-    if (error) {
-      cogoToast.error(error);
-      dispatch(userDeleteErrorReset());
+    if (isError) {
+      cogoToast.error(error?.data?.message);
     }
-    if (user?.message) {
+    if (data?.message) {
       cogoToast.error("Something was wrong!");
-      dispatch(userDeleteErrorReset());
     }
-    if (user?.success) {
-      cogoToast.success("Category is deleted.");
-      dispatch(userDeleteErrorReset());
+    if (data?.success) {
+      cogoToast.success("User is deleted.");
+      setDialog(false);
     }
-  }, [error, user, dispatch]);
+  }, [isError, error, data, setDialog]);
   return (
     <>
-      <ActionButton
-        handleEditClick={handleEditClick}
-        handleDelete={handleDelete}
-        row={row}
-        loader={loader}
-        loading={loading}
-        btnRef={btnRef}
+      <ActionsButton
+        handleEditIcon={() => setOpen(true)}
+        handleDeleteIcon={() => setDialog(true)}
       />
 
+      {/* Edit modal */}
       <Modal open={open} onClose={() => setOpen(false)}>
         <>
           <EditUserForm setOpen={setOpen} row={row} />
         </>
       </Modal>
+
+      {/* Delete dialog */}
+      <DeleteDialog
+        open={dialog}
+        setOpen={setDialog}
+        onClick={handleDelete}
+        isLoading={isLoading}
+        row={row}
+      />
     </>
   );
 };

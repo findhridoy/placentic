@@ -6,7 +6,7 @@ import {
   Rating,
 } from "@mui/material";
 import React from "react";
-import FilterLayout from "../../DashboardLayout/FilterLayout";
+import FilterLayout from "../../TableLayout/FilterLayout";
 
 const RatingFilter = ({ rating, setRating }) => {
   const ratings = [

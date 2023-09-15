@@ -6,6 +6,7 @@ const bcrypt = require("bcryptjs");
 const User = require("../models/userModel");
 const { generateToken } = require("../utils/generateToken");
 const { cloudinary } = require("../config/cloudinary");
+const Apifeatures = require("../utils/ApiFeatures");
 
 /**
  * @route   Post /api/user/register
@@ -42,12 +43,14 @@ const userRegister = asyncHandler(async (req, res) => {
     avatar,
     avatar_id,
   });
+
   if (user) {
     res.status(201).json({
       _id: user._id,
       email: user.email,
       avatar: user.avatar,
       isAdmin: user.isAdmin,
+      isAddress: user?.address ? true : false,
       token: generateToken(user._id),
     });
   } else {
@@ -79,6 +82,7 @@ const userLogin = asyncHandler(async (req, res) => {
       _id: user._id,
       email: user.email,
       isAdmin: user.isAdmin,
+      isAddress: user?.address ? true : false,
       avatar: user.avatar,
       token: generateToken(user._id),
     });
@@ -140,6 +144,7 @@ const updateUserProfile = asyncHandler(async (req, res) => {
       _id: user._id,
       email: user.email,
       isAdmin: user.isAdmin,
+      isAddress: user?.address ? true : false,
       avatar: user.avatar,
       token: generateToken(user._id),
     });
@@ -166,6 +171,7 @@ const updateUserProfile = asyncHandler(async (req, res) => {
       _id: user._id,
       email: user.email,
       isAdmin: user.isAdmin,
+      isAddress: user?.address ? true : false,
       avatar: user.avatar,
       token: generateToken(user._id),
     });
@@ -182,7 +188,7 @@ const updateUserProfile = asyncHandler(async (req, res) => {
  */
 const deleteUser = asyncHandler(async (req, res) => {
   // find user by id
-  const user = await User.findById(req.params.id);
+  const user = await User.findById(req.params.userId);
   if (user) {
     // remove avatar in cloudinary
     await cloudinary.uploader.destroy(user.avatar_id);
@@ -205,10 +211,20 @@ const deleteUser = asyncHandler(async (req, res) => {
  * @access  Private/Admin
  */
 const getUsers = asyncHandler(async (req, res) => {
-  // find all user as an admin
-  const users = await User.find({}).select("-password");
+  // using reuseable class for filter, sort, paginate and search
+  const features = new Apifeatures(
+    User.find().select("-password"),
+    req.query,
+    User.countDocuments()
+  )
+    .search()
+    .sort()
+    .paginate();
+
+  const counts = await features.countsQuery;
+  const users = await features.query;
   if (users) {
-    res.status(200).json(users);
+    res.status(200).json({ counts, users });
   } else {
     res.status(404);
     throw new Error("Users not found");
@@ -222,17 +238,24 @@ const getUsers = asyncHandler(async (req, res) => {
  */
 const updateToAdmin = asyncHandler(async (req, res) => {
   // find user by id
-  const user = await User.findById(req.params.id).select("-password");
+  const user = await User.findById(req.params.userId).select("-password");
 
   // check user and update to admin
   if (user) {
-    user.name = req.body.name || user.name;
-    user.username = req.body.username || user.username;
-    user.email = req.body.email || user.email;
-    user.isAdmin = req.body.isAdmin || user.isAdmin;
+    // user.name = req.body.name || user.name;
+    // user.username = req.body.username || user.username;
+    // user.email = req.body.email || user.email;
+    user.isAdmin = req.body.isAdmin;
 
     const updatedUser = await user.save();
-    res.status(200).json(updatedUser);
+    if (updatedUser) {
+      res.status(200).json({
+        success: true,
+      });
+    } else {
+      res.status(404);
+      throw new Error("Something was wrong");
+    }
   } else {
     res.status(404);
     throw new Error("User not found");

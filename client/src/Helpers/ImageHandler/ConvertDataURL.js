@@ -8,5 +8,7 @@ export const dataURLtoFile = (dataurl, filename) => {
 
   while (n--) u8arr[n] = bstr.charCodeAt(n);
 
-  return new File([u8arr], filename, { type: mime });
+  const randomNumber = Math.floor(Math.random() * (10000 - 500)) + 500;
+
+  return new File([u8arr], filename + " " + randomNumber, { type: mime });
 };

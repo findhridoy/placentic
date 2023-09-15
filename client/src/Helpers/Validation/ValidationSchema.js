@@ -77,17 +77,29 @@ const userUpdateSchema = Yup.object({
 // Shipping Address Schema
 const shippingSchema = Yup.object({
   country: Yup.string().required("Country field can not be empty."),
-  phone_number: Yup.string().required("Phone number field can not be empty."),
+  phone: Yup.string().required("Phone number field can not be empty."),
   address: Yup.string().required("Address field can not be empty."),
   city: Yup.string().required("City field can not be empty."),
   zip_code: Yup.string().required("ZIP code field can not be empty."),
 });
 
+// Delivery Status Schema
+const deliveryStatusSchema = Yup.object({
+  deliveryStatus: Yup.string().required("Select an option."),
+});
+
+// Payment Status Schema
+const paymentStatusSchema = Yup.object({
+  paymentStatus: Yup.string().required("Select an option."),
+});
+
 export {
-  signUpSchema,
-  loginSchema,
-  categorySchema,
   addProductSchema,
-  userUpdateSchema,
+  categorySchema,
+  deliveryStatusSchema,
+  loginSchema,
+  paymentStatusSchema,
   shippingSchema,
+  signUpSchema,
+  userUpdateSchema,
 };

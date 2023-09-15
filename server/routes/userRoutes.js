@@ -18,10 +18,10 @@ const { upload } = require("../utils/avatarUpload");
 router.post("/register", userRegister);
 router.post("/login", userLogin);
 router.get("/profile", protect, getUserProfile);
-router.put("/update", protect, upload.single("avatar"), updateUserProfile);
-router.delete("/delete/:id", protect, admin, deleteUser);
+router.put("/", protect, upload.single("avatar"), updateUserProfile);
 router.get("/", protect, admin, getUsers);
-router.put("/updateAdmin/:id", protect, admin, updateToAdmin);
+router.put("/:userId", protect, admin, updateToAdmin);
+router.delete("/:userId", protect, admin, deleteUser);
 
 // Export router
 module.exports = router;

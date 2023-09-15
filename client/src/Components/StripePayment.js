@@ -1,79 +1,41 @@
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
-import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { useSelector } from "react-redux";
+import { usePaymentIntentMutation } from "../app/features/stripe/stripeApi";
 import PaymentForm from "./PaymentForm";
-
-const stripePromise = loadStripe(
-  "pk_test_51LGMCHGPdR4pQodpRcoBnmBuC8tZgoHE3RpntydsjAYjwawGiy26b3aqrNx5gugQC64zGj7aI5J6SgAHcIA8teQn00FoWs2R4t"
-);
+import CustomAlert from "./controls/CustomAlert";
+import StripePaymentSkeleton from "./skeletons/StripePaymentSkeleton";
 
 const StripePayment = () => {
-  const [clientSecret, setClientSecret] = useState("");
+  // Redux element
+  const { cartAmounts } = useSelector((state) => state.cart);
+  const [paymentIntent, { isLoading, isError, error, data }] =
+    usePaymentIntentMutation();
 
   useEffect(() => {
-    // Create PaymentIntent as soon as the page loads
-    const fetcher = async () => {
-      const { data } = await axios.post(
-        "http://localhost:5000/api/v1/create-payment-intent",
-        {
-          items: [{ id: "xl-tshirt" }],
-        }
-      );
-
-      setClientSecret(data?.clientSecret);
+    const fetchRequest = async () => {
+      await paymentIntent({ amount: cartAmounts?.total });
     };
 
-    fetcher();
-  }, []);
-
-  const appearance = {
-    theme: "stripe",
-
-    variables: {
-      colorDanger: "#e31a16ea",
-      fontFamily: "Poppins, sans-serif",
-      spacingUnit: "3px",
-      borderRadius: "0px",
-    },
-    rules: {
-      ".Label": {
-        fontFamily: "Poppins, sans-serif",
-        fontSize: "0.8rem",
-        fontWeight: "600",
-      },
-      ".Input": {
-        fontSize: "0.8rem",
-        fontWeight: "500",
-        color: "#3d3e42",
-        borderColor: "#c2c2c2",
-        boxShadow: "none",
-      },
-      ".Input:focus": {
-        boxShadow: "none",
-        borderColor: "none",
-      },
-      ".Input--invalid": {
-        boxShadow: "none",
-        borderColor: "none",
-      },
-      ".Error": {
-        fontSize: "0.78rem",
-      },
-    },
-  };
-
-  const options = {
-    clientSecret,
-    appearance,
-  };
+    fetchRequest();
+  }, [paymentIntent, cartAmounts]);
 
   return (
     <div className="stripePayment">
-      {clientSecret && (
-        <Elements options={options} stripe={stripePromise}>
-          <PaymentForm />
-        </Elements>
+      {isLoading ? (
+        <StripePaymentSkeleton />
+      ) : isError ? (
+        <CustomAlert severity="error" message={error?.data?.message} close />
+      ) : data?.message ? (
+        <CustomAlert severity="warning" message={data?.message} close />
+      ) : (
+        data?.clientSecret &&
+        data?.publicSecret && (
+          <Elements stripe={loadStripe(data?.publicSecret)}>
+            <PaymentForm clientSecret={data?.clientSecret} />
+          </Elements>
+        )
       )}
     </div>
   );

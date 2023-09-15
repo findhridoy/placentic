@@ -1,0 +1,21 @@
+.actionsButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.2rem;
+
+  .MuiIconButton-root {
+    &:nth-child(1) {
+      color: $cyan;
+      // &:hover {
+      //   color: $cyan;
+      // }
+    }
+    &:nth-child(2) {
+      color: $red;
+      // &:hover {
+      //   color: $red;
+      // }
+    }
+  }
+}

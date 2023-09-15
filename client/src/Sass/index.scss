@@ -11,12 +11,15 @@
 @import "components/header";
 @import "components/hero";
 @import "components/category";
+@import "components/categories";
 @import "components/products";
 @import "components/newsletter";
+@import "components/footer";
 @import "components/customBreadcrumbs";
 @import "components/profileInfo";
 @import "components/userAvatar";
 @import "components/imageHandler";
+@import "components/fileUploader";
 @import "components/login&signup";
 @import "components/profile";
 @import "components/productLayout";
@@ -34,10 +37,10 @@
 @import "components/shippingForm";
 @import "components/customDropdown";
 @import "components/productListItem";
-// @import "components/stripePayment";
+@import "components/paymentForm";
 
 // Dashboard
 @import "../dashboard/DashboardStyles/dashboardIndex";
 
 // Table
-@import "../tables/tables";
+@import "../tables/TableStyles/tableIndex";

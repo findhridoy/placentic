@@ -5,27 +5,34 @@ import CustomButton from "./controls/CustomButton";
 
 const CategoryItem = ({ category }) => {
   return (
-    <div className="category__item">
+    <div
+      className="category__item"
+      style={{ backgroundImage: `url(${category?.image})` }}
+    >
       <div className="category__img">
         <img src={category?.image} alt="Category Img" />
       </div>
 
       <CustomButton
         className="category__btn btn small__btn btn__white"
-        text={category?.message}
+        text={category?.title}
       />
     </div>
   );
 };
 
 const Category = () => {
-  const size = 4;
-  const sort = -1;
+  const page = 0;
+  const size = 5;
 
   // Redux toolkit element
-  const { isLoading, isError, error, data: categories } = useGetCategoriesQuery(
-    size,
-    sort
+  const {
+    isLoading,
+    isError,
+    error,
+    data: categoryData,
+  } = useGetCategoriesQuery(
+    `category?page=${page}&size=${size}&sort=-createdAt`
   );
 
   return (
@@ -33,21 +40,31 @@ const Category = () => {
       <div className="container">
         <h2 className="category__title section__title">Top Category</h2>
         <div className="category__content">
-          <div className="category__data">
-            {isLoading ? (
-              [...Array(4).keys()].map((index) => (
+          {isLoading ? (
+            <div className="category__skeleton">
+              {[...Array(5).keys()].map((index) => (
                 <Skeleton variant="rectangular" key={index} />
-              ))
-            ) : isError ? (
-              <CustomAlert severity="error" message={error?.data?.message} />
-            ) : categories?.length < 1 ? (
-              <CustomAlert severity="info" message="No categories are found!" />
-            ) : (
-              categories?.map((category) => (
+              ))}
+            </div>
+          ) : isError ? (
+            <CustomAlert
+              severity="error"
+              message={error?.data?.message}
+              mt={25}
+            />
+          ) : categoryData?.categories?.length < 1 ? (
+            <CustomAlert
+              severity="info"
+              message="No categories are found!"
+              mt={25}
+            />
+          ) : (
+            <div className="category__data">
+              {categoryData?.categories?.map((category) => (
                 <CategoryItem category={category} key={category?._id} />
-              ))
-            )}
-          </div>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </section>

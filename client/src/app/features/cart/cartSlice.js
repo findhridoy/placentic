@@ -6,10 +6,20 @@ const cartItems = JSON.parse(localStorage.getItem("cart"))
   ? JSON.parse(localStorage.getItem("cart"))
   : [];
 
+// cart amounts from storage
+const cartAmounts = JSON.parse(localStorage.getItem("amount"))
+  ? JSON.parse(localStorage.getItem("amount"))
+  : {};
+
+// payment from storage
+const paymentInfo = JSON.parse(localStorage.getItem("paymentInfo"))
+  ? JSON.parse(localStorage.getItem("paymentInfo"))
+  : {};
+
 // cart slice
 const cartSlice = createSlice({
   name: "cart",
-  initialState: { cartItems },
+  initialState: { cartItems, cartAmounts, paymentInfo },
   reducers: {
     addToCart: (state, action) => {
       const existCartItem = state.cartItems?.find(
@@ -51,10 +61,35 @@ const cartSlice = createSlice({
 
       state.cartItems = newCartItems;
       localStorage.setItem("cart", JSON.stringify(state.cartItems));
-      cogoToast.error(`Cart item is removed.`);
+      cogoToast.warn(`Cart item is removed.`);
+    },
+
+    setCartAmount: (state, action) => {
+      state.cartAmounts = action.payload;
+      localStorage.setItem("amount", JSON.stringify(state.cartAmounts));
+    },
+    setPaymentInfo: (state, action) => {
+      state.paymentInfo = action.payload;
+      localStorage.setItem("paymentInfo", JSON.stringify(state.paymentInfo));
+    },
+
+    resetCart: (state, action) => {
+      state.cartItems = [];
+      state.cartAmounts = {};
+      state.paymentInfo = {};
+      localStorage.removeItem("cart");
+      localStorage.removeItem("amount");
+      localStorage.removeItem("paymentInfo");
     },
   },
 });
 
-export const { addToCart, updateCartItem, removeFromCart } = cartSlice.actions;
+export const {
+  addToCart,
+  updateCartItem,
+  removeFromCart,
+  setCartAmount,
+  setPaymentInfo,
+  resetCart,
+} = cartSlice.actions;
 export default cartSlice.reducer;

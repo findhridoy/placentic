@@ -3,19 +3,20 @@ import FilterListIcon from "@mui/icons-material/FilterList";
 import { Divider } from "@mui/material";
 import Modal from "@mui/material/Modal";
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
+import moment from "moment";
 import { useMemo, useState } from "react";
 import "react-dropdown/style.css";
-import {
-  useGetCategoriesByProductQuery,
-  useGetProductsQuery,
-} from "../../app/features/products/productApi";
+import { useGetCategoriesQuery } from "../../app/features/categories/categoryApi";
+import { useGetProductsQuery } from "../../app/features/products/productApi";
 import { productColumn } from "../../tables/TableColumns/ProductColumn";
-import Tables from "../../tables/Tables";
-import CategoryFilter from "../DashboardComponents/FiltersComponents/CategoryFilter";
-import PriceFilter from "../DashboardComponents/FiltersComponents/PriceFilter";
-import RatingFilter from "../DashboardComponents/FiltersComponents/RatingFilter";
-import SortFilter from "../DashboardComponents/FiltersComponents/SortFilter";
-import MenuButton from "../DashboardComponents/MenuButton";
+import CsvExport from "../../tables/TableComponents/ExportComponents/CsvExport";
+import CategoryFilter from "../../tables/TableComponents/FilterComponents/CategoryFilter";
+import PriceFilter from "../../tables/TableComponents/FilterComponents/PriceFilter";
+import RatingFilter from "../../tables/TableComponents/FilterComponents/RatingFilter";
+import SortFilter from "../../tables/TableComponents/FilterComponents/SortFilter";
+import MenuButtonLayout from "../../tables/TableLayout/MenuButtonLayout";
+import TableLayout from "../../tables/TableLayout/TableLayout";
+import AddProductForm from "../DashboardComponents/AddProductForm";
 import DashboardLayout from "../DashboardLayout/DashboardLayout";
 
 const DashboardProducts = () => {
@@ -23,6 +24,7 @@ const DashboardProducts = () => {
   const [open, setOpen] = useState(false);
   const [sort, setSort] = useState("");
   const [rating, setRating] = useState(0);
+  const [keyword, setKeyword] = useState("");
   const [categories, setCategories] = useState([]);
   const [price, setPrice] = useState({
     gte: 0,
@@ -33,9 +35,12 @@ const DashboardProducts = () => {
     pageSize: 8,
   });
 
-  // Redux element
-  const { data: categoryData } =
-    useGetCategoriesByProductQuery(`product/categories`);
+  // Redux toolkit element
+  const {
+    isError: categoryIsError,
+    error: categoryError,
+    data: categoryData,
+  } = useGetCategoriesQuery("category");
 
   const {
     isLoading,
@@ -44,7 +49,7 @@ const DashboardProducts = () => {
     isFetching,
     data: productData,
   } = useGetProductsQuery(
-    `product?page=${pageIndex}&size=${pageSize}&category=${categories}&price[gte]=${price?.gte}&price[lte]=${price?.lte}&ratings[gte]=${rating}&sort=${sort}`
+    `product?page=${pageIndex}&size=${pageSize}&category=${categories}&price[gte]=${price?.gte}&price[lte]=${price?.lte}&ratings[gte]=${rating}&sort=${sort}&keyword=${keyword}`
   );
 
   // filter reset handler
@@ -67,7 +72,6 @@ const DashboardProducts = () => {
     () => (productData?.products?.length ? productData?.products : []),
     [productData?.products]
   );
-
   const columns = useMemo(() => productColumn, []);
   const pagination = useMemo(
     () => ({ pageIndex, pageSize }),
@@ -88,14 +92,32 @@ const DashboardProducts = () => {
     getCoreRowModel: getCoreRowModel(),
   });
 
+  // export table data to csv file
+  const csvData = [
+    ["TITLE", "CATEGORY", "PRICE", "REVIEWS", "STOCK", "DATE", "IMAGE"],
+    ...data?.map((product) => [
+      product?.title,
+      product?.category,
+      product?.price,
+      product?.countReviews,
+      product?.countInStock,
+      moment(product?.createdAt).format("D-MM-YYYY"),
+      product?.image ? "Yes" : "No",
+    ]),
+  ];
+
+  // csv file name
+  const filename = `Products - ${moment(new Date()).format("D-MM-YYYY")}`;
+
   return (
     <DashboardLayout title="Product Inventory">
-      <Tables
+      <TableLayout
         table={table}
         isSearchField={true}
+        setKeyword={setKeyword}
         isFilterButton={true}
         FilterButtonComponent={
-          <MenuButton
+          <MenuButtonLayout
             buttonText="Filter By"
             buttonIconComponent={<FilterAltIcon fontSize="small" />}
             resetText="Reset Filters"
@@ -110,29 +132,43 @@ const DashboardProducts = () => {
             <PriceFilter price={price} setPrice={setPrice} />
             <Divider sx={{ my: 0.5 }} />
             <RatingFilter rating={rating} setRating={setRating} />
-          </MenuButton>
+          </MenuButtonLayout>
         }
         isSortButton={true}
         SortButtonComponent={
-          <MenuButton
+          <MenuButtonLayout
             buttonText="Sort By"
             buttonIconComponent={<FilterListIcon fontSize="small" />}
             resetText="Reset"
             resetHandler={resetSortHandler}
           >
             <SortFilter sort={sort} setSort={setSort} />
-          </MenuButton>
+          </MenuButtonLayout>
         }
         isExportButton={true}
+        ExportButtonComponent={
+          <CsvExport csvData={csvData} filename={filename} />
+        }
         isAddButton={true}
+        addButtonHandler={() => setOpen(true)}
         addButtonText="Add New"
-        isLoading={isLoading || isFetching}
+        isLoading={isLoading}
+        isFetching={isFetching}
         isError={isError}
         error={error}
+        data={productData?.products}
+        errorTitle="Sorry! No product found :("
       />
 
       <Modal open={open} onClose={() => setOpen(false)}>
-        <>{/* <AddProductForm setOpen={setOpen} /> */}</>
+        <>
+          <AddProductForm
+            setOpen={setOpen}
+            categoryData={categoryData}
+            categoryIsError={categoryIsError}
+            categoryError={categoryError}
+          />
+        </>
       </Modal>
     </DashboardLayout>
   );

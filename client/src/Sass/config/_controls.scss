@@ -1,4 +1,22 @@
 // **Button
+.btn-root {
+  .MuiButton-root {
+    text-transform: capitalize;
+    border-radius: 0;
+    letter-spacing: 0.8px;
+    font-family: $poppins;
+    @include smaller-font;
+    box-shadow: none;
+    cursor: pointer;
+    @include breakpoint(md) {
+      @include small-font;
+    }
+    &:hover {
+      @include shadow-btn;
+    }
+  }
+}
+
 .btn {
   .MuiButton-root {
     height: 2.8rem;
@@ -33,7 +51,7 @@
     @include smaller-font;
     @include breakpoint(md) {
       height: 2.4rem;
-      width: 8rem;
+      width: 7.2rem;
       @include smallest-font;
     }
     .MuiSvgIcon-root {
@@ -90,6 +108,7 @@
 // **Custom Alert
 .custom__alert {
   // margin: 2rem 0;
+  // margin-top: $x-0-5;
   .MuiPaper-root {
     // opacity: 0.9;
     border-radius: 0;

@@ -19,7 +19,7 @@ const Products = () => {
     error,
     isFetching,
     data: productData,
-  } = useGetProductsQuery(`product?page=${1}&size=${size}`);
+  } = useGetProductsQuery(`product?size=${size}`);
 
   // load more functionality
   const handleLoadMore = () => {

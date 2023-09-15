@@ -4,6 +4,7 @@ const asyncHandler = require("express-async-handler");
 // Internal Imports
 const Category = require("../models/categoryModel");
 const { cloudinary } = require("../config/cloudinary");
+const Apifeatures = require("../utils/ApiFeatures");
 
 /**
  * @route   Post /api/category/create
@@ -58,25 +59,26 @@ const createCategory = asyncHandler(async (req, res) => {
 });
 
 /**
- * @route   Get /api/category
+ * @route   Get /api/v1/category
  * @desc    Get all categories
  * @access  Private/Public
  */
 const getCategories = asyncHandler(async (req, res) => {
-  // paginatations
-  const page = parseInt(req.query.page);
-  const size = parseInt(req.query.size);
-  const sort = parseInt(req.query.sort);
-  const skip = page * size;
+  // using reuseable class for filter, sort, paginate and search
+  const features = new Apifeatures(
+    Category.find(),
+    req.query,
+    Category.countDocuments()
+  )
+    .search()
+    .sort()
+    .paginate();
 
-  // get total products count
-  const counts = await Category.countDocuments({});
-
-  // find all categories
-  const categories = await Category.find({}).limit(size).skip(skip).sort(sort);
+  const counts = await features.countsQuery;
+  const categories = await features.query;
 
   if (categories) {
-    res.status(200).json(categories);
+    res.status(200).json({ counts, categories });
   } else {
     res.status(400);
     throw new Error("Categories are not found!");
@@ -90,7 +92,7 @@ const getCategories = asyncHandler(async (req, res) => {
  */
 
 const updateCategory = asyncHandler(async (req, res) => {
-  const category = await Category.findById(req.params.id);
+  const category = await Category.findById(req.params.catId);
 
   // with image changes
   if (category && req.file) {
@@ -144,7 +146,7 @@ const updateCategory = asyncHandler(async (req, res) => {
  */
 
 const deleteCategory = asyncHandler(async (req, res) => {
-  const category = await Category.findById(req.params.id);
+  const category = await Category.findById(req.params.catId);
   if (category) {
     await cloudinary.uploader.destroy(category.image_id);
     await category.remove();
@@ -156,23 +158,6 @@ const deleteCategory = asyncHandler(async (req, res) => {
     throw new Error("Category is not found");
   }
 });
-
-// // Unauthrized
-// /**
-//  * @route   Get /api/category/category
-//  * @desc    Get limit categories
-//  * @access  Public
-//  */
-// const limitCategories = asyncHandler(async (req, res) => {
-//   // find all category
-//   const categories = await Category.find({}).sort({ _id: -1 }).limit(4);
-//   if (categories) {
-//     res.status(200).json(categories);
-//   } else {
-//     res.status(400);
-//     throw new Error("Categores are not found!");
-//   }
-// });
 
 // Export all controller function
 module.exports = {

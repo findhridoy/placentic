@@ -65,4 +65,9 @@
       padding: 0 $x-1;
     }
   }
+  .checkoutSubtotal__btn {
+    .MuiButton-root {
+      width: 100%;
+    }
+  }
 }

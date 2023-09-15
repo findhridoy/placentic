@@ -1,20 +1,17 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import CloseIcon from "@mui/icons-material/Close";
-import { Button, Checkbox, CircularProgress, IconButton } from "@mui/material";
+import { Checkbox, IconButton } from "@mui/material";
 import cogoToast from "cogo-toast";
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  userMakeAdmin,
-  userMakeAdminReset,
-} from "../../App/actions/userActions";
-import { userUpdateSchema } from "../../Helpers/Validation/ValidationSchema";
+import { useUpdateUserMutation } from "../../app/features/users/userApi";
+import CustomButton from "../../components/controls/CustomButton";
+import { userUpdateSchema } from "../../helpers/Validation/ValidationSchema";
 
 const EditUserForm = ({ setOpen, row }) => {
   // Redux element
-  const dispatch = useDispatch();
-  const { loading, error, user } = useSelector((state) => state.updateUser);
+  const [updateUser, { isLoading, isError, error, data: user }] =
+    useUpdateUserMutation();
 
   // React hook form own state
   const {
@@ -28,32 +25,33 @@ const EditUserForm = ({ setOpen, row }) => {
   // React hook form data submit
   const onSubmit = async (data) => {
     // send data to backend
-    dispatch(userMakeAdmin(row.values._id, data));
+    const updateData = {
+      userId: row?.original._id,
+      data,
+    };
+
+    // send data to backend
+    await updateUser(updateData);
   };
 
   useEffect(() => {
-    if (error) {
-      cogoToast.error(error);
-      dispatch(userMakeAdminReset());
+    if (isError) {
+      cogoToast.error(error?.data?.message);
     }
     if (user?.error_code === 11000 && user?.error_pattern.username) {
       cogoToast.error("Username is already exist.");
-      dispatch(userMakeAdminReset());
     }
     if (user?.error_code === 11000 && user?.error_pattern.email) {
       cogoToast.error("Email is already exist.");
-      dispatch(userMakeAdminReset());
     }
     if (user?.message && !user?.error_code) {
       cogoToast.error("Something was wrong!");
-      dispatch(userMakeAdminReset());
     }
     if (user?.email) {
       cogoToast.success("Updated successfully.");
       setOpen(false);
-      dispatch(userMakeAdminReset());
     }
-  }, [error, user, setOpen, dispatch]);
+  }, [isError, error, user, setOpen]);
   return (
     <div className="addProducts">
       <div className="addProducts__form">
@@ -64,8 +62,9 @@ const EditUserForm = ({ setOpen, row }) => {
             <input
               className="form__control"
               type="text"
-              defaultValue={row?.values.name}
+              defaultValue={row?.original?.name}
               placeholder="Type your fullname"
+              readOnly
               {...register("name")}
             />
             {errors?.name && (
@@ -78,8 +77,9 @@ const EditUserForm = ({ setOpen, row }) => {
             <input
               className="form__control"
               type="text"
-              defaultValue={row?.values.username}
+              defaultValue={row?.original?.username}
               placeholder="Type your username"
+              readOnly
               {...register("username")}
             />
             {errors?.username && (
@@ -92,8 +92,9 @@ const EditUserForm = ({ setOpen, row }) => {
             <input
               className="form__control"
               type="email"
-              defaultValue={row?.values.email}
+              defaultValue={row?.original?.email}
               placeholder="Type your email"
+              readOnly
               {...register("email")}
             />
             {errors?.email && (
@@ -106,7 +107,7 @@ const EditUserForm = ({ setOpen, row }) => {
               size="small"
               color="success"
               id="makeAdmin"
-              defaultChecked={row?.values.isAdmin}
+              defaultChecked={row?.original?.isAdmin}
               {...register("isAdmin")}
             />
             <label className="checkbox__label" htmlFor="makeAdmin">
@@ -114,15 +115,12 @@ const EditUserForm = ({ setOpen, row }) => {
             </label>
           </div>
 
-          <div className="addProducts__btn btn btn__dark">
-            <Button type="submit">
-              {loading ? (
-                <CircularProgress color="inherit" size={30} />
-              ) : (
-                "Update"
-              )}
-            </Button>
-          </div>
+          <CustomButton
+            className="addProducts__btn btn small__btn btn__dark"
+            text="Update"
+            loading={isLoading}
+            type="submit"
+          />
         </form>
         <div className="addProducts__close">
           <IconButton aria-label="close" onClick={() => setOpen(false)}>

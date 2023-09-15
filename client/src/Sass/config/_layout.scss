@@ -243,6 +243,7 @@
 // From Options
 .form__option {
   font-weight: $medium;
+  text-transform: capitalize;
   @include smallest-font;
   color: $dark-alt;
   height: 2.2rem !important;
@@ -372,6 +373,14 @@
 .error__icon {
   .MuiSvgIcon-root {
     color: $red;
+  }
+}
+
+// Stripe auto link
+
+.p-LinkAutofillPrompt {
+  .p-AnimateSinglePresence {
+    display: none !important;
   }
 }
 

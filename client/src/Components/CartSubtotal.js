@@ -1,15 +1,17 @@
 import { Button } from "@mui/material";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { setCartAmount } from "../app/features/cart/cartSlice";
 
 const CartSubtotal = ({ shippingMode, cartItems }) => {
   // react router
   const navigate = useNavigate();
 
+  // Redux element
+  const dispatch = useDispatch();
+
   // subtotal price
-  const subtotal = cartItems?.reduce(
-    (acc, item) => acc + item?.price * item?.quantity,
-    0
-  );
+  const subtotal = cartItems?.reduce((acc, item) => acc + item?.totalPrice, 0);
 
   // shipping price
   const shipping =
@@ -19,13 +21,19 @@ const CartSubtotal = ({ shippingMode, cartItems }) => {
   const amount = {
     items: cartItems?.length,
     subtotal: Number(subtotal)?.toFixed(2),
+    tax: Number((subtotal * 5) / 100)?.toFixed(2),
     shipping: Number(shipping)?.toFixed(2),
-    total: (Number(subtotal) + Number(shipping))?.toFixed(2),
+    shippingMethod: shippingMode,
+    total: (
+      Number(subtotal) +
+      Number(shipping) +
+      Number((subtotal * 5) / 100)
+    ).toFixed(2),
   };
 
   // Store amount and change route
   const handleCheckout = () => {
-    sessionStorage.setItem("amount", JSON.stringify(amount));
+    dispatch(setCartAmount(amount));
     navigate("/checkout");
   };
 
@@ -39,6 +47,11 @@ const CartSubtotal = ({ shippingMode, cartItems }) => {
         <span className="subtotal__digit">${amount?.subtotal}</span>
       </div>
 
+      <div className="cartSubtotal__subtotal">
+        <span className="subtotal__text">TAX</span>
+        <span className="subtotal__digit">${amount?.tax}</span>
+      </div>
+
       <div className="cartSubtotal__shipping">
         <span className="subtotal__text">Shipping</span>
 
@@ -50,7 +63,7 @@ const CartSubtotal = ({ shippingMode, cartItems }) => {
         <span className="subtotal__digit">${amount?.total}</span>
       </div>
 
-      <div className="cartSubtotal__btn btn btn__dark">
+      <div className="cartSubtotal__btn btn small__btn btn__dark">
         <Button onClick={handleCheckout}>
           <span className="btn__text">Proceed to checkout</span>
           <span className="btn__digit">${amount?.total}</span>

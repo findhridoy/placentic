@@ -1,0 +1,74 @@
+// custom chip
+.custom__chip {
+  .MuiButton-root {
+    background-color: $dark-alt;
+    border-radius: 5px;
+    color: $white-alt;
+    font-weight: $medium !important;
+    font-family: $poppins;
+    @include smallest-font;
+    text-transform: capitalize;
+    letter-spacing: 0;
+    @include transition(200ms);
+    &:hover {
+      background-color: $dark;
+    }
+  }
+
+  .warning {
+    .MuiButton-root {
+      background-color: rgba(255, 187, 0, 0.2);
+      color: rgb(255, 153, 0);
+      &:hover {
+        background-color: rgba(255, 187, 0, 0.3);
+        color: rgb(241, 111, 4);
+      }
+    }
+  }
+
+  .success {
+    .MuiButton-root {
+      background-color: rgba(5, 168, 5, 0.2);
+      color: rgb(5, 168, 5);
+      &:hover {
+        background-color: rgba(5, 168, 5, 0.3);
+        color: rgb(14, 175, 14);
+      }
+    }
+  }
+
+  .info {
+    .MuiButton-root {
+      background-color: rgba(6, 119, 219, 0.2);
+      color: rgb(6, 119, 219);
+      &:hover {
+        background-color: rgba(6, 119, 219, 0.3);
+        color: rgb(6, 110, 201);
+      }
+    }
+  }
+
+  .error {
+    .MuiButton-root {
+      background-color: rgba(227, 26, 22, 0.2);
+      color: rgb(227, 26, 22);
+
+      &:hover {
+        background-color: rgba(227, 26, 22, 0.3);
+        color: rgb(227, 26, 22);
+      }
+    }
+  }
+
+  .secondary {
+    .MuiButton-root {
+      background-color: $dark-300;
+      color: $dark-alt;
+
+      &:hover {
+        background-color: $dark-500;
+        color: $white-alt;
+      }
+    }
+  }
+}

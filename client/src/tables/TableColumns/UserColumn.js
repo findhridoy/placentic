@@ -9,42 +9,60 @@ import UserAction from "../TableActions/UserAction";
 // User column
 export const userColumn = [
   {
-    Header: "Name",
-    accessor: "name",
-    Cell: ({ row }) => (
+    accessorKey: "name",
+    header: "Name",
+    cell: ({ row }) => (
       <Stack direction="row" spacing={1} alignItems="center">
         <Avatar
           alt="user image"
-          src={row?.values.avatar}
+          src={row?.original?.avatar}
           sx={{ width: 35, height: 35 }}
         />
-        <span>{row?.values.name}</span>
+        <span>{row?.original?.name}</span>
       </Stack>
     ),
   },
   {
-    Header: "Username",
-    accessor: "username",
+    accessorKey: "username",
+    header: "Username",
   },
   {
-    Header: "Email",
-    accessor: "email",
+    accessorKey: "email",
+    header: "Email",
   },
   {
-    Header: "Id",
-    accessor: "_id",
+    accessorKey: "phone",
+    header: "Phone",
+    cell: ({ row }) => (
+      <span>
+        {row?.original?.phone ? `+88${row?.original?.phone}` : "Not set yet"}
+      </span>
+    ),
   },
   {
-    Header: "Avatar",
-    accessor: "avatar",
+    accessorKey: "country",
+    header: "Country",
+    cell: ({ row }) => (
+      <span>
+        {row?.original?.country ? row?.original?.country : "Not set yet"}
+      </span>
+    ),
+  },
+  {
+    accessorKey: "_id",
+    header: "Id",
+  },
+  {
+    accessorKey: "avatar",
+    header: "Avatar",
   },
 
   {
-    Header: "Admin",
-    accessor: "isAdmin",
-    Cell: ({ row }) => (
+    accessorKey: "isAdmin",
+    header: "Admin",
+    cell: ({ row }) => (
       <div style={{ paddingLeft: "10px" }}>
-        {row?.values.isAdmin ? (
+        {row?.original?.isAdmin ? (
           <CheckCircleIcon color="success" />
         ) : (
           <HighlightOffIcon color="error" />
@@ -53,17 +71,17 @@ export const userColumn = [
     ),
   },
   {
-    Header: "Date",
-    accessor: "updatedAt",
-    Cell: ({ row }) => (
+    accessorKey: "updatedAt",
+    header: "Date",
+    cell: ({ row }) => (
       <Moment format="D MMM YYYY" withTitle>
-        {row?.values.updatedAt}
+        {row?.original?.updatedAt}
       </Moment>
     ),
   },
   {
-    Header: "Action",
-    accessor: "action",
-    Cell: ({ row }) => <UserAction row={row} />,
+    accessorKey: "action",
+    header: "Action",
+    cell: ({ row }) => <UserAction row={row} />,
   },
 ];

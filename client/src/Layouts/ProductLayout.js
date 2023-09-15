@@ -50,9 +50,7 @@ const ProductLayout = ({ children }) => {
     error,
     data: productsData,
   } = useGetProductsQuery(
-    `product?page=${1}&size=${size}&category=${categories}&price[gte]=${
-      price[0]
-    }&price[lte]=${price[1]}&ratings[gte]=${rating}&sort=${sort}`
+    `product?size=${size}&category=${categories}&price[gte]=${price[0]}&price[lte]=${price[1]}&ratings[gte]=${rating}&sort=${sort}`
   );
 
   // category filter handler

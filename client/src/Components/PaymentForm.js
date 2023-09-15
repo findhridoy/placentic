@@ -1,102 +1,122 @@
 import { Button } from "@mui/material";
 import {
-  PaymentElement,
+  CardCvcElement,
+  CardExpiryElement,
+  CardNumberElement,
   useElements,
   useStripe,
 } from "@stripe/react-stripe-js";
-import { useEffect, useState } from "react";
-import CustomAlert from "./controls/CustomAlert";
-// import CustomAlert from "./CustomAlert";
+import cogoToast from "cogo-toast";
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { setPaymentInfo } from "../app/features/cart/cartSlice";
 
-const PaymentForm = () => {
+const PaymentForm = ({ clientSecret }) => {
+  // State
+  const [isProcessing, setProcessingTo] = useState(false);
+
   const stripe = useStripe();
   const elements = useElements();
 
-  const [message, setMessage] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
+  // Redux element
+  const dispatch = useDispatch();
+  const { userInfo } = useSelector((state) => state.auth);
 
-  useEffect(() => {
-    if (!stripe) {
-      return;
-    }
+  const handleCardDetailsChange = (event) => {
+    event.error && cogoToast.error(event.error.message);
+  };
 
-    const clientSecret = new URLSearchParams(window.location.search).get(
-      "payment_intent_client_secret"
-    );
+  const handleSubmit = async (event) => {
+    event.preventDefault();
 
-    if (!clientSecret) {
-      return;
-    }
+    // our payment process starts here
+    if (clientSecret) {
+      const billingDetails = {
+        email: userInfo?.email,
+      };
 
-    stripe.retrievePaymentIntent(clientSecret).then(({ paymentIntent }) => {
-      switch (paymentIntent.status) {
-        case "succeeded":
-          setMessage("Payment succeeded!");
-          break;
-        case "processing":
-          setMessage("Your payment is processing.");
-          break;
-        case "requires_payment_method":
-          setMessage("Your payment was not successful, please try again.");
-          break;
-        default:
-          setMessage("Something went wrong.");
-          break;
+      setProcessingTo(true);
+
+      const cardElement = elements.getElement(CardNumberElement);
+
+      try {
+        const paymentMethodReq = await stripe.createPaymentMethod({
+          type: "card",
+          card: cardElement,
+          billing_details: billingDetails,
+        });
+
+        if (paymentMethodReq.error) {
+          cogoToast.error(paymentMethodReq.error.message);
+          setProcessingTo(false);
+          return;
+        }
+
+        const confirmedCardPayment = await stripe.confirmCardPayment(
+          clientSecret,
+          {
+            payment_method: paymentMethodReq.paymentMethod.id,
+          }
+        );
+
+        if (confirmedCardPayment.error) {
+          cogoToast.error(confirmedCardPayment.error);
+          setProcessingTo(false);
+          return;
+        }
+
+        // save data in storage
+        dispatch(
+          setPaymentInfo({
+            paid_at: confirmedCardPayment?.paymentIntent?.created,
+            payment_id: confirmedCardPayment?.paymentIntent?.id,
+            status: confirmedCardPayment?.paymentIntent?.status,
+            payment_method: "card",
+            email_address: userInfo?.email,
+            is_paid: true,
+          })
+        );
+        cogoToast.success("Payment successful");
+        setProcessingTo(false);
+      } catch (err) {
+        cogoToast.error(err.message);
       }
-    });
-  }, [stripe]);
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    if (!stripe || !elements) {
-      // Stripe.js has not yet loaded.
-      // Make sure to disable form submission until Stripe.js has loaded.
-      return;
-    }
-
-    setIsLoading(true);
-
-    const { error } = await stripe.confirmPayment({
-      elements,
-      confirmParams: {
-        // Make sure to change this to your payment completion page
-        return_url: "http://localhost:3000/checkout",
-      },
-    });
-
-    // This point will only be reached if there is an immediate error when
-    // confirming the payment. Otherwise, your customer will be redirected to
-    // your `return_url`. For some payment methods like iDEAL, your customer will
-    // be redirected to an intermediate site first to authorize the payment, then
-    // redirected to the `return_url`.
-    if (error.type === "card_error" || error.type === "validation_error") {
-      setMessage(error.message);
     } else {
-      setMessage("An unexpected error occurred.");
+      cogoToast.error("Error: Server could not initiate the payment process.");
     }
-
-    setIsLoading(false);
   };
 
   return (
-    <form id="payment-form" onSubmit={handleSubmit}>
-      {/* Show any error or success messages */}
-      {/* {message && <div id="payment-message">{message}</div>} */}
-      {message && <CustomAlert severity="error" message={message} close />}
+    <div className="paymentForm">
+      <form onSubmit={handleSubmit}>
+        <span className="form__group">
+          <label className="form__label">Card number</label>
+          <CardNumberElement onChange={handleCardDetailsChange} />
+        </span>
 
-      <PaymentElement id="payment-element" />
-      <div className="btn small__btn btn__dark">
-        <Button
-          disabled={isLoading || !stripe || !elements}
-          type="submit"
-          id="submit"
-          style={{ width: "100%", marginTop: "1.2rem" }}
-        >
-          {isLoading ? "Proccesing" : "Pay now"}
-        </Button>
-      </div>
-    </form>
+        <div className="form__grid">
+          <span className="form__group">
+            <label className="form__label">Expiration date</label>
+            <CardExpiryElement onChange={handleCardDetailsChange} />
+          </span>
+
+          <span className="form__group">
+            <label className="form__label">CVC</label>
+            <CardCvcElement onChange={handleCardDetailsChange} />
+          </span>
+        </div>
+
+        <div className="btn small__btn btn__dark">
+          <Button
+            disabled={isProcessing || !stripe || !elements}
+            type="submit"
+            style={{ width: "100%", marginTop: "1.2rem" }}
+          >
+            {isProcessing ? "Proccesing" : "Pay now"}
+          </Button>
+        </div>
+      </form>
+    </div>
   );
 };
 

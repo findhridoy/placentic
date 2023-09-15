@@ -150,3 +150,149 @@
   )}
 </div>
 </div> */
+
+// import { Button } from "@mui/material";
+// import {
+//   PaymentElement,
+//   useElements,
+//   useStripe,
+// } from "@stripe/react-stripe-js";
+// import { useEffect, useState } from "react";
+// import "../sass/components/stripePayment.css";
+// import CustomAlert from "./controls/CustomAlert";
+
+// const PaymentForm = () => {
+//   const stripe = useStripe();
+//   const elements = useElements();
+
+//   const [message, setMessage] = useState(null);
+//   const [isLoading, setIsLoading] = useState(false);
+
+//   useEffect(() => {
+//     if (!stripe) {
+//       return;
+//     }
+
+//     const clientSecret = new URLSearchParams(window.location.search).get(
+//       "payment_intent_client_secret"
+//     );
+
+//     if (!clientSecret) {
+//       return;
+//     }
+
+//     stripe.retrievePaymentIntent(clientSecret).then(({ paymentIntent }) => {
+//       switch (paymentIntent.status) {
+//         case "succeeded":
+//           setMessage("Payment succeeded!");
+//           break;
+//         case "processing":
+//           setMessage("Your payment is processing.");
+//           break;
+//         case "requires_payment_method":
+//           setMessage("Your payment was not successful, please try again.");
+//           break;
+//         default:
+//           setMessage("Something went wrong.");
+//           break;
+//       }
+
+//       console.log(paymentIntent);
+//     });
+//   }, [stripe]);
+
+//   const handleSubmit = async (e) => {
+//     e.preventDefault();
+
+//     if (!stripe || !elements) {
+//       return;
+//     }
+
+//     setIsLoading(true);
+
+//     const { error } = await stripe.confirmPayment({
+//       elements,
+//       confirmParams: {
+//         return_url: "http://localhost:3000/checkout",
+//       },
+//     });
+
+//     if (error.type === "card_error" || error.type === "validation_error") {
+//       setMessage(error.message);
+//     } else {
+//       setMessage("An unexpected error occurred.");
+//     }
+
+//     setIsLoading(false);
+//   };
+
+//   const paymentElement = {
+// layout: {
+//   type: "accordion",
+//   defaultCollapsed: false,
+//   radios: true,
+//   spacedAccordionItems: false,
+// },
+// paymentMethodOrder: ["apple_pay", "google_pay", "card", "klarna"],
+// };
+
+// return (
+//   <div className="paymentForm">
+//     <form id="payment-form" onSubmit={handleSubmit}>
+//       {message && <CustomAlert severity="error" message={message} close />}
+//       <br />
+
+//       <PaymentElement />
+//       <div className="btn small__btn btn__dark">
+//         <Button
+//           disabled={isLoading || !stripe || !elements}
+//           type="submit"
+//           id="submit"
+//           style={{ width: "100%", marginTop: "1.2rem" }}
+//         >
+//           {isLoading ? "Proccesing" : "Pay now"}
+//         </Button>
+//       </div>
+//     </form>
+
+/* <div className="craditCard__title_section">
+        <div className="craditCard__title">
+          <p>Cradit Card</p>
+          <p>Lorem ipsum dolor sit elit. Sequi, reprehenderit?</p>
+        </div>
+        <div className="craditCard__image">
+          <img
+            src="https://js.stripe.com/v3/fingerprinted/img/mastercard-4d8844094130711885b5e41b28c9848f.svg"
+            alt="icon"
+          />
+          <img
+            src="https://js.stripe.com/v3/fingerprinted/img/visa-365725566f9578a9589553aa9296d178.svg"
+            alt="icon"
+          />
+          <img
+            src="https://js.stripe.com/v3/fingerprinted/img/amex-a49b82f46c5cd6a96a6e418a6ca1717c.svg"
+            alt="icon"
+          />
+        </div>
+
+        <label>
+          Card number
+          <CardNumberElement />
+        </label>
+
+        <div className="payment__form--flex">
+          <label>
+            Expiration date
+            <CardExpiryElement />
+          </label>
+          <label>
+            CVC Code
+            <CardCvcElement />
+          </label>
+        </div>
+      </div> */
+//     </div>
+//   );
+// };
+
+// export default PaymentForm;

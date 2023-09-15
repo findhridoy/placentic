@@ -6,44 +6,43 @@ import CategoryAction from "../TableActions/CategoryAction";
 // Category column
 export const categoryColumn = [
   {
-    Header: "Id",
-    accessor: "_id",
+    accessorKey: "_id",
+    header: "Id",
   },
   {
-    Header: "Image",
-    accessor: "image",
-    show: false,
+    accessorKey: "image",
+    header: "Image",
   },
   {
-    Header: "Title",
-    accessor: "title",
-    Cell: ({ row }) => (
+    accessorKey: "title",
+    header: "Title",
+    cell: ({ row }) => (
       <Stack direction="row" spacing={1} alignItems="center">
         <Avatar
           alt="category image"
-          src={row?.values.image}
+          src={row?.original?.image}
           sx={{ width: 35, height: 35 }}
         />
-        <span>{row?.values.title}</span>
+        <span>{row?.original?.title}</span>
       </Stack>
     ),
   },
   {
-    Header: "Message",
-    accessor: "message",
+    accessorKey: "message",
+    header: "Message",
   },
   {
-    Header: "Date",
-    accessor: "updatedAt",
-    Cell: ({ row }) => (
+    accessorKey: "updatedAt",
+    header: "Date",
+    cell: ({ row }) => (
       <Moment format="D MMM YYYY" withTitle>
-        {row?.values.updatedAt}
+        {row?.original?.updatedAt}
       </Moment>
     ),
   },
   {
-    Header: "Action",
-    accessor: "action",
-    Cell: ({ row }) => <CategoryAction row={row} />,
+    accessorKey: "action",
+    header: "Action",
+    cell: ({ row }) => <CategoryAction row={row} />,
   },
 ];
