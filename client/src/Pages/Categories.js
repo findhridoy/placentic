@@ -46,9 +46,11 @@ const Categories = () => {
         <div className="categories__container container">
           <div className="categories__content">
             {isLoading ? (
-              [...Array(4).keys()].map((index) => (
-                <Skeleton variant="rectangular" key={index} />
-              ))
+              <div className="categories__skeleton">
+                {[...Array(11).keys()].map((index) => (
+                  <Skeleton variant="rectangular" key={index} />
+                ))}
+              </div>
             ) : isError ? (
               <CustomAlert severity="error" message={error?.data?.message} />
             ) : categoryData?.categories?.length < 1 ? (

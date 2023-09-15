@@ -114,7 +114,7 @@
 .invoice__footer {
   text-align: center;
 }
-.footer__text {
+.invoice__footer .footer__text {
   font-weight: 700; /* bold */
   font-size: 0.875rem; /* small-font */
   color: hsl(228, 4%, 25%); /* dark-alt */
@@ -122,7 +122,7 @@
   font-family: "Nunito Sans", sans-serif; /* nunito */
 }
 
-.footer__contact {
+.invoice__footer .footer__contact {
   display: flex;
   justify-content: center;
   gap: 1rem;
@@ -140,6 +140,6 @@
   gap: 0.2rem;
 }
 
-.footer__contact .MuiSvgIcon-root {
+.invoice__footer .footer__contact .MuiSvgIcon-root {
   font-size: 1.125rem;
 }

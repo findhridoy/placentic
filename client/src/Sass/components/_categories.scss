@@ -1,86 +1,133 @@
 .categories__section {
-  //   background-color: $white;
-  margin-bottom: $x-2;
+  // margin-top: -5rem;
+  // margin-bottom: 3rem;
 
+  // @include breakpoint(sm) {
+  //   margin-top: -4rem;
+  // }
+  // @include breakpoint(md) {
+  //   margin-top: -3.5rem;
+  // }
   .categories__container {
-    padding: 0 $x-0-25;
-    @include breakpoint(sm) {
-      padding: 0;
-    }
-
     .categories__content {
-      display: grid;
-      place-items: center;
-      @include breakpoint(md) {
-        place-items: initial;
-      }
-      .categories__data {
-        display: grid;
-        grid-template-columns: repeat(12, 1fr);
-        grid-auto-flow: dense;
-        gap: 0.3rem;
-        // row-gap: 1rem;
+      .categories__data,
+      .categories__skeleton {
+        column-count: 1;
+        -mox-column-count: 1;
+        -webkit-column-count: 1;
+        line-height: 0;
+
         @include breakpoint(sm) {
-          // gap: 0.5rem;
-        }
-        @include breakpoint(md) {
-          // gap: 0.7rem;
+          column-count: 2;
+          -mox-column-count: 2;
+          -webkit-column-count: 2;
+          column-gap: $x-0-75;
+          -mox-column-gap: $x-0-75;
+          -webkit-column-gap: $x-0-75;
         }
         @include breakpoint(lg) {
-          // gap: 1rem;
+          // column-gap: $x-1;
+          // -mox-column-gap: $x-1;
+          // -webkit-column-gap: $x-1;
+
+          column-count: 3;
+          -mox-column-count: 3;
+          -webkit-column-count: 3;
+        }
+        @include breakpoint(xl) {
+          // column-count: 3;
+          // -mox-column-count: 3;
+          // -webkit-column-count: 3;
+          // column-gap: $x-1-25;
+          // -mox-column-gap: $x-1-25;
+          // -webkit-column-gap: $x-1-25;
         }
 
         //   .MuiSkeleton-root,
         .categories__item {
-          // width: 100% !important;
-          height: 95px;
-          overflow: hidden;
           position: relative;
+          background-color: $white;
+          padding: $x-0-5;
+          margin-bottom: $x-0-75;
 
-          @include breakpoint(sm) {
-            height: 160px;
-          }
           @include breakpoint(md) {
-            height: 220px;
+            // padding: $x-0-75;
           }
+
           @include breakpoint(lg) {
-            height: 280px;
+            // padding: $x-1;
+            // margin-bottom: $x-1;
+          }
+
+          @include breakpoint(xl) {
+            // margin-bottom: $x-1-25;
           }
 
           .categories__img {
-            width: 100%;
             img {
               vertical-align: middle;
               object-fit: cover;
-              width: 100%;
-              height: auto;
-              aspect-ratio: 16/9;
+              width: 100% !important;
+              height: auto !important;
+              // aspect-ratio: 16/9;
             }
           }
 
           .categories__box {
             max-width: 150px;
             width: 100%;
-            background: rgba(255, 255, 255, 0.4);
+            background: rgba(255, 255, 255, 0.5);
             position: absolute;
-            top: 8px;
-            backdrop-filter: blur(5px);
+            top: 20px;
+            left: 20px;
+            backdrop-filter: blur(2px);
+            line-height: initial;
             padding: $x-0-5 $x-0-75;
             display: flex;
             flex-direction: column;
 
-            @include breakpoint(sm) {
-              max-width: 230px;
+            @include breakpoint(md) {
+              max-width: 220px;
               padding: $x-0-75 $x-1;
-              top: 20px;
               gap: 0.1rem;
             }
+            @include breakpoint(lg) {
+              max-width: 230px;
+              top: 30px;
+              left: 30px;
+            }
+            @include breakpoint(xl) {
+              top: 40px;
+              left: 40px;
+            }
+
+            // &:nth-of-type(odd) {
+            //   // .categories__box {
+            //   right: 8px;
+            //   text-align: right;
+            //   background: gray !important;
+            //   @include breakpoint(sm) {
+            //     right: 20px;
+            //     // }
+            //   }
+            // }
+
+            // &:nth-of-type(even) {
+            //   // .categories__box {
+            //   background: red !important;
+            //   left: 8px;
+            //   text-align: left;
+            //   @include breakpoint(sm) {
+            //     left: 20px;
+            //     // }
+            //   }
+            // }
 
             .box__subtitle {
               color: $dark-alt;
               font-size: 0.6rem;
               font-weight: $bold;
-              @include breakpoint(sm) {
+              @include breakpoint(md) {
                 font-size: 0.7rem;
               }
             }
@@ -88,16 +135,17 @@
             .box__title {
               color: $dark;
               @include small-font;
-              @include breakpoint(sm) {
+              @include breakpoint(md) {
                 @include h4-font;
               }
             }
 
             .box__link {
               color: $dark-alt;
+              width: max-content;
               @include smallest-font;
               font-weight: $semi-bold;
-              @include breakpoint(sm) {
+              @include breakpoint(md) {
                 @include smaller-font;
               }
 
@@ -108,36 +156,27 @@
             }
           }
 
-          &:nth-child(odd) {
-            grid-column: 1/8;
-            background: white;
-            @include breakpoint(sm) {
-              grid-column: 1/8;
-            }
+          // &:nth-of-type(2n + 4) {
+          //   background: gray;
+          //   .categories__box {
+          //     right: 8px;
+          //     text-align: right;
+          //     @include breakpoint(sm) {
+          //       right: 20px;
+          //     }
+          //   }
+          // }
+          // &:nth-of-type(even) {
+          //   background: red;
+          //   .categories__box {
+          //     left: 8px;
+          //     text-align: left;
+          //     @include breakpoint(sm) {
+          //       left: 20px;
+          //     }
+          //   }
+          // }
 
-            .categories__box {
-              right: 8px;
-              text-align: right;
-              @include breakpoint(sm) {
-                right: 20px;
-              }
-            }
-          }
-          &:nth-child(even) {
-            grid-column: 8/-1;
-            background: white;
-            @include breakpoint(sm) {
-              grid-column: 8/-1;
-            }
-
-            .categories__box {
-              left: 8px;
-              text-align: left;
-              @include breakpoint(sm) {
-                left: 20px;
-              }
-            }
-          }
           // &:nth-child(3n) {
           //   grid-column: 1/-1;
           //   background: white;
@@ -176,6 +215,22 @@
           //     grid-column: 9/-1;
           //   }
           // }
+        }
+
+        .MuiSkeleton-root {
+          background: $cyan;
+          height: 160px;
+          margin-bottom: $x-0-75;
+
+          @include breakpoint(sm) {
+            height: 200px;
+          }
+          @include breakpoint(md) {
+            height: 220px;
+          }
+          @include breakpoint(lg) {
+            height: 240px;
+          }
         }
       }
     }
