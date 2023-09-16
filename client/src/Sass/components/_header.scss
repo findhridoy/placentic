@@ -6,8 +6,8 @@
   width: 100%;
   // background-color: $white-alt;
   background-color: transparent;
-  // @include header-shadow(-30px);
-  @include transition(300ms);
+  // @include header-shadow(-20px);
+  @include transition(200ms);
   @include header-height;
 
   .nav {
@@ -16,27 +16,6 @@
     align-items: center;
     height: 100%;
 
-    .nav__searchBox {
-      width: 100%;
-      display: flex;
-      justify-content: space-between;
-      input {
-        width: 99%;
-        padding: 0 $x-0-75;
-        @include small-font;
-        font-weight: $medium;
-        color: $dark-alt;
-        background-color: transparent;
-      }
-      .MuiIconButton-root {
-        .MuiSvgIcon-root {
-          @include h3-font;
-        }
-        &:hover {
-          color: $red;
-        }
-      }
-    }
     .nav__logo {
       .logo {
         width: 130px;

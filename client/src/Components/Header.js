@@ -1,7 +1,6 @@
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import CategoryIcon from "@mui/icons-material/Category";
-import CloseIcon from "@mui/icons-material/Close";
 import CollectionsBookmarkIcon from "@mui/icons-material/CollectionsBookmark";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import FavoriteIcon from "@mui/icons-material/Favorite";
@@ -17,6 +16,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, NavLink } from "react-router-dom";
 import { userLoggedOut } from "../app/features/auth/authSlice";
 import placentic from "../assets/logo/placentic.png";
+import HeaderSearch from "./HeaderSearch";
 
 const Header = () => {
   const [header, setHeader] = useState(false);
@@ -54,18 +54,12 @@ const Header = () => {
     dispatch(userLoggedOut());
   };
   return (
-    <header className={header ? "header header__shadow" : "header"}>
+    <header
+      className={header || showSearchBox ? "header header__shadow" : "header"}
+    >
       <nav className="nav container">
         {showSearchBox ? (
-          <div className="nav__searchBox">
-            <input type="text" placeholder="Search..." autoComplete="false" />
-            <IconButton
-              aria-label="close"
-              onClick={() => setShowSearchBox(false)}
-            >
-              <CloseIcon />
-            </IconButton>
-          </div>
+          <HeaderSearch onClick={() => setShowSearchBox(false)} />
         ) : (
           <>
             <div className="nav__logo">
