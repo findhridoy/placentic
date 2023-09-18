@@ -1,25 +1,30 @@
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
-import CategoryIcon from "@mui/icons-material/Category";
-import CollectionsBookmarkIcon from "@mui/icons-material/CollectionsBookmark";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-import LibraryBooksIcon from "@mui/icons-material/LibraryBooks";
 import LocalMallIcon from "@mui/icons-material/LocalMall";
-import LoginIcon from "@mui/icons-material/Login";
 import LogoutIcon from "@mui/icons-material/Logout";
-import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
+import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
 import { Avatar, Badge, IconButton } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, NavLink } from "react-router-dom";
 import { userLoggedOut } from "../app/features/auth/authSlice";
 import placentic from "../assets/logo/placentic.png";
+import useDebounce from "../hooks/useDebounce";
 import HeaderSearch from "./HeaderSearch";
 
+import CategoryIcon from "@mui/icons-material/Category";
+import CollectionsBookmarkIcon from "@mui/icons-material/CollectionsBookmark";
+import LibraryBooksIcon from "@mui/icons-material/LibraryBooks";
+import LoginIcon from "@mui/icons-material/Login";
+import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
+
 const Header = () => {
-  const [header, setHeader] = useState(false);
+  // States
+  const [sticky, setSticky] = useState(false);
+  const [scroll, setScroll] = useState(0);
   const [showSearchBox, setShowSearchBox] = useState(false);
   const [dropdown, setDropdown] = useState(false);
 
@@ -29,20 +34,18 @@ const Header = () => {
   const { cartItems } = useSelector((state) => state.cart);
   const { wishlistItems } = useSelector((state) => state.wishlist);
 
-  // Header scroll
-  useEffect(() => {
-    const onScroll = () => {
-      if (window.scrollY >= 45) {
-        setHeader(true);
-      } else {
-        setHeader(false);
-      }
-    };
-    window.addEventListener("scroll", onScroll);
-    return () => {
-      document.removeEventListener("scroll", onScroll);
-    };
-  }, []);
+  // sticky header function
+  const scrollCallback = (window.onscroll = () => {
+    if (scroll >= window.scrollY && window.scrollY > 0) {
+      setSticky(true);
+    } else {
+      setSticky(false);
+    }
+    setScroll(window.scrollY);
+  });
+
+  // custom timeout hook
+  useDebounce(true, 0, scrollCallback);
 
   // Handle dropdown
   const handleDropdown = () => {
@@ -53,9 +56,10 @@ const Header = () => {
   const logout = () => {
     dispatch(userLoggedOut());
   };
+
   return (
     <header
-      className={header || showSearchBox ? "header header__shadow" : "header"}
+      className={sticky || showSearchBox ? "header header__sticky" : "header"}
     >
       <nav className="nav container">
         {showSearchBox ? (
@@ -67,6 +71,12 @@ const Header = () => {
                 <img className="logo" src={placentic} alt="brand-logo" />
               </Link>
             </div>
+
+            <div className="nav__menu1">
+              <MenuIcon />
+              <span>Menu</span>
+            </div>
+
             <div className="nav__menu">
               <ul className="nav__list">
                 <li className="nav__item">
@@ -101,6 +111,7 @@ const Header = () => {
                 </li>
               </ul>
             </div>
+
             <div className="nav__menu2">
               <ul className="nav__list2">
                 <li className="nav__item2">

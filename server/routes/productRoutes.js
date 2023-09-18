@@ -12,6 +12,7 @@ const {
   approveProductReview,
   deleteProductReview,
   getProducts,
+  getProductBySearch,
 } = require("../controllers/productController");
 const { protect, admin } = require("../middleware/authMiddleware");
 const { upload } = require("../utils/avatarUpload");
@@ -20,6 +21,7 @@ const { upload } = require("../utils/avatarUpload");
 router.post("/", protect, admin, upload.single("image"), addProduct);
 router.put("/:prodId", protect, admin, upload.single("image"), updateProduct);
 router.delete("/:prodId", protect, admin, deleteProduct);
+router.get("/search/:keyword", getProductBySearch);
 router.get("/", getProducts);
 router.get("/categories", getCategoriesByProduct);
 router.get("/:prodId", getProduct);

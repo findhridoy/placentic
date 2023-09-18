@@ -102,6 +102,10 @@
     border: 1px solid $dark-alt;
     color: $dark;
     background-color: transparent;
+    &:hover {
+      color: $white;
+      background-color: $dark-alt;
+    }
   }
 }
 

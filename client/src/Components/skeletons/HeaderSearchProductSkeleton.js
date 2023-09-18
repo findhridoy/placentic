@@ -14,8 +14,8 @@ const HeaderSearchProductSkeleton = () => {
           borderBottomColor="#c2c2c2"
           padding="0.5rem 0"
           sx={{
-            ":first-child": { paddingTop: 0 },
-            ":last-child": { border: "none", paddingBottom: 0 },
+            ":first-of-type": { paddingTop: 0 },
+            ":last-of-type": { border: "none", paddingBottom: 0 },
           }}
         >
           <Stack>

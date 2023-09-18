@@ -52,7 +52,7 @@ const HeaderSearch = ({ onClick }) => {
     setKeyword(queryStr);
   };
 
-  // custom hook
+  // custom timeout hook
   useDebounce(queryStr, 800, handleSearch);
 
   return (

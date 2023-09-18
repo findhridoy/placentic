@@ -1,24 +1,24 @@
 .header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: $z-99;
   width: 100%;
-  // background-color: $white-alt;
   background-color: transparent;
-  // @include header-shadow(-20px);
-  @include transition(200ms);
+  @include transition(400ms);
   @include header-height;
+  top: -100px;
 
   .nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
     height: 100%;
+    position: relative;
+    z-index: $z-99;
 
     .nav__logo {
+      // order: 2;
+      // margin-left: 4.5rem;
       .logo {
-        width: 130px;
+        width: 120px;
+        margin-top: $x-0-25;
         @include breakpoint(md) {
           width: 135px;
         }
@@ -27,7 +27,28 @@
         }
       }
     }
+
+    .nav__menu1 {
+      display: none;
+      // display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      .MuiSvgIcon-root {
+        color: $dark-alt;
+        // @include h3-font;
+      }
+      span {
+        color: $dark-alt;
+        font-weight: $bold;
+        text-transform: uppercase;
+        @include smallest-font;
+        display: block;
+        line-height: 0;
+      }
+    }
+
     .nav__menu {
+      // order: 1;
       position: fixed;
       bottom: 0;
       left: 0;
@@ -42,6 +63,8 @@
         width: initial;
         background-color: initial;
         box-shadow: none;
+
+        // display: none;
       }
       .nav__list {
         display: flex;
@@ -83,6 +106,7 @@
       }
     }
     .nav__menu2 {
+      // order: 3;
       .nav__list2 {
         display: flex;
         gap: 0.5rem;
@@ -168,7 +192,10 @@
 }
 
 // when scroll down
-.header__shadow {
+.header__sticky {
+  position: sticky;
+  top: 0;
+  z-index: $z-99;
   @include header-shadow(-10px);
   background-color: $white-alt;
 }
