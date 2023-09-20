@@ -3,7 +3,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import { IconButton } from "@mui/material";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { useGetProductsQuery } from "../app/features/products/productApi";
+import { useGetProductsBySearchQuery } from "../app/features/products/productApi";
 import useDebounce from "../hooks/useDebounce";
 import Rating from "./Rating";
 import CustomSearchError from "./controls/CustomSearchError";
@@ -39,9 +39,8 @@ const HeaderSearch = ({ onClick }) => {
   const [keyword, setKeyword] = useState("");
 
   // Redux toolkit
-  const { isLoading, isFetching, isError, error, data } = useGetProductsQuery(
-    `product?keyword=${keyword}`
-  );
+  const { isLoading, isFetching, isError, error, data } =
+    useGetProductsBySearchQuery(`product/search/${keyword}`);
 
   // search callback function
   const handleSearch = () => {

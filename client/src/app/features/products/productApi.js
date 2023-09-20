@@ -57,6 +57,15 @@ export const productApi = apiSlice.injectEndpoints({
       providesTags: ["Products"],
     }),
 
+    // get product by search
+    getProductsBySearch: builder.query({
+      query: (url) => ({
+        url: url,
+        method: "GET",
+      }),
+      providesTags: ["Products"],
+    }),
+
     // create product review
     createReview: builder.mutation({
       query: ({ prodId, data }) => ({
@@ -94,6 +103,7 @@ export const {
   useDeleteProductMutation,
   useGetCategoriesByProductQuery,
   useGetProductQuery,
+  useGetProductsBySearchQuery,
   useCreateReviewMutation,
   useApproveReviewMutation,
   useRemoveReviewMutation,

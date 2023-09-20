@@ -1,10 +1,15 @@
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
+import CategoryIcon from "@mui/icons-material/Category";
+import CollectionsBookmarkIcon from "@mui/icons-material/CollectionsBookmark";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import FavoriteIcon from "@mui/icons-material/Favorite";
+import LibraryBooksIcon from "@mui/icons-material/LibraryBooks";
 import LocalMallIcon from "@mui/icons-material/LocalMall";
+import LoginIcon from "@mui/icons-material/Login";
 import LogoutIcon from "@mui/icons-material/Logout";
 import MenuIcon from "@mui/icons-material/Menu";
+import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import SearchIcon from "@mui/icons-material/Search";
 import { Avatar, Badge, IconButton } from "@mui/material";
 import { useState } from "react";
@@ -14,12 +19,6 @@ import { userLoggedOut } from "../app/features/auth/authSlice";
 import placentic from "../assets/logo/placentic.png";
 import useDebounce from "../hooks/useDebounce";
 import HeaderSearch from "./HeaderSearch";
-
-import CategoryIcon from "@mui/icons-material/Category";
-import CollectionsBookmarkIcon from "@mui/icons-material/CollectionsBookmark";
-import LibraryBooksIcon from "@mui/icons-material/LibraryBooks";
-import LoginIcon from "@mui/icons-material/Login";
-import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 
 const Header = () => {
   // States
@@ -80,35 +79,53 @@ const Header = () => {
             <div className="nav__menu">
               <ul className="nav__list">
                 <li className="nav__item">
-                  <NavLink className="nav__link" to="/shop/collection">
+                  <NavLink className="nav__link" to="/collection">
                     <CollectionsBookmarkIcon />
                     <span className="nav__text">Collection</span>
                   </NavLink>
                 </li>
                 <li className="nav__item">
-                  <NavLink className="nav__link" to="/shop/category">
+                  <NavLink className="nav__link" to="/category">
                     <CategoryIcon />
                     <span className="nav__text">Category</span>
                   </NavLink>
                 </li>
                 <li className="nav__item">
-                  <NavLink className="nav__link" to="/about">
+                  <NavLink className="nav__link" to="/about_us">
                     <PersonOutlineIcon />
                     <span className="nav__text">About Us</span>
                   </NavLink>
                 </li>
+
                 <li className="nav__item">
                   <NavLink className="nav__link" to="/blog">
                     <LibraryBooksIcon />
                     <span className="nav__text">Blog</span>
                   </NavLink>
                 </li>
-                <li className="nav__item">
-                  <NavLink className="nav__link" to="/login">
-                    <LoginIcon />
-                    <span className="nav__text">Login</span>
+
+                {/* <li className="nav__item">
+                  <NavLink to="/orders" className="nav__link">
+                    <AddShoppingCartIcon />
+                    <span className="nav__text">Orders</span>
                   </NavLink>
-                </li>
+                </li> */}
+
+                {userInfo?.email ? (
+                  <li className="nav__item sm__screen">
+                    <NavLink to="/profile" className="nav__link">
+                      <AccountCircleIcon />
+                      <span className="nav__text">Profile</span>
+                    </NavLink>
+                  </li>
+                ) : (
+                  <li className="nav__item">
+                    <NavLink className="nav__link" to="/login">
+                      <LoginIcon />
+                      <span className="nav__text">Login</span>
+                    </NavLink>
+                  </li>
+                )}
               </ul>
             </div>
 
@@ -123,7 +140,7 @@ const Header = () => {
                   </IconButton>
                 </li>
                 <li className="nav__item2">
-                  <NavLink className="nav__link2" to="/shop/cart">
+                  <NavLink className="nav__link2" to="/cart">
                     <IconButton aria-label="cart">
                       <Badge badgeContent={cartItems?.length}>
                         <LocalMallIcon />
@@ -132,7 +149,7 @@ const Header = () => {
                   </NavLink>
                 </li>
                 <li className="nav__item2">
-                  <NavLink className="nav__link2" to="/shop/favourites">
+                  <NavLink className="nav__link2" to="/wish_list">
                     <IconButton aria-label="love">
                       <Badge badgeContent={wishlistItems?.length}>
                         <FavoriteIcon />

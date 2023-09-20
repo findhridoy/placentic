@@ -1,12 +1,14 @@
+import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import SearchIcon from "@mui/icons-material/Search";
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+// import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { IconButton, Stack } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { addToCart } from "../app/features/cart/cartSlice";
 import { addToWishlist } from "../app/features/wishlist/wishlistSlice";
 import Rating from "./Rating";
+import CustomButton from "./controls/CustomButton";
 
 const ProductItem = ({ product }) => {
   // react router
@@ -46,20 +48,28 @@ const ProductItem = ({ product }) => {
       <div className="product__img">
         <img src={product?.image} alt={product?.title} />
 
-        <div className="product__action">
+        <div className="product__action1">
+          <IconButton
+            onClick={handleAddToWishlist}
+            disabled={existWishlistItem}
+          >
+            {existWishlistItem ? <FavoriteIcon /> : <FavoriteBorderIcon />}
+          </IconButton>
+          <IconButton onClick={() => navigate(`/product/${product?._id}`)}>
+            <SearchIcon />
+          </IconButton>
+        </div>
+
+        <div className="product__action2">
           <Stack direction="row" justifyContent="center" spacing={0.5}>
-            <IconButton onClick={handleAddToCart} disabled={existCartItem}>
-              <ShoppingCartIcon />
-            </IconButton>
-            <IconButton
-              onClick={handleAddToWishlist}
-              disabled={existWishlistItem}
-            >
-              <FavoriteBorderIcon />
-            </IconButton>
-            <IconButton onClick={() => navigate(`/product/${product?._id}`)}>
-              <SearchIcon />
-            </IconButton>
+            <CustomButton
+              className=" btn small__btn btn__dark"
+              text="Add To Cart"
+              // endIcon={<ShoppingCartIcon />}
+              onClick={handleAddToCart}
+              disabled={existCartItem}
+              // loading={isFetching}
+            />
           </Stack>
         </div>
       </div>
@@ -75,6 +85,24 @@ const ProductItem = ({ product }) => {
           </span>
         </Stack>
       </Stack>
+
+      {/* <div className="product__btn--group">
+        <CustomButton
+          className=" btn small__btn outline__dark"
+          text="Discover"
+          // endIcon={<AddIcon />}
+          // onClick={handleLoadmore}
+          // loading={isFetching}
+        />
+
+        <CustomButton
+          className=" btn small__btn btn__dark"
+          text="Add To Cart"
+          // endIcon={<AddIcon />}
+          // onClick={handleLoadmore}
+          // loading={isFetching}
+        />
+      </div> */}
     </div>
   );
 };

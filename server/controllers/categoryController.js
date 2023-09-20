@@ -86,6 +86,27 @@ const getCategories = asyncHandler(async (req, res) => {
 });
 
 /**
+ * @route   Get /api/category/prodId
+ * @desc    Get single category by title
+ * @access  Public
+ */
+const getCategory = asyncHandler(async (req, res) => {
+  // regex
+  const searchRegExp = new RegExp(".*" + req.params.cat_title + ".*", "i");
+
+  // find category by title
+  const category = await Category.find({ title: { $regex: searchRegExp } })
+    .select(["title", "message", "image", "-_id"])
+    .setOptions({ lean: true });
+  if (category?.length > 0) {
+    res.status(200).json(category[0]);
+  } else {
+    res.status(404);
+    throw new Error("Category not found");
+  }
+});
+
+/**
  * @route   Put /api/category/update/:id
  * @desc    Update category
  * @access  Private/Admin
@@ -163,6 +184,7 @@ const deleteCategory = asyncHandler(async (req, res) => {
 module.exports = {
   createCategory,
   getCategories,
+  getCategory,
   updateCategory,
   deleteCategory,
 };

@@ -4,7 +4,7 @@
   .productLayout__container {
     display: block;
     // place-items: center;
-    grid-template-columns: 240px 1fr;
+    grid-template-columns: 260px 1fr;
     gap: 2rem;
     @include breakpoint(md) {
       display: grid;
@@ -94,6 +94,7 @@
       }
     }
     .productLayout__content {
+      // background: gray;
       .productLayout__header {
         display: flex;
         justify-content: space-between;
@@ -134,9 +135,9 @@
         // @include breakpoint(sm) {
         //   // grid-template-columns: repeat(auto-fill, minmax(225px, 1fr));
         // }
-        @include breakpoint(xl) {
-          grid-template-columns: repeat(3, minmax(min-content, 1fr));
-        }
+        // @include breakpoint(xl) {
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        // }
       }
 
       .productLayout__list {

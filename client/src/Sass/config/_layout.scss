@@ -44,6 +44,13 @@
   }
 }
 
+// only small screen visible
+.sm__screen {
+  @include breakpoint(md) {
+    display: none;
+  }
+}
+
 // Outline Button
 // .btn__outline {
 //   .MuiButton-root {

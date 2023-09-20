@@ -17,7 +17,10 @@ const CategoryItem = ({ category }) => {
       <div className="categories__box">
         <span className="box__subtitle">Collection</span>
         <h4 className="box__title">{category?.message}</h4>
-        <Link className="box__link" to="/shop/category">
+        <Link
+          className="box__link"
+          to={`/category/${category?.title.toLowerCase()}`}
+        >
           See all collection
         </Link>
       </div>
