@@ -73,7 +73,10 @@ class Apifeatures {
     }
 
     if (this.queryStr.category) {
-      const category = { category: { $in: this.queryStr.category.split(",") } };
+      const category = {
+        category: { $in: this.queryStr.category.split(",") },
+        $option: "i",
+      };
       this.countsQuery = this.countsQuery.countDocuments(category);
       this.query = this.query.find(category);
     }

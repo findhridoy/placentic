@@ -30,6 +30,15 @@ export const categoryApi = apiSlice.injectEndpoints({
       invalidatesTags: ["Categories"],
     }),
 
+    // get category by title
+    getCategory: builder.query({
+      query: (url) => ({
+        url: url,
+        method: "GET",
+      }),
+      providesTags: ["Categories"],
+    }),
+
     // update category
     updateCategory: builder.mutation({
       query: ({ catId, data }) => ({
@@ -54,6 +63,7 @@ export const categoryApi = apiSlice.injectEndpoints({
 export const {
   useGetCategoriesQuery,
   useCreateCategoryMutation,
+  useGetCategoryQuery,
   useUpdateCategoryMutation,
   useDeleteCategoryMutation,
 } = categoryApi;

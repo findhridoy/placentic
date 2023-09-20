@@ -102,6 +102,10 @@
     border: 1px solid $dark-alt;
     color: $dark;
     background-color: transparent;
+    &:hover {
+      color: $white;
+      background-color: $dark-alt;
+    }
   }
 }
 
@@ -211,6 +215,36 @@
   }
 
   .MuiRadio-root.Mui-checked {
+    color: $dark-alt;
+  }
+}
+
+// Custom search error
+.customSearchError {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  justify-content: center;
+  height: 100%;
+
+  .customSearchError__image {
+    max-width: 300px;
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+  .customSearchError__title {
+    font-weight: $semi-bold;
+    @include h4-font;
+    color: $dark-alt;
+  }
+  .customSearchError__subtitle {
+    font-weight: $medium;
+    @include small-font;
     color: $dark-alt;
   }
 }

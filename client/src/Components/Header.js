@@ -1,7 +1,6 @@
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import CategoryIcon from "@mui/icons-material/Category";
-import CloseIcon from "@mui/icons-material/Close";
 import CollectionsBookmarkIcon from "@mui/icons-material/CollectionsBookmark";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import FavoriteIcon from "@mui/icons-material/Favorite";
@@ -9,17 +8,22 @@ import LibraryBooksIcon from "@mui/icons-material/LibraryBooks";
 import LocalMallIcon from "@mui/icons-material/LocalMall";
 import LoginIcon from "@mui/icons-material/Login";
 import LogoutIcon from "@mui/icons-material/Logout";
+import MenuIcon from "@mui/icons-material/Menu";
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import SearchIcon from "@mui/icons-material/Search";
 import { Avatar, Badge, IconButton } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, NavLink } from "react-router-dom";
 import { userLoggedOut } from "../app/features/auth/authSlice";
 import placentic from "../assets/logo/placentic.png";
+import useDebounce from "../hooks/useDebounce";
+import HeaderSearch from "./HeaderSearch";
 
 const Header = () => {
-  const [header, setHeader] = useState(false);
+  // States
+  const [sticky, setSticky] = useState(false);
+  const [scroll, setScroll] = useState(0);
   const [showSearchBox, setShowSearchBox] = useState(false);
   const [dropdown, setDropdown] = useState(false);
 
@@ -29,20 +33,18 @@ const Header = () => {
   const { cartItems } = useSelector((state) => state.cart);
   const { wishlistItems } = useSelector((state) => state.wishlist);
 
-  // Header scroll
-  useEffect(() => {
-    const onScroll = () => {
-      if (window.scrollY >= 45) {
-        setHeader(true);
-      } else {
-        setHeader(false);
-      }
-    };
-    window.addEventListener("scroll", onScroll);
-    return () => {
-      document.removeEventListener("scroll", onScroll);
-    };
-  }, []);
+  // sticky header function
+  const scrollCallback = (window.onscroll = () => {
+    if (scroll >= window.scrollY && window.scrollY > 0) {
+      setSticky(true);
+    } else {
+      setSticky(false);
+    }
+    setScroll(window.scrollY);
+  });
+
+  // custom timeout hook
+  useDebounce(true, 0, scrollCallback);
 
   // Handle dropdown
   const handleDropdown = () => {
@@ -53,19 +55,14 @@ const Header = () => {
   const logout = () => {
     dispatch(userLoggedOut());
   };
+
   return (
-    <header className={header ? "header header__shadow" : "header"}>
+    <header
+      className={sticky || showSearchBox ? "header header__sticky" : "header"}
+    >
       <nav className="nav container">
         {showSearchBox ? (
-          <div className="nav__searchBox">
-            <input type="text" placeholder="Search..." autoComplete="false" />
-            <IconButton
-              aria-label="close"
-              onClick={() => setShowSearchBox(false)}
-            >
-              <CloseIcon />
-            </IconButton>
-          </div>
+          <HeaderSearch onClick={() => setShowSearchBox(false)} />
         ) : (
           <>
             <div className="nav__logo">
@@ -73,40 +70,65 @@ const Header = () => {
                 <img className="logo" src={placentic} alt="brand-logo" />
               </Link>
             </div>
+
+            <div className="nav__menu1">
+              <MenuIcon />
+              <span>Menu</span>
+            </div>
+
             <div className="nav__menu">
               <ul className="nav__list">
                 <li className="nav__item">
-                  <NavLink className="nav__link" to="/shop/collection">
+                  <NavLink className="nav__link" to="/collection">
                     <CollectionsBookmarkIcon />
                     <span className="nav__text">Collection</span>
                   </NavLink>
                 </li>
                 <li className="nav__item">
-                  <NavLink className="nav__link" to="/shop/category">
+                  <NavLink className="nav__link" to="/category">
                     <CategoryIcon />
                     <span className="nav__text">Category</span>
                   </NavLink>
                 </li>
                 <li className="nav__item">
-                  <NavLink className="nav__link" to="/about">
+                  <NavLink className="nav__link" to="/about_us">
                     <PersonOutlineIcon />
                     <span className="nav__text">About Us</span>
                   </NavLink>
                 </li>
+
                 <li className="nav__item">
                   <NavLink className="nav__link" to="/blog">
                     <LibraryBooksIcon />
                     <span className="nav__text">Blog</span>
                   </NavLink>
                 </li>
-                <li className="nav__item">
-                  <NavLink className="nav__link" to="/login">
-                    <LoginIcon />
-                    <span className="nav__text">Login</span>
+
+                {/* <li className="nav__item">
+                  <NavLink to="/orders" className="nav__link">
+                    <AddShoppingCartIcon />
+                    <span className="nav__text">Orders</span>
                   </NavLink>
-                </li>
+                </li> */}
+
+                {userInfo?.email ? (
+                  <li className="nav__item sm__screen">
+                    <NavLink to="/profile" className="nav__link">
+                      <AccountCircleIcon />
+                      <span className="nav__text">Profile</span>
+                    </NavLink>
+                  </li>
+                ) : (
+                  <li className="nav__item">
+                    <NavLink className="nav__link" to="/login">
+                      <LoginIcon />
+                      <span className="nav__text">Login</span>
+                    </NavLink>
+                  </li>
+                )}
               </ul>
             </div>
+
             <div className="nav__menu2">
               <ul className="nav__list2">
                 <li className="nav__item2">
@@ -118,7 +140,7 @@ const Header = () => {
                   </IconButton>
                 </li>
                 <li className="nav__item2">
-                  <NavLink className="nav__link2" to="/shop/cart">
+                  <NavLink className="nav__link2" to="/cart">
                     <IconButton aria-label="cart">
                       <Badge badgeContent={cartItems?.length}>
                         <LocalMallIcon />
@@ -127,7 +149,7 @@ const Header = () => {
                   </NavLink>
                 </li>
                 <li className="nav__item2">
-                  <NavLink className="nav__link2" to="/shop/favourites">
+                  <NavLink className="nav__link2" to="/wish_list">
                     <IconButton aria-label="love">
                       <Badge badgeContent={wishlistItems?.length}>
                         <FavoriteIcon />

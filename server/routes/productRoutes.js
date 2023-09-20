@@ -12,6 +12,7 @@ const {
   approveProductReview,
   deleteProductReview,
   getProducts,
+  getProductBySearch,
 } = require("../controllers/productController");
 const { protect, admin } = require("../middleware/authMiddleware");
 const { upload } = require("../utils/avatarUpload");
@@ -23,6 +24,7 @@ router.delete("/:prodId", protect, admin, deleteProduct);
 router.get("/", getProducts);
 router.get("/categories", getCategoriesByProduct);
 router.get("/:prodId", getProduct);
+router.get("/search/:keyword", getProductBySearch);
 router.post("/review/:prodId", protect, createProductReview);
 router.get("/review/approve/:prodId", protect, admin, approveProductReview);
 router.get("/review/delete", protect, admin, deleteProductReview);

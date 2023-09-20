@@ -10,7 +10,7 @@ html {
   scroll-behavior: smooth;
 }
 body {
-  @include body-margin(plus);
+  // @include body-margin(plus);
   padding: 0;
   overflow: overlay;
   font-family: $poppins;

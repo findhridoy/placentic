@@ -200,6 +200,33 @@ const getProduct = asyncHandler(async (req, res) => {
 });
 
 /**
+ * @route   Get /api/product?keyword=light
+ * @desc    Get all product and category by search
+ * @access  Public
+ */
+const getProductBySearch = asyncHandler(async (req, res) => {
+  const keyword = req.params.keyword;
+
+  const searchRegExp = new RegExp(".*" + keyword + ".*", "i");
+  const searchObj = {
+    $or: [
+      { title: { $regex: searchRegExp } },
+      { category: { $regex: searchRegExp } },
+    ],
+  };
+
+  const counts = await Product.countDocuments(searchObj);
+  const products = await Product.find(searchObj);
+
+  if (products) {
+    res.status(200).json({ counts, products });
+  } else {
+    res.status(404);
+    throw new Error("Products not found");
+  }
+});
+
+/**
  * @route   Post /api/product/review/:prodId
  * @desc    Create a product review
  * @access  Private
@@ -388,6 +415,7 @@ module.exports = {
   getProducts,
   getCategoriesByProduct,
   getProduct,
+  getProductBySearch,
   createProductReview,
   approveProductReview,
   deleteProductReview,

@@ -7,10 +7,11 @@ import DashboardProducts from "./dashboard/DashboardPages/DashboardProducts";
 import DashboardUsers from "./dashboard/DashboardPages/DashboardUsers";
 import AdminRoutes from "./helpers/Private/AdminRoutes";
 import PrivateRoutes from "./helpers/Private/PrivateRoutes";
-import PublicRoutes from "./helpers/Private/PublicRoutes";
+// import PublicRoutes from "./helpers/Private/PublicRoutes";
 import useAuthCheck from "./hooks/useAuthCheck";
 import Cart from "./pages/Cart";
 import Categories from "./pages/Categories";
+import CategoryProduct from "./pages/CategoryProduct";
 import Checkout from "./pages/Checkout";
 import Collection from "./pages/Collection";
 import Home from "./pages/Home";
@@ -30,15 +31,16 @@ const App = () => {
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/product/:prodId" element={<Product />} />
-      <Route path="/shop/cart" element={<Cart />} />
-      <Route path="/shop/collection" element={<Collection />} />
-      <Route path="/shop/category" element={<Categories />} />
+      <Route path="/cart" element={<Cart />} />
+      <Route path="/collection" element={<Collection />} />
+      <Route path="/category" element={<Categories />} />
+      <Route path="/category/:cate_title" element={<CategoryProduct />} />
 
       {/* Public Routes */}
-      <Route path="/*" element={<PublicRoutes />}>
-        <Route path="login" element={<Login />} />
-        <Route path="signup" element={<Signup />} />
-      </Route>
+      {/* <Route path="/*" element={<PublicRoutes />}> */}
+      <Route path="login" element={<Login />} />
+      <Route path="signup" element={<Signup />} />
+      {/* </Route> */}
 
       {/* Private Routes */}
       <Route path="/*" element={<PrivateRoutes />}>
