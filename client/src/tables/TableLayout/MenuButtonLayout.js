@@ -54,11 +54,6 @@ const MenuButtonLayout = ({
         {children}
 
         <Box padding="0.4rem 1.4rem">
-          {/* <CustomButton
-            className="table__button btn small__btn btn__dark"
-            text="Apply"
-            onClick={applyHandler}
-          /> */}
           <CustomButton
             className="table__button btn small__btn btn__dark outline__dark"
             text={resetText}

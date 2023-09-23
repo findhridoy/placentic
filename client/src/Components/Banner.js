@@ -27,13 +27,12 @@ const SliderContent = ({ countnumber }) => {
           illum quas adipisci molestias! Excepturi exercitationem laboriosam
           nesciunt!
         </span>
-        <div className="bannerSlider__button">
-          <CustomButton
-            className="bannerSlider__button btn outline__dark"
-            text="Explore now"
-            endIcon={<PlayArrowIcon />}
-          />
-        </div>
+
+        <CustomButton
+          className="bannerSlider__button btn outline__dark"
+          text="Explore now"
+          endIcon={<PlayArrowIcon />}
+        />
 
         <div className="bannerSlider__countnumber">0{countnumber}</div>
       </div>

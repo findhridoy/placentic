@@ -6,93 +6,18 @@
     // place-items: center;
     grid-template-columns: 260px 1fr;
     gap: 2rem;
-    @include breakpoint(md) {
+    @include breakpoint(xl) {
       display: grid;
     }
 
-    .productLayout__menu {
-      background-color: $dark-alt;
-      @include box-shadow;
-      height: max-content;
+    .productLayoutMenu {
       display: none;
 
-      @include breakpoint(md) {
+      @include breakpoint(xl) {
         display: block;
       }
-
-      .MuiList-root {
-        .MuiMenuItem-root {
-          position: relative;
-          color: $white-alt;
-          font-weight: $medium;
-          font-family: $poppins;
-          @include smaller-font;
-          display: flex;
-          justify-content: space-between;
-
-          // Badge Icon
-          .MuiBadge-badge {
-            background-color: $cyan !important;
-            color: $white-alt;
-            font-family: $montserrat;
-          }
-        }
-        .Mui-selected {
-          color: $cyan;
-        }
-      }
-
-      .priceRange__slider {
-        padding: $x-0-75 $x-1-75 0 $x-1;
-
-        .priceRange__title {
-          color: $white;
-          text-transform: capitalize;
-          font-weight: $semi-bold;
-        }
-        .slider {
-          padding-left: 0.4rem;
-        }
-
-        .MuiSlider-root {
-          color: $white-alt;
-        }
-        .MuiSlider-track {
-          color: $white-alt;
-          opacity: 0.4;
-        }
-        .MuiSlider-thumb {
-          border-radius: 0;
-        }
-        .MuiSlider-valueLabelOpen {
-          color: $white-alt;
-          opacity: 0.8;
-          font-family: $nunito;
-          @include smaller-font;
-          top: 42px;
-          background-color: transparent;
-        }
-      }
-
-      .raitngs {
-        padding: $x-0-75 $x-1-75 0 $x-1;
-        margin-top: $x-1;
-        .raitngs__title {
-          color: $white;
-          text-transform: capitalize;
-          font-weight: $semi-bold;
-        }
-        .raitng {
-          margin-left: -0.2rem;
-          margin-top: $x-0-25;
-        }
-        .MuiSvgIcon-root {
-          color: $cyan !important;
-          // @include h2-font;
-          // opacity: 0.9;
-        }
-      }
     }
+
     .productLayout__content {
       // background: gray;
       .productLayout__header {
@@ -124,12 +49,27 @@
             justify-content: initial;
             width: initial;
           }
+
+          .productLayout__sort--dropdown {
+            display: none;
+            @include breakpoint(xl) {
+              display: block;
+            }
+          }
+
+          .productLayoutFilterMenu {
+            display: block;
+            @include breakpoint(xl) {
+              display: none;
+            }
+          }
         }
       }
       .productLayout__grid {
         display: grid;
-        column-gap: 1rem;
-        row-gap: 3rem;
+        // column-gap: 1rem;
+        // row-gap: 1rem;
+        gap: 1rem;
         place-items: center;
         // grid-template-columns: repeat(auto-fit, minmax(min-content, 1fr));
         // @include breakpoint(sm) {
@@ -138,6 +78,10 @@
         // @include breakpoint(xl) {
         grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
         // }
+
+        @include breakpoint(xl) {
+          gap: 1.5rem;
+        }
       }
 
       .productLayout__list {

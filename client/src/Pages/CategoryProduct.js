@@ -4,30 +4,35 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useGetCategoryQuery } from "../app/features/categories/categoryApi";
 import { useGetCategoriesByProductQuery } from "../app/features/products/productApi";
 import CustomBreadcrumbs from "../components/controls/CustomBreadcrumbs";
+import MenuItemSkeleton from "../components/skeletons/MenuItemSkeleton";
 import Layout from "../layouts/Layout";
 import ProductLayout from "../layouts/ProductLayout";
 
-const FilterMenu = ({ categoryData, cate_title }) => {
+const FilterMenu = ({ categoryData, cate_title, isLoading }) => {
   // react router navigate
   const navigate = useNavigate();
 
   return (
     <MenuList>
-      {categoryData?.categories?.map((category) => (
-        <MenuItem
-          onClick={() =>
-            navigate(`/category/${category?.title?.toLowerCase()}`)
-          }
-          key={category?.title}
-          divider={true}
-          selected={
-            cate_title === category?.title?.toLowerCase() ? true : false
-          }
-        >
-          {category?.title}
-          <Badge badgeContent={category?.productCount} />
-        </MenuItem>
-      ))}
+      {isLoading ? (
+        <MenuItemSkeleton />
+      ) : (
+        categoryData?.categories?.map((category) => (
+          <MenuItem
+            onClick={() =>
+              navigate(`/category/${category?.title?.toLowerCase()}`)
+            }
+            key={category?.title}
+            divider={true}
+            selected={
+              cate_title === category?.title?.toLowerCase() ? true : false
+            }
+          >
+            {category?.title}
+            <Badge badgeContent={category?.productCount} />
+          </MenuItem>
+        ))
+      )}
     </MenuList>
   );
 };
@@ -53,7 +58,11 @@ const CategoryProduct = () => {
       <CustomBreadcrumbs title={category?.message} image={category?.image} />
       <ProductLayout
         FilterMenuComponent={
-          <FilterMenu categoryData={categoryData} cate_title={cate_title} />
+          <FilterMenu
+            categoryData={categoryData}
+            cate_title={cate_title}
+            isLoading={isLoading}
+          />
         }
         categories={[
           category?.title ? category?.title : toCapitalize(cate_title),
