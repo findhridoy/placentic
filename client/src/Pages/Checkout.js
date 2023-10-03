@@ -22,6 +22,7 @@ const Checkout = () => {
   );
 
   const { isLoading, isError, data: user } = useGetProfileQuery();
+
   const [
     orderCreate,
     { isLoading: orderIsLoading, isError: orderIsError, error, data },
@@ -29,6 +30,7 @@ const Checkout = () => {
 
   const handleCheckout = async () => {
     const orderData = {
+      customerId: user?._id,
       customer: {
         name: user?.name,
         image: user?.avatar,

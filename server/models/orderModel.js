@@ -8,6 +8,11 @@ const OrderSchema = new Schema(
       type: String,
       required: true,
     },
+    customerId: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
     customer: {
       name: { type: String, required: true },
       image: { type: String, required: true },

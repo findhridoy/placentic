@@ -14,6 +14,7 @@ const Apifeatures = require("../utils/Apifeatures");
 const createOrder = asyncHandler(async (req, res) => {
   const {
     customer,
+    customerId,
     orderItems,
     shippingAddress,
     shippingPrice,
@@ -29,6 +30,7 @@ const createOrder = asyncHandler(async (req, res) => {
       useLetters: false,
     }),
     customer,
+    customerId,
     orderItems,
     shippingAddress,
     shippingPrice,
@@ -66,6 +68,23 @@ const getOrders = asyncHandler(async (req, res) => {
 
   const counts = await features.countsQuery;
   const orders = await features.query;
+
+  if (orders) {
+    res.status(200).json({ counts, orders });
+  } else {
+    res.status(404);
+    throw new Error("Orders not found");
+  }
+});
+
+/**
+ * @route   Get /api/v1/order?sort=1&page=1&size=4
+ * @desc    Get order by user id
+ * @access  Public/Admin
+ */
+const getOrder = asyncHandler(async (req, res) => {
+  const counts = await Order.countDocuments({ customerId: req.user.id });
+  const orders = await Order.find({ customerId: req.user.id });
 
   if (orders) {
     res.status(200).json({ counts, orders });
@@ -123,6 +142,7 @@ const deleteOrder = asyncHandler(async (req, res) => {
 module.exports = {
   createOrder,
   getOrders,
+  getOrder,
   updateOrder,
   deleteOrder,
 };

@@ -8,12 +8,12 @@ const wishlistItems = JSON.parse(localStorage.getItem("wishlist"))
 
 // wishlist slice
 const wishlistSlice = createSlice({
-  name: "wishList",
+  name: "wishlist",
   initialState: { wishlistItems },
   reducers: {
     addToWishlist: (state, action) => {
       state.wishlistItems.push(action.payload);
-      localStorage.setItem("wishList", JSON.stringify(state.wishlistItems));
+      localStorage.setItem("wishlist", JSON.stringify(state.wishlistItems));
       cogoToast.success(`${action.payload?.title} is added your wish list.`);
     },
 
@@ -23,7 +23,7 @@ const wishlistSlice = createSlice({
       );
 
       state.wishlistItems = newWishlistItems;
-      localStorage.setItem("wishList", JSON.stringify(state.wishlistItems));
+      localStorage.setItem("wishlist", JSON.stringify(state.wishlistItems));
       cogoToast.success(`${action.payload?.title} is removed.`);
     },
   },

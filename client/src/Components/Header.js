@@ -149,7 +149,7 @@ const Header = () => {
                   </NavLink>
                 </li>
                 <li className="nav__item2">
-                  <NavLink className="nav__link2" to="/wish_list">
+                  <NavLink className="nav__link2" to="/wishlist">
                     <IconButton aria-label="love">
                       <Badge badgeContent={wishlistItems?.length}>
                         <FavoriteIcon />

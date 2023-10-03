@@ -4,7 +4,7 @@
   align-items: center;
   position: relative;
   overflow: hidden;
-  @include body-margin(minus);
+  // @include body-margin(minus);
   &::after {
     left: 0;
     width: 0;

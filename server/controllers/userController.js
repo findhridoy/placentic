@@ -98,7 +98,7 @@ const userLogin = asyncHandler(async (req, res) => {
  * @access  Private/Loggedin user
  */
 const getUserProfile = asyncHandler(async (req, res) => {
-  const user = await User.findById(req.user._id).select("-password");
+  const user = await User.findById(req.user.id).select("-password");
   if (user) {
     res.status(200).json(user);
   } else {
@@ -114,7 +114,7 @@ const getUserProfile = asyncHandler(async (req, res) => {
  */
 const updateUserProfile = asyncHandler(async (req, res) => {
   // find user by id
-  let user = await User.findById(req.user._id);
+  let user = await User.findById(req.user.id);
 
   // with file
   if (user && req.file) {
@@ -136,7 +136,7 @@ const updateUserProfile = asyncHandler(async (req, res) => {
       zip_code: req.body.zip_code || user.zip_code,
     };
 
-    user = await User.findByIdAndUpdate(req.user._id, updatedUser, {
+    user = await User.findByIdAndUpdate(req.user.id, updatedUser, {
       new: true,
     });
 
@@ -163,7 +163,7 @@ const updateUserProfile = asyncHandler(async (req, res) => {
       zip_code: req.body.zip_code || user.zip_code,
     };
 
-    user = await User.findByIdAndUpdate(req.user._id, updatedUser, {
+    user = await User.findByIdAndUpdate(req.user.id, updatedUser, {
       new: true,
     });
 

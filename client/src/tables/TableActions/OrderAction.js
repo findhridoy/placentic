@@ -6,7 +6,7 @@ import OrderInvoice from "../../dashboard/DashboardComponents/OrderInvoice";
 import ActionsButton from "../TableComponents/AdditionalComponents/ActionsButton";
 import DeleteDialog from "../TableComponents/AdditionalComponents/DeleteDialog";
 
-const OrderAction = ({ row }) => {
+const OrderAction = ({ row, customer }) => {
   // Modal state
   const [open, setOpen] = useState(false);
   const [dialog, setDialog] = useState(false);
@@ -39,6 +39,7 @@ const OrderAction = ({ row }) => {
         handleDeleteIcon={() => setDialog(true)}
         row={row}
         visibleIcon={true}
+        customer={customer}
       />
 
       {/* Edit modal */}
@@ -49,13 +50,15 @@ const OrderAction = ({ row }) => {
       </Modal>
 
       {/* Delete dialog */}
-      <DeleteDialog
-        open={dialog}
-        setOpen={setDialog}
-        onClick={handleDelete}
-        isLoading={isLoading}
-        row={row}
-      />
+      {customer ? null : (
+        <DeleteDialog
+          open={dialog}
+          setOpen={setDialog}
+          onClick={handleDelete}
+          isLoading={isLoading}
+          row={row}
+        />
+      )}
     </>
   );
 };
