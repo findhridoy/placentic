@@ -6,7 +6,7 @@ const bcrypt = require("bcryptjs");
 const User = require("../models/userModel");
 const { generateToken } = require("../utils/generateToken");
 const { cloudinary } = require("../config/cloudinary");
-const Apifeatures = require("../utils/Apifeatures");
+const { ApiFeatures } = require("../utils/Apifeatures");
 
 /**
  * @route   Post /api/user/register
@@ -212,7 +212,7 @@ const deleteUser = asyncHandler(async (req, res) => {
  */
 const getUsers = asyncHandler(async (req, res) => {
   // using reuseable class for filter, sort, paginate and search
-  const features = new Apifeatures(
+  const features = new ApiFeatures(
     User.find().select("-password"),
     req.query,
     User.countDocuments()
