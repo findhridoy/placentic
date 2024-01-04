@@ -1,0 +1,104 @@
+.productLayoutFilter__menu {
+  background-color: $dark-alt;
+  @include box-shadow;
+  height: max-content;
+
+  .MuiList-root {
+    .MuiMenuItem-root {
+      position: relative;
+      color: $white-alt;
+      font-weight: $medium;
+      font-family: $poppins;
+      @include smaller-font;
+      display: flex;
+      justify-content: space-between;
+
+      // Badge Icon
+      .MuiBadge-badge {
+        background-color: $cyan !important;
+        color: $white-alt;
+        font-family: $montserrat;
+      }
+    }
+    .Mui-selected {
+      color: $cyan;
+    }
+  }
+
+  .priceRange__slider {
+    padding: $x-0-75 $x-1-75 0 $x-1;
+
+    .priceRange__title {
+      color: $white;
+      text-transform: capitalize;
+      font-weight: $medium;
+    }
+    .slider {
+      padding-left: 0.4rem;
+    }
+
+    .MuiSlider-root {
+      color: $white-alt;
+    }
+    .MuiSlider-track {
+      color: $white-alt;
+      opacity: 0.4;
+    }
+    .MuiSlider-thumb {
+      border-radius: 0;
+    }
+    .MuiSlider-valueLabelOpen {
+      color: $white-alt;
+      opacity: 0.8;
+      font-family: $nunito;
+      @include smaller-font;
+      top: 42px;
+      background-color: transparent;
+    }
+  }
+
+  .raitngs {
+    padding: $x-0-75 $x-1-75 0 $x-1;
+    margin-top: $x-1;
+    .raitngs__title {
+      color: $white;
+      text-transform: capitalize;
+      font-weight: $medium;
+    }
+    .raitng {
+      margin-left: -0.2rem;
+      margin-top: $x-0-25;
+    }
+    .MuiSvgIcon-root {
+      color: $cyan !important;
+      // @include h2-font;
+      // opacity: 0.9;
+    }
+  }
+
+  .productLayoutFilter__sortBy {
+    display: block;
+
+    @include breakpoint(xl) {
+      display: none;
+    }
+
+    .productLayoutFilter__sort {
+      padding: 0 $x-1-75 0 $x-1;
+      // margin-top: $x-0-25;
+      .MuiFormControlLabel-root {
+        .MuiFormControlLabel-label {
+          font-family: $poppins !important;
+          font-weight: $medium;
+          color: $white;
+          @include smaller-font;
+          display: flex;
+          align-items: center;
+        }
+        .Mui-checked {
+          color: $cyan !important;
+        }
+      }
+    }
+  }
+}

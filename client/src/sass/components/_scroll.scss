@@ -1,0 +1,12 @@
+::-webkit-scrollbar {
+  background: transparent;
+  width: 0.5rem;
+  height: 0.5rem;
+  &-thumb {
+    background: rgb(63, 78, 78);
+    border-radius: 0.5rem;
+    &:hover {
+      // background: $accent-color;
+    }
+  }
+}

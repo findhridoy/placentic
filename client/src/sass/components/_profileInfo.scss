@@ -1,0 +1,31 @@
+.profileInfo__list {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  text-align: initial;
+  // margin-top: $x-1-75;
+  padding: $x-0-75;
+  .profileInfo__item {
+    display: grid;
+    align-items: center;
+    grid-template-columns: 1fr 2fr;
+    gap: 1rem;
+    padding: $x-0-5 0;
+    &:not(:last-child) {
+      border-bottom: 1px solid $gray;
+    }
+    .item__property {
+      color: $dark-alt;
+      opacity: 0.7;
+      @include smaller-font;
+      font-weight: $semi-bold;
+      text-transform: capitalize;
+    }
+    .item__value {
+      @extend .item__property;
+      opacity: 1;
+      justify-self: flex-end;
+      text-transform: initial;
+    }
+  }
+}
