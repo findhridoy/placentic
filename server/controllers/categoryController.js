@@ -4,7 +4,7 @@ const asyncHandler = require("express-async-handler");
 // Internal Imports
 const Category = require("../models/categoryModel");
 const { cloudinary } = require("../config/cloudinary");
-const Apifeatures = require("../utils/Apifeatures");
+const { ApiFeatures } = require("../utils/Apifeatures");
 
 /**
  * @route   Post /api/category/create
@@ -65,7 +65,7 @@ const createCategory = asyncHandler(async (req, res) => {
  */
 const getCategories = asyncHandler(async (req, res) => {
   // using reuseable class for filter, sort, paginate and search
-  const features = new Apifeatures(
+  const features = new ApiFeatures(
     Category.find(),
     req.query,
     Category.countDocuments()

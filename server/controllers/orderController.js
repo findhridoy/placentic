@@ -4,7 +4,7 @@ const generateUniqueId = require("generate-unique-id");
 
 // Internal Imports
 const Order = require("../models/orderModel");
-const Apifeatures = require("../utils/Apifeatures");
+const { ApiFeatures } = require("../utils/Apifeatures");
 
 /**
  * @route   Post /api/v1/order
@@ -56,7 +56,7 @@ const createOrder = asyncHandler(async (req, res) => {
  */
 const getOrders = asyncHandler(async (req, res) => {
   // using reuseable class for filter, sort, paginate and search
-  const features = new Apifeatures(
+  const features = new ApiFeatures(
     Order.find(),
     req.query,
     Order.countDocuments()
