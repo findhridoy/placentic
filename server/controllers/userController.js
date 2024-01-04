@@ -6,7 +6,7 @@ const bcrypt = require("bcryptjs");
 const User = require("../models/userModel");
 const { generateToken } = require("../utils/generateToken");
 const { cloudinary } = require("../config/cloudinary");
-const Apifeatures = require("../utils/ApiFeatures");
+const Apifeatures = require("../utils/Apifeatures");
 
 /**
  * @route   Post /api/user/register

@@ -4,7 +4,7 @@ const asyncHandler = require("express-async-handler");
 // Internal Imports
 const Product = require("../models/productModel");
 const { cloudinary } = require("../config/cloudinary");
-const Apifeatures = require("../utils/ApiFeatures");
+const Apifeatures = require("../utils/Apifeatures");
 
 /**
  * @route   Post /api/product
