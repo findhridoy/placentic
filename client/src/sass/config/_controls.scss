@@ -1,0 +1,250 @@
+// **Button
+.btn-root {
+  .MuiButton-root {
+    text-transform: capitalize;
+    border-radius: 0;
+    letter-spacing: 0.8px;
+    font-family: $poppins;
+    @include smaller-font;
+    box-shadow: none;
+    cursor: pointer;
+    @include breakpoint(md) {
+      @include small-font;
+    }
+    &:hover {
+      @include shadow-btn;
+    }
+  }
+}
+
+.btn {
+  .MuiButton-root {
+    height: 2.8rem;
+    width: 9rem;
+    font-weight: $semi-bold;
+    text-transform: capitalize;
+    border-radius: 0;
+    letter-spacing: 0.8px;
+    font-family: $poppins;
+    // display: flex;
+    // align-items: center;
+    @include small-font;
+    box-shadow: none;
+    cursor: pointer;
+    @include breakpoint(md) {
+      height: 3rem;
+      width: 10rem;
+    }
+    &:hover {
+      @include shadow-btn;
+    }
+  }
+}
+.small__btn {
+  .MuiButton-root {
+    height: 2.3rem;
+    width: 7.9rem;
+    display: flex;
+    align-items: center;
+    font-family: $poppins;
+    letter-spacing: 0;
+    @include smaller-font;
+    @include breakpoint(md) {
+      height: 2.4rem;
+      width: 7.2rem;
+      @include smallest-font;
+    }
+    .MuiSvgIcon-root {
+      @include h3-font;
+    }
+  }
+}
+// White Button
+.btn__white {
+  .MuiButton-root,
+  .MuiIconButton-root {
+    background-color: $white;
+    color: $dark-alt;
+    &:hover {
+      color: $dark-alt;
+      background-color: $white;
+    }
+    &:disabled {
+      pointer-events: auto !important;
+      cursor: progress !important;
+      color: $dark-alt !important;
+      background-color: $white !important;
+    }
+  }
+}
+// Dark Button
+.btn__dark {
+  .MuiButton-root,
+  .MuiIconButton-root {
+    background-color: $dark-alt;
+    color: $white;
+    &:hover {
+      color: $white;
+      background-color: $dark-alt;
+    }
+    &:disabled {
+      pointer-events: auto !important;
+      cursor: progress !important;
+      color: $white !important;
+      background-color: $dark-alt !important;
+    }
+  }
+}
+
+// **Outline Button
+.outline__dark {
+  .MuiButton-root {
+    border: 1px solid $dark-alt;
+    color: $dark;
+    background-color: transparent;
+    &:hover {
+      color: $white;
+      background-color: $dark-alt;
+    }
+  }
+}
+
+// **Custom Alert
+.custom__alert {
+  // margin: 2rem 0;
+  // margin-top: $x-0-5;
+  .MuiPaper-root {
+    // opacity: 0.9;
+    border-radius: 0;
+    width: 100%;
+    .MuiAlert-message {
+      // color: $dark-alt;
+      font-weight: $medium;
+      font-family: $poppins;
+    }
+  }
+}
+
+// **Custom Loader
+.customLoader {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  // background-color: $white-alt;
+  // background-color: gray;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+// **Custom Viewer
+.customViewer {
+  border: $border-gray;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: $x-0-25 $x-0-75;
+  .customViewer__title {
+    font-weight: $bold;
+    text-transform: uppercase;
+    font-family: $nunito;
+    @include smaller-font;
+  }
+  .customViewer__icons {
+    display: flex;
+    align-items: center;
+    gap: 0.1rem;
+    .active__viewer {
+      .MuiIconButton-root {
+        background-color: $cyan-alt;
+      }
+      .MuiSvgIcon-root {
+        color: $cyan;
+      }
+    }
+  }
+}
+
+// **Custom Accordion
+.customAccordion {
+  .MuiAccordion-root {
+    background-color: transparent;
+    box-shadow: none;
+    padding: $x-0-75 $x-0-75 0 $x-0-75;
+
+    .MuiSvgIcon-root {
+      color: $white;
+    }
+
+    .customAccordion__title {
+      color: $white;
+      text-transform: uppercase;
+      font-weight: $semi-bold;
+      // font-family: $nunito;
+      letter-spacing: 0.03rem;
+      // display: flex;
+      // justify-content: space-between;
+      // align-items: center;
+      // padding: $x-1-75 $x-1 $x-0-5;
+    }
+    .MuiAccordionDetails-root {
+      padding: 0;
+    }
+  }
+}
+
+// **Custom Radio Group
+.customRadioGroup {
+  .MuiRadio-root {
+    padding: 5px;
+    margin-right: $x-0-25;
+  }
+
+  .MuiTypography-root {
+    font-family: $poppins;
+    color: $dark-alt;
+    @include smaller-font;
+    font-weight: $semi-bold;
+    @include breakpoint(sm) {
+      // @include smallest-font;
+    }
+  }
+
+  .MuiRadio-root.Mui-checked {
+    color: $dark-alt;
+  }
+}
+
+// Custom search error
+.customSearchError {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  justify-content: center;
+  height: 100%;
+
+  .customSearchError__image {
+    max-width: 300px;
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+  .customSearchError__title {
+    font-weight: $semi-bold;
+    @include h4-font;
+    color: $dark-alt;
+  }
+  .customSearchError__subtitle {
+    font-weight: $medium;
+    @include small-font;
+    color: $dark-alt;
+  }
+}

@@ -1,0 +1,80 @@
+.customBreadcrumbs {
+  position: relative;
+  height: 250px;
+  width: 100%;
+  margin-bottom: $x-1-75;
+  @include breakpoint(md) {
+    height: 380px;
+  }
+  .customBreadcrumbs__container {
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    position: absolute;
+    height: calc(100% + 3.5rem);
+    top: -3.5rem;
+    width: 100%;
+    display: flex;
+    align-items: center;
+
+    @include breakpoint(md) {
+      height: calc(100% + 4rem);
+      top: -4rem;
+    }
+
+    &::before {
+      content: "";
+      position: absolute;
+      width: 100%;
+      height: 25rem;
+      background-image: linear-gradient(to top, $white-alt, transparent);
+      left: 0;
+      bottom: 0;
+    }
+
+    &::after {
+      content: "";
+      position: absolute;
+      width: 100%;
+      height: 15rem;
+      background-image: linear-gradient(to bottom, $white-alt, transparent);
+      left: 0;
+      bottom: -15rem;
+      z-index: -1;
+    }
+
+    .customBreadcrumbs__content {
+      width: 100%;
+      z-index: 1;
+
+      .customBreadcrumbs__title {
+        color: $dark-alt;
+        font-weight: $bolder;
+        @include big-font;
+        // opacity: 0.8;
+        font-family: $nunito;
+      }
+      .MuiLink-root {
+        color: $cyan;
+        font-weight: $semi-bold;
+        font-family: $montserrat;
+        @include smallest-font;
+        text-decoration: none;
+        text-transform: uppercase;
+        cursor: pointer;
+        @include transition(200ms);
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+      .breadcrumbs__text {
+        @extend .MuiLink-root;
+        cursor: initial;
+        color: $dark-alt;
+        &:hover {
+          text-decoration: none;
+        }
+      }
+    }
+  }
+}

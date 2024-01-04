@@ -1,0 +1,40 @@
+.customDropdown {
+  border: $border-gray;
+  display: flex;
+  height: 100%;
+  align-items: center;
+  gap: 0.5rem;
+  padding: $x-0-5 $x-0-75;
+  .customDropdown__title {
+    font-weight: $bold;
+    text-transform: uppercase;
+    font-family: $nunito;
+    @include smaller-font;
+  }
+  .custom-select {
+    select {
+      background: transparent;
+      background-image: none;
+      outline: none;
+      cursor: pointer;
+      z-index: 2;
+      border: none;
+      // padding: $x-0-5 0;
+
+      font-weight: $bold;
+      text-transform: uppercase;
+      font-family: $nunito;
+      @include smaller-font;
+      color: $cyan;
+
+      option {
+        font-weight: $medium;
+        text-transform: uppercase;
+        font-family: $poppins;
+        color: $dark;
+        @include smaller-font;
+        border: none;
+      }
+    }
+  }
+}
