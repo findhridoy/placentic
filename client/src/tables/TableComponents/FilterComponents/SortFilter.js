@@ -8,16 +8,6 @@ const SortFilter = ({ sort, setSort }) => {
   };
 
   // sorting options
-  // const sortOptions = [
-  //   // { label: "Default", value: "" },
-  //   { label: "Name", value: "title" },
-  //   { label: "Newest First", value: "-createdAt" },
-  //   { label: "Modification Time", value: "updatedAt" },
-  //   { label: "Price: Low to High", value: "price" },
-  //   { label: "Price: High to Low", value: "-price" },
-  // ];
-
-  // sorting options
   const sortOptions = [
     { label: "Default", value: "" },
     { label: "Newest First", value: "updatedAt" },

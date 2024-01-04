@@ -1,17 +1,17 @@
 import AddIcon from "@mui/icons-material/Add";
-import StarBorderIcon from "@mui/icons-material/StarBorder";
-import { Rating, Slider } from "@mui/material";
+// import FilterListIcon from "@mui/icons-material/FilterList";
 import { useState } from "react";
 import { useGetProductsQuery } from "../app/features/products/productApi";
 import ProductItem from "../components/ProductItem";
+import ProductLayoutFilter from "../components/ProductLayoutFilter";
+import ProductLayoutFilterMenu from "../components/ProductLayoutFilterMenu";
 import ProductListItem from "../components/ProductListItem";
-import CustomAccordion from "../components/controls/CustomAccordion";
 import CustomAlert from "../components/controls/CustomAlert";
 import CustomButton from "../components/controls/CustomButton";
-import CustomDropdown from "../components/controls/CustomDropdown";
 import CustomViewer from "../components/controls/CustomViewer";
 import ButtonSkeleton from "../components/skeletons/ButtonSkeleton";
 import ProductItemSkeleton from "../components/skeletons/ProductItemSkeleton";
+import CustomDropdown from "./../components/controls/CustomDropdown";
 
 const ProductLayout = ({ categories, FilterMenuComponent }) => {
   // States
@@ -22,7 +22,7 @@ const ProductLayout = ({ categories, FilterMenuComponent }) => {
   const [viewer, setViewer] = useState("grid");
 
   // sorting options
-  const options = [
+  const sortOptions = [
     { label: "Default", value: "" },
     { label: "Newest First", value: "updatedAt" },
     { label: "Oldest First", value: "-createdAt" },
@@ -31,7 +31,7 @@ const ProductLayout = ({ categories, FilterMenuComponent }) => {
   ];
 
   const {
-    isLoading: productLoading,
+    isLoading,
     isFetching,
     isError,
     error,
@@ -40,18 +40,6 @@ const ProductLayout = ({ categories, FilterMenuComponent }) => {
     `product?size=${size}&category=${categories}&price[gte]=${price[0]}&price[lte]=${price[1]}&ratings[gte]=${rating}&sort=${sort}`
   );
 
-  // price filter handler
-  const handlePriceFilter = (event, newValue) => {
-    setPrice(newValue);
-  };
-  // rating filter handler
-  const handleRatingFilter = (event, newValue) => {
-    if (newValue === null) {
-      setRating(0);
-    } else {
-      setRating(newValue);
-    }
-  };
   // loadmore handler
   const handleLoadmore = () => {
     setSize((preValue) => preValue + 3);
@@ -61,44 +49,17 @@ const ProductLayout = ({ categories, FilterMenuComponent }) => {
     <section className="productLayout">
       <div className="container">
         <div className="productLayout__container">
-          <div className="productLayout__menu">
-            {false && <h4>Loading.....</h4>}
-
-            <CustomAccordion title="Categories">
-              {FilterMenuComponent}
-            </CustomAccordion>
-
-            <CustomAccordion title="Filter By">
-              <div className="priceRange__slider">
-                <h5 className="priceRange__title">Price Range</h5>
-
-                <div className="slider">
-                  <Slider
-                    size="small"
-                    value={price}
-                    onChange={handlePriceFilter}
-                    valueLabelDisplay="on"
-                    valueLabelFormat={(e) => `$ ${e}`}
-                    min={1}
-                  />
-                </div>
-              </div>
-
-              <div className="raitngs">
-                <h5 className="raitngs__title">Ratings</h5>
-
-                <div className="raitng">
-                  <Rating
-                    value={rating}
-                    defaultValue={0}
-                    precision={0.5}
-                    onChange={handleRatingFilter}
-                    emptyIcon={<StarBorderIcon />}
-                  />
-                </div>
-              </div>
-            </CustomAccordion>
-            <CustomAccordion title="Other"></CustomAccordion>
+          <div className="productLayoutMenu">
+            <ProductLayoutFilter
+              FilterMenuComponent={FilterMenuComponent}
+              price={price}
+              setPrice={setPrice}
+              rating={rating}
+              setRating={setRating}
+              sort={sort}
+              setSort={setSort}
+              sortOptions={sortOptions}
+            />
           </div>
 
           <div className="productLayout__content">
@@ -118,11 +79,35 @@ const ProductLayout = ({ categories, FilterMenuComponent }) => {
               )}
 
               <div className="productLayout__right">
-                <CustomDropdown
-                  options={options}
-                  selectedStates={sort}
-                  updateStates={setSort}
-                />
+                <div className="productLayout__sort--dropdown">
+                  <CustomDropdown
+                    options={sortOptions}
+                    selectedStates={sort}
+                    updateStates={setSort}
+                  />
+                </div>
+
+                <div className="productLayoutFilterMenu">
+                  <ProductLayoutFilterMenu>
+                    <ProductLayoutFilter
+                      FilterMenuComponent={FilterMenuComponent}
+                      price={price}
+                      setPrice={setPrice}
+                      rating={rating}
+                      setRating={setRating}
+                      sort={sort}
+                      setSort={setSort}
+                      sortOptions={sortOptions}
+                    />
+                  </ProductLayoutFilterMenu>
+                </div>
+
+                {/* <CustomButton
+                  className="productLayout__filter--btn btn small__btn btn__dark"
+                  text="Filter"
+                  endIcon={<FilterListIcon />}
+                /> */}
+
                 <CustomViewer viewer={viewer} setViewer={setViewer} />
               </div>
             </div>
@@ -137,7 +122,7 @@ const ProductLayout = ({ categories, FilterMenuComponent }) => {
 
             {viewer === "grid" && (
               <div className="productLayout__grid">
-                {productLoading
+                {isLoading
                   ? [...Array(6).keys()].map((index) => (
                       <ProductItemSkeleton key={index} />
                     ))
@@ -149,7 +134,7 @@ const ProductLayout = ({ categories, FilterMenuComponent }) => {
 
             {viewer === "list" && (
               <div className="productLayout__list">
-                {productLoading
+                {isLoading
                   ? [...Array(6).keys()].map((index) => (
                       <ProductItemSkeleton key={index} />
                     ))
@@ -160,11 +145,9 @@ const ProductLayout = ({ categories, FilterMenuComponent }) => {
             )}
 
             {productsData?.counts === productsData?.products?.length ||
-            productsData?.products?.length === 0 ? (
-              " "
-            ) : (
+            productsData?.products?.length === 0 ? null : (
               <>
-                {productLoading ? (
+                {isLoading ? (
                   <ButtonSkeleton height={40} width="100%" marginTop={5} />
                 ) : (
                   <CustomButton

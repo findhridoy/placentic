@@ -20,6 +20,7 @@ import Orders from "./pages/Orders";
 import Product from "./pages/Product";
 import Profile from "./pages/Profile";
 import Signup from "./pages/Signup";
+import Wishlist from "./pages/Wishlist";
 
 const App = () => {
   // Check user authentication
@@ -32,6 +33,7 @@ const App = () => {
       <Route path="/" element={<Home />} />
       <Route path="/product/:prodId" element={<Product />} />
       <Route path="/cart" element={<Cart />} />
+      <Route path="/wishlist" element={<Wishlist />} />
       <Route path="/collection" element={<Collection />} />
       <Route path="/category" element={<Categories />} />
       <Route path="/category/:cate_title" element={<CategoryProduct />} />

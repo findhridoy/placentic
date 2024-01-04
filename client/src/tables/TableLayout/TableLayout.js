@@ -42,7 +42,7 @@ const TableLayout = ({
     }
   }, [inputValue, setKeyword]);
   return (
-    <div className="tableLayout__section">
+    <section className="tableLayout__section">
       <div className="tableLayout__section-header">
         {isSearchField && (
           <form className="tableLayout__search" onSubmit={handleSubmit}>
@@ -185,7 +185,7 @@ const TableLayout = ({
           </div>
         </div>
       )}
-    </div>
+    </section>
   );
 };
 

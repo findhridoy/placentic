@@ -15,7 +15,6 @@ import CustomBreadcrumbs from "../components/controls/CustomBreadcrumbs";
 import CustomButton from "../components/controls/CustomButton";
 import ProfileInfoSkeleton from "../components/skeletons/ProfileInfoSkeleton";
 import Layout from "../layouts/Layout";
-import Orders from "./Orders";
 
 const Profile = () => {
   // States
@@ -107,13 +106,15 @@ const Profile = () => {
                       />
                     )}
 
-                    <h2 className="profile__name">Hello! {user?.name}</h2>
+                    <div className="profile__card">
+                      <h2 className="profile__name">Hello! {user?.name}</h2>
 
-                    <ProfileInfo
-                      register={register}
-                      isEdit={isEdit}
-                      user={user}
-                    />
+                      <ProfileInfo
+                        register={register}
+                        isEdit={isEdit}
+                        user={user}
+                      />
+                    </div>
 
                     {isEdit && (
                       <div className="button__group">
@@ -149,11 +150,11 @@ const Profile = () => {
             <div className="profile__others">
               <div className="profile__orders">
                 <h3 className="orders__title">Orders</h3>
-                <Orders profile={true} />
+                {/* <Orders profile={true} /> */}
               </div>
               <div className="profile__address">
                 <h3 className="address__title">Address</h3>
-                <Orders profile={true} />
+                {/* <Orders profile={true} /> */}
               </div>
             </div>
           </div>

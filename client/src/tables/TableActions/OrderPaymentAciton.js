@@ -8,7 +8,7 @@ import { useUpdateOrderMutation } from "../../app/features/orders/orderApi";
 import UpdateOrderForm from "../../dashboard/DashboardComponents/UpdateOrderForm";
 import { paymentStatusSchema } from "../../helpers/Validation/ValidationSchema";
 
-const OrderPaymentAciton = ({ row }) => {
+const OrderPaymentAciton = ({ row, customer }) => {
   // Modal state
   const [open, setOpen] = useState(false);
 
@@ -65,6 +65,7 @@ const OrderPaymentAciton = ({ row }) => {
             // endIcon={<KeyboardArrowDownIcon />}
             size="small"
             // onClick={() => setOpen(true)}
+            disabled={customer}
           >
             ● {row?.original?.paymentResult?.status}
           </Button>

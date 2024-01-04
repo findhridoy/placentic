@@ -3,10 +3,11 @@ import { useState } from "react";
 import { useGetCategoriesByProductQuery } from "../app/features/products/productApi";
 import collectionImage from "../assets/banners/collection2.jpg";
 import CustomBreadcrumbs from "../components/controls/CustomBreadcrumbs";
+import MenuItemSkeleton from "../components/skeletons/MenuItemSkeleton";
 import Layout from "../layouts/Layout";
 import ProductLayout from "../layouts/ProductLayout";
 
-const FilterMenu = ({ categories, setCategories, categoryData }) => {
+const FilterMenu = ({ categories, setCategories, categoryData, isLoading }) => {
   // category filter handler
   const handleCategoryFilter = (category) => {
     if (categories?.includes(category)) {
@@ -18,17 +19,21 @@ const FilterMenu = ({ categories, setCategories, categoryData }) => {
 
   return (
     <MenuList>
-      {categoryData?.categories?.map((category) => (
-        <MenuItem
-          onClick={() => handleCategoryFilter(category?.title)}
-          key={category?.title}
-          divider={true}
-          selected={categories?.includes(category?.title) ? true : false}
-        >
-          {category?.title}
-          <Badge badgeContent={category?.productCount} />
-        </MenuItem>
-      ))}
+      {isLoading ? (
+        <MenuItemSkeleton />
+      ) : (
+        categoryData?.categories?.map((category) => (
+          <MenuItem
+            onClick={() => handleCategoryFilter(category?.title)}
+            key={category?.title}
+            divider={true}
+            selected={categories?.includes(category?.title) ? true : false}
+          >
+            {category?.title}
+            <Badge badgeContent={category?.productCount} />
+          </MenuItem>
+        ))
+      )}
     </MenuList>
   );
 };
@@ -48,6 +53,7 @@ const Collection = () => {
             categories={categories}
             setCategories={setCategories}
             categoryData={categoryData}
+            isLoading={isLoading}
           />
         }
         categories={categories}

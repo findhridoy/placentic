@@ -8,7 +8,7 @@ import { useUpdateOrderMutation } from "../../app/features/orders/orderApi";
 import UpdateOrderForm from "../../dashboard/DashboardComponents/UpdateOrderForm";
 import { deliveryStatusSchema } from "../../helpers/Validation/ValidationSchema";
 
-const OrderDeliveryAction = ({ row }) => {
+const OrderDeliveryAction = ({ row, customer }) => {
   // Modal state
   const [open, setOpen] = useState(false);
 
@@ -67,12 +67,15 @@ const OrderDeliveryAction = ({ row }) => {
           }
         >
           {row?.original?.deliveryStatus === "free" ? (
-            <Button size="small">● Store Pickup</Button>
+            <Button disabled={customer} size="small">
+              ● Store Pickup
+            </Button>
           ) : (
             <Button
-              endIcon={<KeyboardArrowDownIcon />}
+              endIcon={!customer && <KeyboardArrowDownIcon />}
               size="small"
               onClick={() => setOpen(true)}
+              disabled={customer}
             >
               ● {row?.original?.deliveryStatus}
             </Button>

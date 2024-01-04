@@ -14,7 +14,7 @@ const reducers = combineReducers({
   category: categorySlice,
 });
 
-// store congure
+// store configure
 export const store = configureStore({
   reducer: (state, action) => {
     if (userLoggedOut.match(action)) {

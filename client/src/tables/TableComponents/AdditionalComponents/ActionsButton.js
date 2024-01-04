@@ -4,7 +4,12 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import { IconButton } from "@mui/material";
 import React from "react";
 
-const ActionsButton = ({ handleEditIcon, handleDeleteIcon, visibleIcon }) => {
+const ActionsButton = ({
+  handleEditIcon,
+  handleDeleteIcon,
+  visibleIcon,
+  customer,
+}) => {
   return (
     <div className="actionsButton">
       <IconButton size="small" onClick={handleEditIcon}>
@@ -15,7 +20,7 @@ const ActionsButton = ({ handleEditIcon, handleDeleteIcon, visibleIcon }) => {
         )}
       </IconButton>
 
-      <IconButton size="small" onClick={handleDeleteIcon}>
+      <IconButton disabled={customer} size="small" onClick={handleDeleteIcon}>
         <DeleteIcon fontSize="small" />
       </IconButton>
     </div>
