@@ -40,9 +40,11 @@ const Products = () => {
             ) : productData?.products?.length < 1 ? (
               <CustomAlert severity="info" message="No products are found!" />
             ) : (
-              productData?.products?.map((product) => (
-                <ProductItem product={product} key={product?._id} />
-              ))
+              productData?.products
+                ?.slice(0, 12)
+                ?.map((product) => (
+                  <ProductItem product={product} key={product?._id} />
+                ))
             )}
           </div>
 
