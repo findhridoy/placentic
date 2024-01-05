@@ -4,7 +4,7 @@ const generateUniqueId = require("generate-unique-id");
 
 // Internal Imports
 const Order = require("../models/orderModel");
-const { ApiFeatures } = require("../utils/Apifeatures");
+const { ApiFeatures } = require("../utils/ApiFeatures");
 
 /**
  * @route   Post /api/v1/order
