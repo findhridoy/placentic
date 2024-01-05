@@ -1,0 +1,62 @@
+.newsletter__section {
+  background-color: $cyan-alt;
+  padding: $x-3 0;
+  margin-top: $x-3;
+
+  .newsletter__content {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+
+    .newsletter__data {
+      max-width: 800px;
+      width: 100%;
+      .newsletter__title {
+        @include h2-font;
+        font-weight: $semi-bold;
+        color: $dark-alt;
+      }
+      .newsletter__description {
+        @include normal-font;
+        font-weight: $medium;
+        color: $dark-alt;
+      }
+
+      .newsletter__form {
+        display: flex;
+        align-items: center;
+        border-bottom: $border-dark-alt;
+        width: 100%;
+        margin-top: $x-1-25;
+
+        @include breakpoint(md) {
+          margin-top: $x-1-5;
+        }
+
+        input {
+          height: 2.5rem;
+          padding-right: $x-0-75;
+          width: 100%;
+          @include small-font;
+          font-weight: $medium;
+          color: $dark-alt;
+          background-color: transparent;
+          @include breakpoint(md) {
+            height: 2.8rem;
+          }
+        }
+
+        .MuiIconButton-root {
+          color: $dark-alt;
+          @include transition(300ms);
+          &:hover {
+            background-color: $dark-alt !important;
+            color: $white-alt;
+          }
+        }
+      }
+    }
+  }
+}

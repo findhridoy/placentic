@@ -1,0 +1,105 @@
+.footer__section {
+  padding: 1.5rem 0;
+  @include breakpoint(md) {
+    padding: 2.5rem 0;
+  }
+  @include breakpoint(lg) {
+    padding: 3.5rem 0;
+  }
+
+  .footer__content {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    gap: 1rem;
+    @include breakpoint(md) {
+      flex-direction: row;
+      justify-content: space-between;
+      text-align: initial;
+    }
+
+    .footer__link {
+      .link__list {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+
+        .link__item {
+          .link {
+            font-weight: $semi-bold;
+            @include small-font;
+            color: $dark-alt;
+            text-transform: uppercase;
+            &:hover {
+              color: $cyan;
+            }
+          }
+        }
+      }
+    }
+
+    .footer__logo {
+      order: 3;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      @include breakpoint(md) {
+        order: initial;
+      }
+
+      img {
+        width: 130px;
+        @include breakpoint(md) {
+          width: 135px;
+        }
+        @include breakpoint(lg) {
+          width: 140px;
+        }
+      }
+
+      .footer__text {
+        font-weight: $medium;
+        @include smallest-font;
+        color: $dark-alt;
+        opacity: 0.9;
+        .brand__link {
+          color: $cyan;
+          font-weight: $semi-bold;
+          &:hover {
+            text-decoration: underline;
+          }
+        }
+      }
+    }
+
+    .footer__social {
+      display: flex;
+      gap: 1.5rem;
+      justify-content: center;
+
+      .social__text {
+        font-weight: $semi-bold;
+        @include smaller-font;
+        color: $dark-alt;
+        text-transform: uppercase;
+      }
+
+      .social__list {
+        display: flex;
+        gap: 0.8rem;
+        .social__item {
+          .social__link {
+            .MuiSvgIcon-root {
+              @include h3-font;
+              color: $dark-alt;
+              &:hover {
+                color: $cyan;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
