@@ -6,7 +6,7 @@ const DashboardLayout = ({ children, title, filter, setFilter }) => {
   return (
     <div className="dashboardLayout">
       <DashboardMenu />
-      <div className="dashboarLayout__container">
+      <div className="dashboardLayout__container">
         <DashboardHeader title={title} filter={filter} setFilter={setFilter} />
         <div className="dashboardLayout__pages">{children}</div>
       </div>

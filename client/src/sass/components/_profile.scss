@@ -1,17 +1,18 @@
 .profile {
   position: relative;
-  margin-top: -5rem;
+  padding: $x-1;
+  // margin-top: -5rem;
   .profile__content {
-    display: grid;
-    gap: 2.5rem;
-    @include breakpoint(lg) {
-      grid-template-columns: 1fr 1.5fr;
-      gap: 2rem;
-    }
-    @include breakpoint(xl) {
-      grid-template-columns: 1.1fr 2fr;
-      gap: 2.5rem;
-    }
+    // display: grid;
+    // gap: 2.5rem;
+    // @include breakpoint(lg) {
+    //   grid-template-columns: 1fr 1.5fr;
+    //   gap: 2rem;
+    // }
+    // @include breakpoint(xl) {
+    //   grid-template-columns: 1.1fr 2fr;
+    //   gap: 2.5rem;
+    // }
     .profile__info {
       background-color: $white;
       text-align: center;

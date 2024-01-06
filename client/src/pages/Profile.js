@@ -8,13 +8,11 @@ import {
   useGetProfileQuery,
   useUpdateProfileMutation,
 } from "../app/features/auth/authApi";
-import profileImage from "../assets/banners/profile1.jpg";
 import ProfileInfo from "../components/ProfileInfo";
 import UserAvatar from "../components/UserAvatar";
-import CustomBreadcrumbs from "../components/controls/CustomBreadcrumbs";
 import CustomButton from "../components/controls/CustomButton";
 import ProfileInfoSkeleton from "../components/skeletons/ProfileInfoSkeleton";
-import Layout from "../layouts/Layout";
+import ProfileLayout from "../layouts/ProfileLayout";
 
 const Profile = () => {
   // States
@@ -85,8 +83,7 @@ const Profile = () => {
     reset();
   };
   return (
-    <Layout>
-      <CustomBreadcrumbs title="Profile" image={profileImage} />
+    <ProfileLayout title="Your profile">
       <section className="profile section">
         <div className="container">
           <div className="profile__content">
@@ -147,20 +144,18 @@ const Profile = () => {
               )}
             </div>
 
-            <div className="profile__others">
+            {/* <div className="profile__others">
               <div className="profile__orders">
                 <h3 className="orders__title">Orders</h3>
-                {/* <Orders profile={true} /> */}
               </div>
               <div className="profile__address">
                 <h3 className="address__title">Address</h3>
-                {/* <Orders profile={true} /> */}
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
       </section>
-    </Layout>
+    </ProfileLayout>
   );
 };
 
