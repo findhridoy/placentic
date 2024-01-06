@@ -57,7 +57,7 @@
         @include transition(200ms);
         @include breakpoint(md) {
           flex-direction: row;
-          gap: 0.8rem;
+          gap: 0.5rem;
           padding: $x-0-5 0 $x-0-5 $x-1-5;
           border-left: 3px solid transparent;
         }

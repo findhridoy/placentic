@@ -1,0 +1,66 @@
+.wishlist__section {
+  //   .cart__header {
+  //     display: flex;
+  //     justify-content: space-between;
+  //     align-items: center;
+  //     padding-bottom: $x-0-25;
+  //     border-bottom: $border-gray;
+  //     margin-bottom: $x-1;
+
+  //     .cart__title {
+  //       color: $dark-alt;
+  //       @include h2-font;
+  //       font-weight: $semi-bold;
+  //     }
+  //     .cart__backLink {
+  //       display: flex;
+  //       align-items: center;
+  //       gap: 0.2rem;
+  //       color: $dark-alt;
+  //       @include smaller-font;
+  //       font-weight: $bold;
+  //       .MuiSvgIcon-root {
+  //         @include h3-font;
+  //       }
+  //       &:hover {
+  //         color: $cyan;
+  //       }
+  //     }
+  //   }
+  .wishlist__content {
+    // display: grid;
+    // gap: 2rem;
+
+    // @include breakpoint(lg) {
+    //   grid-template-columns: 1fr 0.5fr;
+    // }
+  }
+
+  //   .cart__checkout {
+  //     .cart__shipping {
+  //       position: relative;
+  //       padding: $x-0-75 $x-1;
+  //       &::before {
+  //         content: "";
+  //         position: absolute;
+  //         height: 100%;
+  //         width: 100%;
+  //         left: 0;
+  //         top: 0;
+  //         background-color: $white;
+  //         z-index: -1;
+  //         // border-radius: 8px;
+  //         opacity: 0.6;
+  //         // @include box-shadow;
+  //       }
+
+  //       .shipping__title {
+  //         color: $dark-alt;
+  //         @include normal-font;
+  //         font-weight: $semi-bold;
+  //         opacity: 0.9;
+  //         margin-bottom: $x-0-25;
+  //       }
+  //     }
+  //   }
+}

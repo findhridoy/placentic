@@ -1,4 +1,7 @@
 import CloseIcon from "@mui/icons-material/Close";
+import DataSaverOffIcon from "@mui/icons-material/DataSaverOff";
+import InsightsIcon from "@mui/icons-material/Insights";
+import LeaderboardIcon from "@mui/icons-material/Leaderboard";
 import { Avatar } from "@mui/material";
 import cogoToast from "cogo-toast";
 import React, { useEffect, useState } from "react";
@@ -9,6 +12,7 @@ import {
   useUpdateProfileMutation,
 } from "../app/features/auth/authApi";
 import ProfileInfo from "../components/ProfileInfo";
+import ProfileTab from "../components/ProfileTab";
 import UserAvatar from "../components/UserAvatar";
 import CustomButton from "../components/controls/CustomButton";
 import ProfileInfoSkeleton from "../components/skeletons/ProfileInfoSkeleton";
@@ -84,7 +88,7 @@ const Profile = () => {
   };
   return (
     <ProfileLayout title="Your profile">
-      <section className="profile section">
+      <section className="profile">
         <div className="container">
           <div className="profile__content">
             <div className="profile__info">
@@ -97,7 +101,7 @@ const Profile = () => {
                       <UserAvatar setAvatar={setAvatar} user={user} />
                     ) : (
                       <Avatar
-                        sx={{ width: 150, height: 150 }}
+                        sx={{ width: 100, height: 100 }}
                         alt={user?.name}
                         src={user?.avatar}
                       />
@@ -144,14 +148,34 @@ const Profile = () => {
               )}
             </div>
 
-            {/* <div className="profile__others">
-              <div className="profile__orders">
-                <h3 className="orders__title">Orders</h3>
+            <div className="profile__others">
+              <div className="profile__dashborad">
+                {[...Array(3).keys()].map((index) => (
+                  <div className="dashborad__card">
+                    <div className="card__header">
+                      <h2 className="card__number">5</h2>
+                      <DataSaverOffIcon />
+                    </div>
+
+                    <div className="card__body">
+                      <div>
+                        <h3 className="card__title">Total</h3>
+                        <p className="card__percentege">
+                          <InsightsIcon />
+                          36%
+                        </p>
+                      </div>
+
+                      <LeaderboardIcon fontSize="large" />
+                    </div>
+                  </div>
+                ))}
               </div>
-              <div className="profile__address">
-                <h3 className="address__title">Address</h3>
+
+              <div className="profile__tabs">
+                <ProfileTab />
               </div>
-            </div> */}
+            </div>
           </div>
         </div>
       </section>

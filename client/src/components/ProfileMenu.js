@@ -1,5 +1,6 @@
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
+import FavoriteIcon from "@mui/icons-material/Favorite";
 import React from "react";
 import { Link, NavLink } from "react-router-dom";
 import placentic from "../assets/logo/placentic.png";
@@ -20,7 +21,7 @@ const ProfileMenu = () => (
           to="/profile"
         >
           <AccountCircleIcon />
-          <span className="menu__text">Profile</span>
+          <span className="menu__text">My Profile</span>
         </NavLink>
       </li>
       <li className="menu__item">
@@ -31,7 +32,18 @@ const ProfileMenu = () => (
           to="/orders"
         >
           <AddShoppingCartIcon />
-          <span className="menu__text">Orders</span>
+          <span className="menu__text">My Orders</span>
+        </NavLink>
+      </li>
+      <li className="menu__item">
+        <NavLink
+          className={({ isActive }) =>
+            isActive ? "menu__link active__link" : "menu__link"
+          }
+          to="/wishlist"
+        >
+          <FavoriteIcon />
+          <span className="menu__text">My Wishlist</span>
         </NavLink>
       </li>
 
