@@ -1,6 +1,6 @@
 .profileHeader {
-  // background-color: $white-alt;
-  background-color: transparent;
+  background-color: $white-alt;
+  // background-color: transparent;
   @include transition(300ms);
   @include header-height;
   padding: 0 $x-1;
@@ -23,7 +23,7 @@
     left: 0;
     top: 0;
     z-index: -10;
-    // @include header-shadow(-25px);
+    @include header-shadow(-25px);
   }
 
   .dh__nav {

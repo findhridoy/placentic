@@ -6,7 +6,7 @@ const ListItem = ({ register, isEdit, property, value }) => {
       <span className="item__property">{property}</span>
       {isEdit ? (
         <input
-          className="form__control"
+          className="form__control item__input"
           type="text"
           defaultValue={value ? value : ""}
           {...register(property)}

@@ -1,17 +1,17 @@
 .profile {
   position: relative;
-  padding: $x-1 $x-1-75;
+  padding: $x-1;
   // margin-top: -5rem;
   .profile__content {
     display: grid;
     gap: 2.5rem;
     @include breakpoint(lg) {
       grid-template-columns: 1fr 1.5fr;
-      gap: 1.5rem;
+      gap: 1rem;
     }
     @include breakpoint(xl) {
-      grid-template-columns: 1.1fr 2fr;
-      gap: 1.5rem;
+      grid-template-columns: 1fr 2fr;
+      gap: 1rem;
     }
     .profile__info {
       background-color: $white;
@@ -21,6 +21,8 @@
       width: 100%;
       margin: 0 auto;
       // @include box-shadow;
+
+      // border-radius: 8px;
 
       .MuiSkeleton-root {
         margin: 0 auto;
@@ -43,11 +45,11 @@
 
       .profile__name {
         color: $dark-alt;
-        margin-top: $x-1-25;
-        @include h2-font;
+        margin-top: $x-0-75;
+        @include h3-font;
         font-weight: $semi-bold;
         border-bottom: 1px solid $gray;
-        padding-bottom: $x-0-75;
+        padding-bottom: $x-0-5;
       }
       .profile__btn {
         // margin-top: $x-0-75;
@@ -70,6 +72,8 @@
           height: max-content;
           background-color: $white;
           padding: $x-0-75;
+
+          // border-radius: 8px;
 
           .card__header {
             display: flex;
@@ -144,6 +148,7 @@
           box-shadow: none;
           // border-bottom: 1px solid $gray;
           background-color: $white;
+          // border-radius: 8px;
         }
 
         .MuiBox-root .css-19kzrtu {

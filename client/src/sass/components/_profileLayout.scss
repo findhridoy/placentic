@@ -27,9 +27,11 @@
     }
 
     .profileLayout__pages {
+      // position: relative;
       // padding: $x-1;
       @include breakpoint(sm) {
-        // padding: $x-0-25;
+        // padding: $x-1-25;
+        // margin-left: 12rem;
       }
     }
   }

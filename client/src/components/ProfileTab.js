@@ -6,6 +6,7 @@ import { useTheme } from "@mui/material/styles";
 import PropTypes from "prop-types";
 import * as React from "react";
 import SwipeableViews from "react-swipeable-views";
+import Addresses from "../pages/Addresses";
 import ProductTabSkeleton from "./skeletons/ProductTabSkeleton";
 
 function TabPanel(props) {
@@ -80,10 +81,10 @@ const ProfileTab = ({ product, loading }) => {
             onChangeIndex={handleChangeIndex}
           >
             <TabPanel value={value} index={0} dir={theme.direction}>
-              {/* <ProductReview product={product} loading={loading} /> */}
+              {/* Recent order */}
             </TabPanel>
             <TabPanel value={value} index={1} dir={theme.direction}>
-              {/* addresses */}
+              <Addresses />
             </TabPanel>
             {/* <TabPanel value={value} index={2} dir={theme.direction}>
               <span className="product__description">

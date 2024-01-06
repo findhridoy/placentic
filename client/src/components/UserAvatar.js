@@ -43,7 +43,7 @@ const UserAvatar = ({ setAvatar, user }) => {
         }
       >
         <Avatar
-          sx={{ width: 150, height: 150 }}
+          sx={{ width: 100, height: 100 }}
           alt={user?.name}
           src={croppedImage ? croppedImage : user?.avatar ? user?.avatar : ""}
         />

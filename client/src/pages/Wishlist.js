@@ -8,7 +8,7 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import wishlistImage from "../assets/banners/cart5.jpg";
 import CustomAlert from "../components/controls/CustomAlert";
-import ProfileLayout from "../layouts/ProfileLayout";
+import Layout from "../layouts/Layout";
 import CustomBreadcrumbs from "./../components/controls/CustomBreadcrumbs";
 
 const WishlistItem = ({ wishlistItem }) => {
@@ -104,7 +104,7 @@ const Wishlist = () => {
   const { wishlistItems } = useSelector((state) => state.wishlist);
 
   return (
-    <ProfileLayout>
+    <Layout title="Your wishlist">
       <div className="wishlist__section">
         <CustomBreadcrumbs title="Your wishlist" image={wishlistImage} />
         <div className="container">
@@ -125,7 +125,7 @@ const Wishlist = () => {
           )}
         </div>
       </div>
-    </ProfileLayout>
+    </Layout>
   );
 };
 
