@@ -1,0 +1,12 @@
+.addresses {
+  .addresses__container {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 0.5rem;
+    .addresses__card {
+      background-color: $white;
+      width: 130px;
+      height: 100px;
+    }
+  }
+}

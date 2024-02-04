@@ -1,16 +1,17 @@
 .profile {
   position: relative;
-  margin-top: -5rem;
+  padding: $x-1;
+  // margin-top: -5rem;
   .profile__content {
     display: grid;
     gap: 2.5rem;
     @include breakpoint(lg) {
       grid-template-columns: 1fr 1.5fr;
-      gap: 2rem;
+      gap: 1rem;
     }
     @include breakpoint(xl) {
-      grid-template-columns: 1.1fr 2fr;
-      gap: 2.5rem;
+      grid-template-columns: 1fr 2fr;
+      gap: 1rem;
     }
     .profile__info {
       background-color: $white;
@@ -20,6 +21,8 @@
       width: 100%;
       margin: 0 auto;
       // @include box-shadow;
+
+      // border-radius: 8px;
 
       .MuiSkeleton-root {
         margin: 0 auto;
@@ -42,11 +45,11 @@
 
       .profile__name {
         color: $dark-alt;
-        margin-top: $x-1-25;
-        @include h2-font;
+        margin-top: $x-0-75;
+        @include h3-font;
         font-weight: $semi-bold;
         border-bottom: 1px solid $gray;
-        padding-bottom: $x-0-75;
+        padding-bottom: $x-0-5;
       }
       .profile__btn {
         // margin-top: $x-0-75;
@@ -57,9 +60,52 @@
     }
     .profile__others {
       display: flex;
-      gap: 2.5rem;
+      gap: 1rem;
       flex-direction: column;
-      .profile__orders {
+
+      .profile__dashborad {
+        display: flex;
+        flex-wrap: nowrap;
+        gap: 1rem;
+        .dashborad__card {
+          width: 100%;
+          height: max-content;
+          background-color: $white;
+          padding: $x-0-75;
+
+          // border-radius: 8px;
+
+          .card__header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            .card__number {
+              @include h2-font;
+              font-weight: $medium;
+              color: $cyan;
+            }
+          }
+
+          .card__body {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            .card__title {
+              color: $dark-alt;
+              opacity: 0.8;
+              @include h4-font;
+            }
+
+            .card__percentege {
+              color: $dark-alt;
+              @include small-font;
+              font-weight: $semi-bold;
+              display: flex;
+              align-items: center;
+              gap: 0.2rem;
+            }
+          }
+        }
         .orders__title {
           color: $dark-alt;
           border-bottom: 1px solid $gray;
@@ -67,12 +113,52 @@
           @include h3-font;
         }
       }
-      .profile__address {
-        .address__title {
+
+      .profile__tabs {
+        // max-width: 400px;
+        // margin: 0 auto;
+        // margin-top: $x-3;
+        // text-align: left;
+
+        @include breakpoint(sm) {
+          // max-width: 450px;
+        }
+        @include breakpoint(md) {
+          // max-width: initial;
+        }
+        @include breakpoint(xl) {
+          // max-width: 90%;
+        }
+
+        .MuiButtonBase-root.css-1vw5i9y-MuiButtonBase-root-MuiTab-root {
+          font-weight: $bold !important;
           color: $dark-alt;
-          border-bottom: 1px solid $gray;
-          padding-bottom: $x-0-25;
-          @include h3-font;
+          font-family: $poppins;
+          @include smaller-font;
+          align-items: flex-start;
+          text-transform: capitalize;
+        }
+
+        .MuiTabs-indicator {
+          background-color: $dark-alt !important;
+          display: none;
+        }
+
+        .MuiAppBar-root {
+          box-shadow: none;
+          // border-bottom: 1px solid $gray;
+          background-color: $white;
+          // border-radius: 8px;
+        }
+
+        .MuiBox-root .css-19kzrtu {
+          padding: $x-1-75 0 !important;
+        }
+
+        .product__description {
+          color: $dark-alt !important;
+          @include small-font;
+          opacity: 0.9;
         }
       }
     }

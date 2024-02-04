@@ -23,6 +23,9 @@
 @import "components/imageHandler";
 @import "components/fileUploader";
 @import "components/login&signup";
+@import "components/profileLayout";
+@import "components/profileHeader";
+@import "components/profileMenu";
 @import "components/profile";
 @import "components/productLayout";
 @import "components/productLayoutFilter";
@@ -35,6 +38,8 @@
 @import "components/reviewComment";
 @import "components/cart";
 @import "components/cartItem";
+@import "components/wishlist";
+@import "components/wishlistItem";
 @import "components/cartSubtotal";
 @import "components/checkout";
 @import "components/customizeAccordion";
@@ -43,6 +48,7 @@
 @import "components/productListItem";
 @import "components/paymentForm";
 @import "components/orders";
+@import "components/addresses";
 
 // Dashboard
 @import "../dashboard/DashboardStyles/dashboardIndex";

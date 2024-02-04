@@ -21,6 +21,11 @@
       font-weight: $semi-bold;
       text-transform: capitalize;
     }
+
+    .item__input {
+      height: 2.2rem;
+    }
+
     .item__value {
       @extend .item__property;
       opacity: 1;
